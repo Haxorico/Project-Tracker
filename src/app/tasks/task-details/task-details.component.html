@@ -1,0 +1,48 @@
+<div class="row">
+    <div class="col-xs-12">
+        <h1>{{task.name}}</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <button type="button" class="btn btn-danger" (click)="onDeleteTaskClicked()"
+            *ngIf="loggedUser.rank >= 50">Delete Task</button>
+        <button type="button" class="btn btn-warning" (click)="onEditTaskClicked()" *ngIf="loggedUser.rank > 0">Edit
+            Task</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        Name: {{task.name}}<br>
+        <a (click)="onProjectClicked()">Project: {{task.project.name}}</a><br>
+        Status: {{task.GetStatus()}}<br>
+        Type: {{task.GetType()}}<br>
+        Estimate: {{task.estimate}}<br>
+        Start Date: {{task.start_date}}<br>
+        End Date: {{task.end_date}}<br>
+        Description: {{task.description}}<br>
+        <a (click)="onTaskUserClicked()">Task User: {{task.user.name}}</a> <br>
+        <a (click)="onTaskReportedClicked()">Task Reporter: {{task.reporter.name}}</a><br>
+        <button class="btn btn-primary" (click)="ShowAllUsers()"
+            *ngIf='isShowingAllUsers==false && isShowingAllManagers==false'>Change User</button>
+        <button class="btn btn-info" (click)="ShowAllManagers()"
+            *ngIf='isShowingAllUsers==false && isShowingAllManagers==false'>Change User-Reporter</button>
+        <div *ngIf="isShowingAllUsers==true">
+            <ul>
+                <li *ngFor='let user of users'>
+                    <div>{{user.name}} - <b><a (click)="SetAsUser(user)">Set as user</a></b></div>
+                </li>
+            </ul>
+        </div>
+        <div *ngIf="isShowingAllManagers==true">
+            <ul>
+                <div *ngFor='let user of users'>
+                    <li *ngIf='user.rank > 10'>
+                        {{user.name}} - <b><a (click)="SetAsReporter(user)">Set as reporter</a></b>
+                    </li>
+                </div>
+            </ul>
+        </div>
+    </div>

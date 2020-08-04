@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col-md-5">
+        <div class="row">
+            <div class="col-xs-12">
+                <button class="btn btn-success" (click)="onNewUserClicked()">New User</button>
+                <label for="filter">Filter</label>
+                <input type="text" id="filter" name="filter" (input)="onFilterChanged($event.target.value)">
+                <div *ngFor="let user of users">
+
+                    <a [routerLink]="['/users', user.id]" routerLinkActive="active" style="cursor: pointer;"
+                        class="list-group-item clearfix">
+                        <div class="pull-left">
+                            <h4 class="list-group-item-heading"> {{user.name}} - {{user.GetTitle()}} <br>
+                                {{user.skype}} - {{user.phone_number}}
+                            </h4>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <router-outlet></router-outlet>
+    </div>
+</div>

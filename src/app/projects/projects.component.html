@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-md-5">
+        <div class="row">
+            <div class="col-xs-12">
+                <button class="btn btn-success" (click)="onNewProjectClicked()" *ngIf="loggedUser.rank >= 50">New
+                    Project</button>
+                <label for="filter">Filter</label>
+                <input type="text" id="filter" name="filter" (input)="onFilterChanged($event.target.value)">
+                <div *ngFor="let project of projects; let i = index">
+                    <a [routerLink]="['/projects', project.id]" routerLinkActive="active" style="cursor: pointer;"
+                        class="list-group-item clearfix">
+                        <div class="pull-left">
+                            <h4 class="list-group-item-heading"> {{project.name}} - {{project.description}}</h4>
+                        </div>
+                        <span class="pull-right">
+                            <img [src]=project.logo alt="{{project.name}}" class="img-responsive"
+                                style="height: 80px; width: 100px;">
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <router-outlet></router-outlet>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+<div class="col-md-5">
+    <div class="row">
+        <div class="col-xs-12">
+            <img [src]=user.photo alt="{{user.name}}" class="img-responsive" style="height: 200px;">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>{{user.name}}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <button type="button" class="btn btn-danger" (click)="onDeleteUserClicked()"
+                *ngIf="loggedUser.rank >= 50">Delete User</button>
+            <button type="button" class="btn btn-warning" (click)="onEditUserClicked()" *ngIf="loggedUser.rank > 0">Edit
+                User</button>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            Name: {{user.name}} <br>
+            Title: {{user.GetTitle()}} <br>
+            Location: {{user.location}}<br>
+            Date of Birth: {{user.date_of_birth}}<br>
+            Address: {{user.address}}<br>
+            Skype: {{user.skype}}<br>
+            Phone Number: {{user.phone_number}}
+        </div>
+    </div>
+    <hr>
+    <h4>Projects: </h4>
+    <div *ngFor='let p of user.projects'>
+        <a  [routerLink]="['/projects', p.id]">{{p.name}}</a> 
+       
+    </div>
+    <hr>
+    <h5>Tasks: </h5>
+    <div *ngFor='let t of user.tasks'>
+       <a  [routerLink]="['/tasks', t.id]">{{t.project.name}}: {{t.name}}</a> 
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12">
+            Skills:<br>
+
+            <ul>
+                <li *ngFor='let skill of user.skills; let i = index'>
+                    {{skill}}
+
+                    <b *ngIf='loggedUser.id===user.id'><a (click)='removeSkill(i)'> - Remove Skill</a></b>
+
+                </li>
+            </ul>
+            <div *ngIf='loggedUser.id===user.id || loggedUser.rank > 30'>
+                <hr>
+                <label for="skill">New Skill</label>
+                <input #skill type="text" id="skill" name="skill">
+
+                <button class="btn btn-primary" (click)='addSkill()'>Add Skill</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <router-outlet></router-outlet>
+    </div>
+</div>
