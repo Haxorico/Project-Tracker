@@ -12,16 +12,21 @@ import { ProjectService } from '../projects/project.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  loginSub: Subscription;
-  user: User = this.loginService.GetGuestUser();
-  loginName: string = "(" + this.user.name + ") - Login";
+  userSub: Subscription;
+  loggedUser: User = this.loginService.GetGuestUser();
+  /* loginName: string = "(" + this.user.name + ") - Login"; */
   constructor(private loginService: LoginService,
     private userService: UserService,
     private taskService: TaskService,
     private projectService: ProjectService) { }
 
   ngOnInit(): void {
-    this.loginSub = this.loginService.loginChanged.subscribe((user: User) => {
+    this.userSub = this.userService.userLogedChanged.subscribe(() => {
+      this.loggedUser = this.userService.GetCurrentUser();
+    });
+      
+    /* this.loginSub = this.loginService.loginChanged.subscribe((user: User) => { 
+      this.loginSub = this.loginService.loginChanged.subscribe(() => {
       if (user == null) {
         this.user = this.loginService.GetGuestUser();
       }
@@ -32,12 +37,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
       else {
         this.loginName = user.name + " (Logout)";
         this.user = this.loginService.GetLogedUser();
-      }
-    });
+      } 
+    });*/
   }
 
   ngOnDestroy() {
-    this.loginSub.unsubscribe();
+    this.userSub.unsubscribe();
   }
   onSaveDataClicked() {
     localStorage.clear();
@@ -49,5 +54,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.userService.LoadUsers(JSON.parse(localStorage.getItem('users'))); 
     this.taskService.LoadTasks(JSON.parse(localStorage.getItem('tasks'))); 
     this.projectService.LoadProjects(JSON.parse(localStorage.getItem('projects'))); 
+  }
+  GetUserLoc()
+  {
+    return this.userService.GetLocById(this.loggedUser.id);
   }
 }

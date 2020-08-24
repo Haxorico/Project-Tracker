@@ -6,6 +6,7 @@ import { LoginService } from '../login/login.service';
 import { Subscription } from 'rxjs';
 import { TaskService } from '../tasks/task.service';
 import { Task } from '../tasks/task.model';
+import { UserService } from '../users/user.service';
 
 @Component({
   selector: 'app-timesheets',
@@ -22,12 +23,14 @@ export class TimesheetsComponent implements OnInit {
   loggedUser: User;
 
   constructor(private projectService: ProjectService,
-    private loginService: LoginService,
-    private taskService: TaskService) { }
+    /* private loginService: LoginService, */
+    private taskService: TaskService,
+    private userService: UserService) { }
 
   ngOnInit(): void {
     this.projects = this.projectService.GetProjects();
-    this.loggedUser = this.loginService.GetLogedUser();
+    this.loggedUser = this.userService.GetCurrentUser();
+    /* this.loggedUser = this.loginService.GetLogedUser(); */
 
     this.projectSub = this.projectService.ProjectsChanged.subscribe((p: Project[]) => {
       this.projects = p;
@@ -37,7 +40,8 @@ export class TimesheetsComponent implements OnInit {
     this.taskSub = this.taskService.TasksChanged.subscribe((t: Task[]) => {
       this.tasks = t;
     })
-    this.loggedUser = this.loginService.GetLogedUser();
+    this.loggedUser = this.userService.GetCurrentUser();
+    /* this.loggedUser = this.loginService.GetLogedUser(); */
 
 
   }

@@ -6,6 +6,7 @@ import { User } from '../users/user.model';
 import { LoginService } from '../login/login.service';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
+import { UserService } from '../users/user.service';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -15,17 +16,18 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class ProjectsComponent implements OnInit, OnDestroy {
   projects: Project[];
   projectSub: Subscription;
-  loggedUser: User;
+  loggedUser: User; 
   constructor(
     private projectService: ProjectService,
-    private loginService: LoginService,
+    /* private loginService: LoginService, */
+    private userService: UserService,
     private router : Router,
     private route : ActivatedRoute) { }
 
   ngOnInit(): void {
     this.projects = this.projectService.GetProjects();
-    this.loggedUser = this.loginService.GetLogedUser();
-
+    //this.loggedUser = this.loginService.GetLogedUser();
+    this.loggedUser = this.userService.GetCurrentUser();
     this.projectSub = this.projectService.ProjectsChanged.subscribe((p : Project[]) => {
       this.projects = p;
     })

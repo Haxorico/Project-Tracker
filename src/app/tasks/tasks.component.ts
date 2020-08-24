@@ -7,6 +7,7 @@ import { LoginService } from '../login/login.service';
 import { Subscription } from 'rxjs';
 import { User } from '../users/user.model';
 import { newArray } from '@angular/compiler/src/util';
+import { UserService } from '../users/user.service';
 
 @Component({
   selector: 'app-tasks',
@@ -15,7 +16,8 @@ import { newArray } from '@angular/compiler/src/util';
 })
 export class TasksComponent implements OnInit, OnDestroy {
   taskSub: Subscription;
-  loggedUser: User;
+  //loggedUser: User;
+  user: User;
   tasks: Task[] = [];
   openTasks: Task[] = [];
   devTasks: Task[] = [];
@@ -23,7 +25,8 @@ export class TasksComponent implements OnInit, OnDestroy {
   closedTasks: Task[] = [];
   tableSize = [];
   constructor(private taskService: TaskService,
-    private loginService: LoginService,
+    /* private loginService: LoginService, */
+    private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,) { }
 
@@ -34,8 +37,8 @@ export class TasksComponent implements OnInit, OnDestroy {
       this.tasks = t;
       this.sortTasksIntoGroups()
     })
-    this.loggedUser = this.loginService.GetLogedUser();
-
+    //this.loggedUser = this.loginService.GetLogedUser();
+    this.user = this.userService.GetCurrentUser(); 
   }
 
   ngOnDestroy() {

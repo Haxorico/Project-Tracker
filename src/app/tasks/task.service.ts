@@ -6,6 +6,7 @@ import { Project } from '../projects/project.model';
 import { ProjectService } from '../projects/project.service';
 import { UserService } from '../users/user.service';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -16,25 +17,30 @@ export class TaskService {
 
   constructor(private projectService: ProjectService,
     private userService: UserService) {
+    //generate some dummy data
+    this.GenerteStubs();
 
+  }
+
+  GenerteStubs() {
     //some test tasks to work with.
-    this.NewTask("Task 1A name", projectService.GetProjectByLoc(0), 0, 0, "1/1/2021", "1/1/2020", "1/1/2021", "Task1 descrition", this.userService.GetUserByLoc(18), this.userService.GetUserByLoc(0));
-    this.NewTask("Task 2A name", projectService.GetProjectByLoc(0), 0, 0, "1/1/2021", "1/2/2020", "1/1/2021", "Task2 descrition", this.userService.GetUserByLoc(18), this.userService.GetUserByLoc(0));
-    this.NewTask("Task 3A name", projectService.GetProjectByLoc(0), 3, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task3 descrition", this.userService.GetUserByLoc(18), this.userService.GetUserByLoc(0));
-    this.NewTask("Task 4A name", projectService.GetProjectByLoc(0), 2, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task4 descrition", this.userService.GetUserByLoc(19), this.userService.GetUserByLoc(0));
-    this.NewTask("Making Sure", projectService.GetProjectByLoc(0), 0, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Make sure tasks 1-4 are completed", this.userService.GetUserByLoc(19), this.userService.GetUserByLoc(1));
+    this.NewTask("Task 1A name", this.projectService.GetProjectByLoc(0), 0, 0, "1/1/2021", "1/1/2020", "1/1/2021", "Task1 descrition", this.userService.GetUserByLoc(18), this.userService.GetUserByLoc(0));
+    this.NewTask("Task 2A name", this.projectService.GetProjectByLoc(0), 0, 0, "1/1/2021", "1/2/2020", "1/1/2021", "Task2 descrition", this.userService.GetUserByLoc(18), this.userService.GetUserByLoc(0));
+    this.NewTask("Task 3A name", this.projectService.GetProjectByLoc(0), 3, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task3 descrition", this.userService.GetUserByLoc(18), this.userService.GetUserByLoc(0));
+    this.NewTask("Task 4A name", this.projectService.GetProjectByLoc(0), 2, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task4 descrition", this.userService.GetUserByLoc(19), this.userService.GetUserByLoc(0));
+    this.NewTask("Making Sure", this.projectService.GetProjectByLoc(0), 0, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Make sure tasks 1-4 are completed", this.userService.GetUserByLoc(19), this.userService.GetUserByLoc(1));
 
-    this.NewTask("Task 1B name", projectService.GetProjectByLoc(1), 0, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task 1b descrition", this.userService.GetUserByLoc(20), this.userService.GetUserByLoc(2));
-    this.NewTask("Task 2B name", projectService.GetProjectByLoc(1), 2, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task 2b descrition", this.userService.GetUserByLoc(20), this.userService.GetUserByLoc(2));
-    this.NewTask("Task 3B name", projectService.GetProjectByLoc(1), 1, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task 3b descrition", this.userService.GetUserByLoc(16), this.userService.GetUserByLoc(3));
+    this.NewTask("Task 1B name", this.projectService.GetProjectByLoc(1), 0, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task 1b descrition", this.userService.GetUserByLoc(20), this.userService.GetUserByLoc(2));
+    this.NewTask("Task 2B name", this.projectService.GetProjectByLoc(1), 2, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task 2b descrition", this.userService.GetUserByLoc(20), this.userService.GetUserByLoc(2));
+    this.NewTask("Task 3B name", this.projectService.GetProjectByLoc(1), 1, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task 3b descrition", this.userService.GetUserByLoc(16), this.userService.GetUserByLoc(3));
 
-    this.NewTask("Task 1C name", projectService.GetProjectByLoc(2), 0, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task 1c descrition", this.userService.GetUserByLoc(15), this.userService.GetUserByLoc(4));
-    this.NewTask("Task 2C name", projectService.GetProjectByLoc(2), 2, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task 2c descrition", this.userService.GetUserByLoc(10), this.userService.GetUserByLoc(4));
-    this.tasks[0].AddWorkTime("01/01/2020", 8, 30,"First day");
-    this.tasks[0].AddWorkTime("02/01/2020", 6, 0,"Still learning");
-    this.tasks[0].AddWorkTime("03/01/2020", 9, 30,"Gettin better");
-    this.tasks[0].AddWorkTime("04/01/2020", 7, 30,"Long marathon");
-    this.tasks[0].AddWorkTime("05/01/2020", 1, 35,"Just checking");
+    this.NewTask("Task 1C name", this.projectService.GetProjectByLoc(2), 0, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task 1c descrition", this.userService.GetUserByLoc(15), this.userService.GetUserByLoc(4));
+    this.NewTask("Task 2C name", this.projectService.GetProjectByLoc(2), 2, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task 2c descrition", this.userService.GetUserByLoc(10), this.userService.GetUserByLoc(4));
+    this.tasks[0].AddWorkTime("01/01/2020", 8, 30, "First day");
+    this.tasks[0].AddWorkTime("02/01/2020", 6, 0, "Still learning");
+    this.tasks[0].AddWorkTime("03/01/2020", 9, 30, "Gettin better");
+    this.tasks[0].AddWorkTime("04/01/2020", 7, 30, "Long marathon");
+    this.tasks[0].AddWorkTime("05/01/2020", 1, 35, "Just checking");
   }
 
   NewTask(

@@ -2,28 +2,34 @@ import { Injectable } from '@angular/core';
 import { UserService } from '../users/user.service';
 import { User } from '../users/user.model';
 import { Subscription, Subject } from 'rxjs';
+//import { find } from 'lodash';
+import * as _ from "lodash";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-
-  loggedUser: User = this.GetGuestUser();
-  loginChanged = new Subject<User>();
+  /* loginChanged = new Subject<User>(); */
   constructor(private userService: UserService) {
 
   }
 
-  Login(name: string, password: string): boolean {
+  Login(name: string, password: string) : boolean {
     const users = this.userService.GetUsers();
-    for (let i = 0; i < users.length; i++) {
+    var debug = _.find(users, user => user.name.toLowerCase() == name && user.password == password )
+    if (debug==undefined)
+      return false;
+    this.userService.SetCurrentUser(debug);
+    return true;
+    /* for (let i = 0; i < users.length; i++) {
       if (users[i].name.toLowerCase() == name && users[i].password == password) {
-        this.loggedUser = users[i];
-        this.loginChanged.next(this.loggedUser);
+        //this.loggedUser = users[i];
+        this.userService.SetCurrentUser(users[i]);
+        this.loginChanged.next();
         return true;
       }
-    }
-    return false;
+    } 
+    return false; */
   }
 
   GetGuestUser() : User
@@ -32,11 +38,12 @@ export class LoginService {
   }
 
   Logout() {
-    this.loggedUser = this.GetGuestUser();
-    this.loginChanged.next(this.loggedUser);
+    /* this.loggedUser = this.GetGuestUser();
+    this.loginChanged.next(this.loggedUser); */
+    this.userService.SetCurrentUser(this.userService.GetGuestUser());
   }
 
-  GetLogedUser() {
+  /* GetLogedUser() {
     return this.loggedUser;
-  }
+  } */
 }

@@ -34,7 +34,8 @@ export class TaskDetailsComponent implements OnInit {
       this.isShowingAllUsers = false;
       this.isShowingAllManagers = false;
     })
-    this.loggedUser = this.loginService.GetLogedUser();
+    //this.loggedUser = this.loginService.GetLogedUser();
+    this.loggedUser = this.userService.GetCurrentUser();
     this.users = this.userService.GetUsers();
   }
   onTaskReportedClicked() {

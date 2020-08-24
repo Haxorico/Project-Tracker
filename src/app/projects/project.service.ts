@@ -11,15 +11,20 @@ export class ProjectService {
   private projects: Project[] = [];
   ProjectsChanged = new Subject<Project[]>();
 
-  constructor(private userService: UserService) {
-    //dummy data to work with
-    const users = this.userService.GetUsers();
-    this.AddNewProject("OpenQ", "Maintenece", "", "Anju Software", "1/1/2020", "1/1/2021", "Check memory leaks", [users[0],users[5],users[12]]);
-    this.AddNewProject("Artnet", "Routine Check", "", "Artnet (Coroporation)", "5/6/2020", "5/12/2020", "Fix crash after 12minutes", [users[1],users[4],users[5]]);
-    this.AddNewProject("EventNut", "Bug Fix", "", "Guy Darvish", "2/5/2020", "10/5/2020", "Fix timer issue", [users[2],users[6],users[17]]);
 
+  constructor(private userService: UserService) {
+    //generate some dummy data to work with 
+    this.GenerateStubs();
   }
 
+  GenerateStubs() {
+    //dummy data to work with
+    const users = this.userService.GetUsers();
+    this.AddNewProject("OpenQ", "Maintenece", "", "Anju Software", "1/1/2020", "1/1/2021", "Check memory leaks", [users[0], users[5], users[12]]);
+    this.AddNewProject("Artnet", "Routine Check", "", "Artnet (Coroporation)", "5/6/2020", "5/12/2020", "Fix crash after 12minutes", [users[1], users[4], users[5]]);
+    this.AddNewProject("EventNut", "Bug Fix", "", "Guy Darvish", "2/5/2020", "10/5/2020", "Fix timer issue", [users[2], users[6], users[17]]);
+
+  }
   GetProjects() {
     return this.projects.slice();
   }
@@ -62,11 +67,11 @@ export class ProjectService {
       u.projects.push(p);
       this.userService.UpdateFullUser(u);
     });
-      
-    
+
+
     if (flagTickEvent)
       this.ProjectsChanged.next(this.projects.slice());
-    
+
   }
 
 

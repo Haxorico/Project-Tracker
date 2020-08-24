@@ -1,16 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 
 import { User } from './user.model';
 @Injectable({
   providedIn: 'root'
 })
+
 export class UserService {
   private users: User[] = [];
   guest: User = new User("Guest", "", 0, "", "", "", "", "", "");
+  private user: User = this.guest;
   usersChanged = new Subject<User[]>();
+  userLogedChanged = new Subject<void>();
+
 
   constructor() {
+
+    //Generatae some dummy data to work with
+    this.GenerateStubs();
+  }
+
+  GenerateStubs() {
     //just some dummy data to work with
     this.NewUser("a", "a", 100, "", "1/1/90", "Grand Master Office", "Floor 4", "the_admin_1337", "050-1333337");
     this.NewUser("Admin", "aAbBtEst-1237", 99, "", "1/1/91", "Master Office", "Floor 3", "my_name", "050-248741");
@@ -35,8 +46,8 @@ export class UserService {
     this.NewUser("Ben", "123456", 1, "", "20/10/95", "Cubical - 3C", "House", "work_work", "050-6666666");
     this.NewUser("Derek", "123456", 2, "", "20/10/95", "Cubical - 4A", "House", "work_work", "050-6666666");
     this.NewUser("Ali", "123456", 1, "", "20/10/95", "Cubical - 4B", "House", "work_work", "050-6666666");
-  }
 
+  }
   NewUser(name: string = "EMPTY_NAME",
     password: string,
     rank: number,
@@ -69,6 +80,13 @@ export class UserService {
   GetUsers() {
     return this.users.slice();
   }
+  GetCurrentUser() {
+    return this.user;
+  }
+  SetCurrentUser(u: User) {
+    this.user = u;
+    this.userLogedChanged.next();
+  }
   GetUserByLoc(loc: number) {
     return this.users[loc];
   }
@@ -78,7 +96,7 @@ export class UserService {
 
 
   UpdateFullUser(newUser: User) {
-    const loc : number = this.GetLocById(newUser.id);
+    const loc: number = this.GetLocById(newUser.id);
     this.users[loc] = newUser;
     this.usersChanged.next(this.users.slice());
   }

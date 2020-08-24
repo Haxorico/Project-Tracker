@@ -13,7 +13,8 @@ import { LoginService } from '../login/login.service';
 export class UsersComponent implements OnInit, OnDestroy {
   userSub : Subscription;
   users: User[];
-  loggedUser: User;
+  user: User;
+  /* loggedUser: User; */
   constructor(
     private userService: UserService,
     private router: Router,
@@ -26,8 +27,8 @@ export class UsersComponent implements OnInit, OnDestroy {
     {
       this.users = u;
     })
-    this.loggedUser = this.loginService.GetLogedUser();
-
+    /* this.loggedUser = this.loginService.GetLogedUser(); */
+    this.user = this.userService.GetCurrentUser();
     
   }
 

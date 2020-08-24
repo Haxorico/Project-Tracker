@@ -7,13 +7,18 @@
             <ul class="nav navbar-nav">
                 <!-- Buttons everyone can use (even guests) -->
                 <li><a routerLink="/">Home Page</a></li>
-
-                <li><a routerLink="/login">{{loginName}}</a></li>
-
+                <!-- Show a "[name] - Logout" button. or a "Guest - Login" message -->
+                <div *ngIf="loggedUser.rank == 0; else logoutBlock">
+                    <li><a routerLink="/login">Guest - Login</a></li>
+                </div>
+                <ng-template #logoutBlock>
+                    <li><a routerLink="/login">{{loggedUser.name}} - Logout</a></li>
+                </ng-template>
                 <!-- Buttons only logged users can use -->
-                <div *ngIf="user.rank > 0">
+                <div *ngIf="loggedUser.rank > 0">
                     <li><a routerLink="/tasks">Dashboard</a></li>
-                    <li><a [routerLink]="['userinfo',user.id]">User Information</a></li>
+                    <!-- <li><a [routerLink]="['userinfo',loggedUser.id]">User Information</a></li> -->
+                    <li><a [routerLink]="['userinfo',GetUserLoc()]">User Information</a></li>
                     <li><a routerLink="/projects">Projects</a></li>
                     <li><a routerLink="/users">Users List</a></li>
                 </div>

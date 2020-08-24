@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { LoginService } from './login.service';
 import { User } from '../users/user.model';
 import { Router } from '@angular/router';
+import { UserService } from '../users/user.service';
 
 @Component({
   selector: 'app-login',
@@ -17,10 +18,12 @@ export class LoginComponent implements OnInit {
   submited : boolean = false;
   loginMessage : string;
   constructor(private loginService : LoginService,
+    private userService: UserService,
     private router: Router) { }
 
   ngOnInit(): void {
-    if (this.loginService.loggedUser != this.loginService.GetGuestUser())
+    /* if (this.loginService.loggedUser != this.loginService.GetGuestUser()) */
+    if (this.userService.GetCurrentUser() != this.loginService.GetGuestUser())
     {
       this.loginService.Logout();
       this.router.navigate(['/']);
@@ -35,6 +38,7 @@ export class LoginComponent implements OnInit {
     if (this.loginService.Login(name,pw))
     {
       this.router.navigate(['/']);
-    }
+    } 
+    
   }
 }

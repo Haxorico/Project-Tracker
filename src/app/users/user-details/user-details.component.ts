@@ -16,7 +16,7 @@ export class UserDetailsComponent implements OnInit {
   loggedUser: User;
   @ViewChild('skill', { static: false }) skill;
   constructor(private userService : UserService,
-              private loginService : LoginService,
+              /* private loginService : LoginService, */
               private route: ActivatedRoute,
               private router: Router) { }
 
@@ -29,7 +29,8 @@ export class UserDetailsComponent implements OnInit {
       }
     )
     
-    this.loggedUser = this.loginService.GetLogedUser();
+    /* this.loggedUser = this.loginService.GetLogedUser(); */
+    this.loggedUser = this.userService.GetCurrentUser();
   }
   onEditUserClicked()
   {

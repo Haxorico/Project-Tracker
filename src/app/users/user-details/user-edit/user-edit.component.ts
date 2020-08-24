@@ -21,9 +21,8 @@ export class UserEditComponent implements OnInit {
   userId: number;
   submited: boolean = false;
   logedUser: User;
-
   constructor(private userService: UserService,
-    private loginService: LoginService,
+    /* private loginService: LoginService, */
     private route: ActivatedRoute,
     private router: Router) { }
 
@@ -36,14 +35,14 @@ export class UserEditComponent implements OnInit {
         this.user = this.userService.GetUserById(this.userId);
       }
     )
-    this.logedUser = this.loginService.GetLogedUser();
-
+    //this.logedUser = this.loginService.GetLogedUser();
+      this.userService.GetCurrentUser();
   }
   onSubmitButtonClicked() {
     let rank = this.editForm.value.rank;
     
-    // do no allow users edit those who are a higher rank
-    if (this.user.rank > this.logedUser.rank)
+    // do not allow users edit those who are a higher rank
+    if (this.user.rank > this.logedUser.rank) 
     {
 
       this.router.navigate(['../../'], { relativeTo: this.route })

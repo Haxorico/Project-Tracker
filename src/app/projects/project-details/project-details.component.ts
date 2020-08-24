@@ -19,7 +19,7 @@ export class ProjectDetailsComponent implements OnInit {
   showMembers: boolean = false;
   Users: User[] = [];
 
-  constructor(private loginService: LoginService,
+  constructor(/* private loginService: LoginService, */
     private projectService: ProjectService,
     private userService: UserService,
     private route: ActivatedRoute,
@@ -35,8 +35,8 @@ export class ProjectDetailsComponent implements OnInit {
         this.Users = this.userService.GetUsers();
       }
     )
-    this.loggedUser = this.loginService.GetLogedUser();
-
+    //this.loggedUser = this.loginService.GetLogedUser();
+    this.loggedUser = this.userService.GetCurrentUser();
   }
 
   onRemoveUserClicked(u: User) {
