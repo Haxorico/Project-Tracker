@@ -2,11 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { User } from '../../user.model';
 import { Params, ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../../user.service';
-import { LoginService } from 'src/app/login/login.service';
-
-
-
+import { UserService } from '../../../../Shared/user.service';
+import {Md5} from 'ts-md5/dist/md5';
 
 @Component({
   selector: 'app-user-edit',
@@ -17,12 +14,10 @@ export class UserEditComponent implements OnInit {
 
   @ViewChild('f', { static: false }) editForm: NgForm;
 
-  user: User;
-  userId: number;
+  editingUser: User;
   submited: boolean = false;
-  logedUser: User;
+  loggedUser: User;
   constructor(private userService: UserService,
-    /* private loginService: LoginService, */
     private route: ActivatedRoute,
     private router: Router) { }
 
@@ -31,30 +26,28 @@ export class UserEditComponent implements OnInit {
     //get the user from the path
     this.route.params.subscribe(
       (params: Params) => {
-        this.userId = params['id'];
-        this.user = this.userService.GetUserById(this.userId);
-      }
-    )
-    //this.logedUser = this.loginService.GetLogedUser();
-      this.userService.GetCurrentUser();
+        const id = params['id'];
+        this.editingUser = this.userService.GetUserById(id);
+      })
+      this.loggedUser = this.userService.GetCurrentUser();
   }
   onSubmitButtonClicked() {
     let rank = this.editForm.value.rank;
-    
     // do not allow users edit those who are a higher rank
-    if (this.user.rank > this.logedUser.rank) 
+    if (this.editingUser.rank > this.loggedUser.rank) 
     {
-
       this.router.navigate(['../../'], { relativeTo: this.route })
       return;
     } 
     // make sure you cant give someone a higher rank than you posses
-    if (rank > this.logedUser.rank)
-      rank = this.user.rank;
-    let loc = this.userService.GetLocById(this.userId);
+    if (rank > this.loggedUser.rank)
+      rank = this.editingUser.rank;
+    // use stringhash for password.
+    const pw = Md5.hashStr(this.editForm.value.password).toString();
+    const loc = this.userService.GetUserLoc(this.editingUser);
     this.userService.UpdateUser(loc,
       this.editForm.value.name,
-      this.editForm.value.password,
+      pw,
       rank,
       this.editForm.value.photo,
       this.editForm.value.date_of_birth,

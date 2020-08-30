@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from 'src/app/users/user.model';
 import { Task } from '../task.model';
-import { LoginService } from 'src/app/login/login.service';
-import { TaskService } from '../task.service';
+import { LoginService } from 'src/Shared/login.service';
+import { TaskService } from '../../../Shared/task.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { UserService } from 'src/app/users/user.service';
-import { ProjectService } from 'src/app/projects/project.service';
+import { UserService } from 'src/Shared/user.service';
+import { ProjectService } from 'src/Shared/project.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -16,7 +16,6 @@ import { Subscription } from 'rxjs';
 export class TaskDetailsComponent implements OnInit {
 
   loggedUser: User;
-  taskId: number;
   task: Task;
   users: User[];
   constructor(private loginService: LoginService,
@@ -29,34 +28,30 @@ export class TaskDetailsComponent implements OnInit {
   isShowingAllManagers: Boolean = false;
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
-      this.taskId = params['id'];
-      this.task = this.taskService.GetTaskById(this.taskId);
+      const id = params['id'];
+      this.task = this.taskService.GetTaskById(id);
       this.isShowingAllUsers = false;
       this.isShowingAllManagers = false;
     })
-    //this.loggedUser = this.loginService.GetLogedUser();
     this.loggedUser = this.userService.GetCurrentUser();
     this.users = this.userService.GetUsers();
   }
   onTaskReportedClicked() {
-    let loc = this.task.reporter.id;
-    loc = this.userService.GetLocById(loc);
-    this.router.navigate(["/users/" + loc]);
+    const id = this.task.reporter.id;
+    this.router.navigate(["/users/" + id]);
   }
   onTaskUserClicked() {
-    let loc = this.task.user.id;
-    loc = this.userService.GetLocById(loc);
-    this.router.navigate(["/users/" + loc]);
+    const id = this.task.user.id;
+    this.router.navigate(["/users/" + id]);
   }
 
   onProjectClicked() {
-    let loc = this.task.project.id;
-    loc = this.projectService.GetProjectLocById(loc);
-    this.router.navigate(["/projects/" + loc]);
+    let id = this.task.project.id;
+    this.router.navigate(["/projects/" + id]);
   }
 
   onDeleteTaskClicked() {
-    this.taskService.DelTaskById(this.taskId);
+    this.taskService.DelTask(this.task);
     this.router.navigate(["../"], { relativeTo: this.route });
   }
   onEditTaskClicked() {
@@ -78,13 +73,10 @@ export class TaskDetailsComponent implements OnInit {
     //add the task to the user
     newUser.tasks.push(this.task);
     //if the user in not a team member, add him to the team.
-    let foundProject = false;
-    newUser.projects.forEach(p => {
-      if (p.id == this.task.project.id)
-        foundProject = true;
-    });
-    if (!foundProject)
+    if (!newUser.IsUserInProject(this.task.project)){
       newUser.projects.push(this.task.project);
+      this.task.project.AddTeamMember(newUser);
+    }
     //update the services
     this.taskService.UpdateFullTask(this.task);
     this.userService.UpdateFullUser(newUser);
@@ -106,13 +98,11 @@ export class TaskDetailsComponent implements OnInit {
     //set the task to the new user
     this.task.reporter = newReporter;
     //if the user in not a team member, add him to the team.
-    let foundProject = false;
-    newReporter.projects.forEach(p => {
-      if (p.id == this.task.project.id)
-        foundProject = true;
-    });
-    if (!foundProject)
+    if (!newReporter.IsUserInProject(this.task.project))
+    {
       newReporter.projects.push(this.task.project);
+      this.task.project.AddTeamMember(newReporter);
+    }
     //add the task to the user
     newReporter.tasks.push(this.task);
     //update the services

@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from './user.model';
-import { UserService } from './user.service';
+import { UserService } from '../../Shared/user.service';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LoginService } from '../login/login.service';
+import { LoginService } from '../../Shared/login.service';
 
 @Component({
   selector: 'app-users',
@@ -14,7 +14,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   userSub : Subscription;
   users: User[];
   user: User;
-  /* loggedUser: User; */
   constructor(
     private userService: UserService,
     private router: Router,
@@ -27,7 +26,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     {
       this.users = u;
     })
-    /* this.loggedUser = this.loginService.GetLogedUser(); */
     this.user = this.userService.GetCurrentUser();
     
   }

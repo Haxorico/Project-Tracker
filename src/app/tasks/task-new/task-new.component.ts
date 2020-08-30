@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { TaskService } from '../task.service';
+import { TaskService } from '../../../Shared/task.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -11,10 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class TaskNewComponent implements OnInit {
 
   @ViewChild('f', {static: false}) newTaskForm: NgForm;
-  constructor(
-    private taskService : TaskService,
-    private route : ActivatedRoute,
-    private router : Router) { }
+  constructor(private taskService : TaskService) { }
 
   ngOnInit(): void {
   }

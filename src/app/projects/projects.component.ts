@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ProjectService } from './project.service';
+import { ProjectService } from '../../Shared/project.service';
 
 import { Project } from './project.model';
 import { User } from '../users/user.model';
-import { LoginService } from '../login/login.service';
+import { LoginService } from '../../Shared/login.service';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UserService } from '../users/user.service';
+import { UserService } from '../../Shared/user.service';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',

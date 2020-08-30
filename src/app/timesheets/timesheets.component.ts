@@ -1,12 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ProjectService } from '../projects/project.service';
+import { NgForm } from '@angular/forms';
+import { Subscription } from 'rxjs';
+
+import { ProjectService } from '../../Shared/project.service';
 import { Project } from '../projects/project.model';
 import { User } from '../users/user.model';
-import { LoginService } from '../login/login.service';
-import { Subscription } from 'rxjs';
-import { TaskService } from '../tasks/task.service';
+import { TaskService } from '../../Shared/task.service';
 import { Task } from '../tasks/task.model';
-import { UserService } from '../users/user.service';
+import { UserService } from '../../Shared/user.service';
+
+import * as _ from "lodash";
 
 @Component({
   selector: 'app-timesheets',
@@ -14,23 +17,19 @@ import { UserService } from '../users/user.service';
   styleUrls: ['./timesheets.component.css']
 })
 export class TimesheetsComponent implements OnInit {
-
-
   projects: Project[] = [];
   projectSub: Subscription;
   tasks: Task[] = [];
   taskSub: Subscription;
   loggedUser: User;
-
+  @ViewChild('f', {static: false}) newTaskForm: NgForm;
   constructor(private projectService: ProjectService,
-    /* private loginService: LoginService, */
     private taskService: TaskService,
     private userService: UserService) { }
 
   ngOnInit(): void {
     this.projects = this.projectService.GetProjects();
     this.loggedUser = this.userService.GetCurrentUser();
-    /* this.loggedUser = this.loginService.GetLogedUser(); */
 
     this.projectSub = this.projectService.ProjectsChanged.subscribe((p: Project[]) => {
       this.projects = p;
@@ -41,34 +40,11 @@ export class TimesheetsComponent implements OnInit {
       this.tasks = t;
     })
     this.loggedUser = this.userService.GetCurrentUser();
-    /* this.loggedUser = this.loginService.GetLogedUser(); */
-
-
-  }
-  IsMemberInTeam(p: Project, u: User) {
-    let ret: boolean = false;
-    p.team_members.forEach(tm => {
-      if (tm == u)
-        ret = true;
-    });
-    return ret;
   }
 
   AddWorkTime(t: Task) {
-    let hh, mm, date, comment;
-    for (const elementId of this.tasks) {
-      if (t != elementId)
-        continue;
-      let element = <HTMLInputElement>document.getElementById("hh_" + elementId.id.toString());
-      hh = element.value;
-      element = <HTMLInputElement>document.getElementById("mm_" + elementId.id.toString());
-      mm = element.value;
-      element = <HTMLInputElement>document.getElementById("date_" + elementId.id.toString());
-      date = element.value;
-      element = <HTMLInputElement>document.getElementById("comment_" + elementId.id.toString());
-      comment = element.value;
-    }
-    t.AddWorkTime(date,hh,mm, comment);
-    this.taskService.UpdateFullTask(t);
+    const d = this.newTaskForm.value;
+    t.AddWorkTime(d.date,d.hh,d.mm, d.comment);
+    this.taskService.UpdateFullTask(t); 
   }
 }

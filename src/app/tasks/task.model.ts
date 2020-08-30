@@ -1,8 +1,7 @@
 import { Project } from '../projects/project.model';
 import { User } from '../users/user.model'
 export class Task {
-  public static count = 0;
-  public id: number;
+  public id: string;
   public work_times = [];
   constructor(
     public name: string,

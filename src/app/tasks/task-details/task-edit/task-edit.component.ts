@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Task } from '../../task.model';
-import { TaskService } from '../../task.service';
+import { TaskService } from '../../../../Shared/task.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
 @Component({
@@ -13,7 +13,6 @@ export class TaskEditComponent implements OnInit {
 
   @ViewChild('f', { static: false }) editForm: NgForm;
   task : Task;
-  taskLoc : number;
   submited : boolean = false;
 
   constructor(
@@ -28,13 +27,14 @@ export class TaskEditComponent implements OnInit {
     this.route.params.subscribe(
       (params: Params) =>
       {
-        this.taskLoc = params['id'];
-        this.task = this.taskService.GetTaskByLoc(this.taskLoc);
+        const id = params['id'];
+        this.task = this.taskService.GetTaskById(id);
       })
   }
   onSubmitButtonClicked()
   {
-      this.taskService.UpdateTask(this.taskLoc,
+    const loc = this.taskService.GetTaskLoc(this.task);
+      this.taskService.UpdateTask(loc,
       this.editForm.value.name,
       this.task.project,
       this.editForm.value.status,

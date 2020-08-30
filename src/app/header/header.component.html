@@ -7,6 +7,7 @@
             <ul class="nav navbar-nav">
                 <!-- Buttons everyone can use (even guests) -->
                 <li><a routerLink="/">Home Page</a></li>
+                <li><a routerLink="/localstorage">Save/Load Data</a></li>
                 <!-- Show a "[name] - Logout" button. or a "Guest - Login" message -->
                 <div *ngIf="loggedUser.rank == 0; else logoutBlock">
                     <li><a routerLink="/login">Guest - Login</a></li>
@@ -17,16 +18,11 @@
                 <!-- Buttons only logged users can use -->
                 <div *ngIf="loggedUser.rank > 0">
                     <li><a routerLink="/tasks">Dashboard</a></li>
-                    <!-- <li><a [routerLink]="['userinfo',loggedUser.id]">User Information</a></li> -->
-                    <li><a [routerLink]="['userinfo',GetUserLoc()]">User Information</a></li>
+                    <li><a [routerLink]="['userinfo',loggedUser.id]">User Information</a></li>
                     <li><a routerLink="/projects">Projects</a></li>
                     <li><a routerLink="/users">Users List</a></li>
                 </div>
             </ul>
-            <hr>
-            <button class="btn btn-primary" (click)="onSaveDataClicked()">Save Data</button>
-            <button class="btn btn-warning" (click)="onLoadDataClicked()">Load Data</button>
-            <hr>
         </div>
     </div>
 </nav>

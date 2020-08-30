@@ -8,10 +8,10 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 
-import { LoginService } from './login/login.service';
+import { LoginService } from '../Shared/login.service';
 import { LoginComponent } from './login/login.component';
 
-import { UserService } from './users/user.service';
+import { UserService } from '../Shared/user.service';
 import { UsersComponent } from './users/users.component';
 import { UserDetailsComponent } from './users/user-details/user-details.component';
 import { UserEditComponent } from './users/user-details/user-edit/user-edit.component';
@@ -26,9 +26,11 @@ import { TaskDetailsComponent } from './tasks/task-details/task-details.componen
 import { TaskNewComponent } from './tasks/task-new/task-new.component';
 import { TaskEditComponent } from './tasks/task-details/task-edit/task-edit.component';
 import { TimesheetsComponent } from './timesheets/timesheets.component';
+import { LocalStorageComponent } from './local-storage/local-storage.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'timesheet', pathMatch: 'full' },
+  { path: 'localstorage', component: LocalStorageComponent, pathMatch: 'full' },
   { path: 'userinfo', component: HomeComponent,children: [
     { path: ':id', component: UserDetailsComponent },
     { path: ':id/edit', component: UserEditComponent }
@@ -79,6 +81,7 @@ const appRoutes: Routes = [
     TaskNewComponent,
     TaskEditComponent,
     TimesheetsComponent,
+    LocalStorageComponent,
   ],
   imports: [
     BrowserModule,

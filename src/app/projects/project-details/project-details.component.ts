@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/users/user.model';
-import { LoginService } from 'src/app/login/login.service';
-import { ProjectService } from '../project.service';
+import { LoginService } from 'src/Shared/login.service';
+import { ProjectService } from '../../../Shared/project.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Project } from '../project.model';
-import { UserService } from 'src/app/users/user.service';
+import { UserService } from 'src/Shared/user.service';
 
 @Component({
   selector: 'app-project-details',
@@ -13,7 +13,6 @@ import { UserService } from 'src/app/users/user.service';
 })
 export class ProjectDetailsComponent implements OnInit {
   loggedUser: User;
-  projID: number;
   project: Project;
 
   showMembers: boolean = false;
@@ -29,8 +28,8 @@ export class ProjectDetailsComponent implements OnInit {
 
     this.route.params.subscribe(
       (params: Params) => {
-        this.projID = params['id'];
-        this.project = this.projectService.GetProjectById(this.projID);
+        const id = params['id'];
+        this.project = this.projectService.GetProjectById(id);
         this.showMembers = false;
         this.Users = this.userService.GetUsers();
       }
@@ -61,7 +60,7 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   onDeleteProjectClicked() {
-    this.projectService.DeleteProjById(this.projID);
+    this.projectService.DeleteProj(this.project);
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 }

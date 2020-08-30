@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
-import { ProjectService } from '../project.service';
+import { ProjectService } from '../../../Shared/project.service';
 
 
 @Component({

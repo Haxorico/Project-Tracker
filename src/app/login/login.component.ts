@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { LoginService } from './login.service';
+import { LoginService } from '../../Shared/login.service';
 import { User } from '../users/user.model';
 import { Router } from '@angular/router';
-import { UserService } from '../users/user.service';
+import { UserService } from '../../Shared/user.service';
+import {Md5} from 'ts-md5/dist/md5';
+
 
 @Component({
   selector: 'app-login',
@@ -22,7 +24,6 @@ export class LoginComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    /* if (this.loginService.loggedUser != this.loginService.GetGuestUser()) */
     if (this.userService.GetCurrentUser() != this.loginService.GetGuestUser())
     {
       this.loginService.Logout();
@@ -31,14 +32,11 @@ export class LoginComponent implements OnInit {
   }
   onSubmitButtonClicked()
   {
-    this.submited=true;
-    //name is not case-sensitive but password is.
-    const name = this.loginForm.value.name.toLowerCase();
-    const pw = this.loginForm.value.password;
-    if (this.loginService.Login(name,pw))
-    {
+    const name = this.loginForm.value.name;
+    const pw : string = Md5.hashStr(this.loginForm.value.password).toString();
+    if (this.loginService.Login(name,pw)){
       this.router.navigate(['/']);
     } 
-    
+
   }
 }

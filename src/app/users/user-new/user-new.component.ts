@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { UserService } from '../user.service';
+import { UserService } from '../../../Shared/user.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
@@ -24,7 +24,6 @@ export class UserNewComponent implements OnInit {
     
   }
   onSubmitButtonClicked() {
-    //name, password, rank, photo, date_of_birth, location, address, skype, phone_number
     this.userService.NewUser(
     this.newUserForm.value.name,
     this.newUserForm.value.password,

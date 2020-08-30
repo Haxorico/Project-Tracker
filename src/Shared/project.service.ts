@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Project } from './project.model';
-import { User } from './../users/user.model';
+import { Project } from '../app/projects/project.model';
+import { User } from '../app/users/user.model';
 import { Subject } from 'rxjs';
-import { UserService } from '../users/user.service';
+import { UserService } from './user.service';
+import * as _ from "lodash";
+import { v4 as uuidv4 } from 'uuid';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -33,20 +36,15 @@ export class ProjectService {
     return this.projects[loc];
   }
 
-  GetProjectById(id: number) {
-    for (let loc = 0; loc < this.projects.length; loc++) {
-      if (this.projects[loc].id == id)
-        return this.projects[loc];
-    }
-    return null;
+  GetProjectById(id: string) {
+    return _.find(this.projects, project => project.id == id)
   }
-
-  GetProjectLocById(id: number) {
-    for (let loc = 0; loc < this.projects.length; loc++) {
-      if (this.projects[loc].id == id)
-        return loc;
-    }
-    return -1;
+  GetProjectLoc(project: Project)
+  {
+    return _.findIndex(this.projects, {id: project.id});
+  }
+  GetProjectLocById(id: string) {
+    return _.findIndex(this.projects, {id: id});
   }
   AddNewProject(
     name: string = "NO_NAME",
@@ -59,8 +57,7 @@ export class ProjectService {
     team_members: User[] = [],
     flagTickEvent: boolean = true) {
     const p = new Project(name, type, logo, client_name, start_date, end_date, description, team_members);
-    p.id = Project.count;
-    Project.count++;
+    p.id = uuidv4();
     this.projects.push(p);
     //update the team-members
     team_members.forEach(u => {
@@ -75,19 +72,18 @@ export class ProjectService {
   }
 
 
-
+  DeleteProj(project: Project){
+    const loc = this.GetProjectLoc(project);
+    this.projects.splice(loc, 1);
+  }
   DeleteProjByLoc(loc: number) {
     this.projects.splice(loc, 1);
     this.ProjectsChanged.next(this.projects.slice());
   }
 
-  DeleteProjById(id: number) {
-    for (let i = 0; i < this.projects.length; i++) {
-      if (this.projects[i].id === id) {
-        this.projects.splice(i, 1);
-        return;
-      }
-    }
+  DeleteProjById(id: string) {
+    const loc = this.GetProjectLocById(id);
+    this.projects.splice(loc, 1);
   }
 
   UpdateProject(loc: number,
@@ -111,17 +107,18 @@ export class ProjectService {
   }
 
   UpdateFullProject(p: Project) {
-    const loc = this.GetProjectLocById(p.id);
+    const loc = this.GetProjectLoc(p);
     this.projects[loc] = p;
     this.ProjectsChanged.next(this.projects.slice());
   }
 
   LoadProjects(p: Project[], flagCleanAll: boolean = true) {
+    
     if (flagCleanAll) {
       this.projects = [];
-      Project.count = 0;
     }
-
+    if (p==null)
+      return false;
     p.forEach(val => {
 
       this.AddNewProject(val.name,
@@ -135,6 +132,7 @@ export class ProjectService {
         false)
     });
     this.ProjectsChanged.next(this.projects.slice());
+    return true;
   }
 
 }

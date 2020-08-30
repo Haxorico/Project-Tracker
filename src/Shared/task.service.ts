@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Task } from './task.model';
-import { User } from '../users/user.model';
-import { Project } from '../projects/project.model';
-import { ProjectService } from '../projects/project.service';
-import { UserService } from '../users/user.service';
+import { Task } from '../app/tasks/task.model';
+import { User } from '../app/users/user.model';
+import { Project } from '../app/projects/project.model';
+import { ProjectService } from './project.service';
+import { UserService } from './user.service';
+import * as _ from "lodash";
+import { v4 as uuidv4 } from 'uuid';
 
 
 @Injectable({
@@ -56,18 +58,13 @@ export class TaskService {
     task_reporter: User,
     flagTickEvent: boolean = true) {
     const t = new Task(name, project, status, type, estimate, start_date, end_date, description, user, task_reporter);
-    t.id = Task.count;
+    t.id = uuidv4();
     this.tasks.push(t);
 
     //update the users
     if (user != undefined) {
       //if the user in not a team member, add him to the team.
-      let foundProject = false;
-      user.projects.forEach(p => {
-        if (p.id == project.id)
-          foundProject = true;
-      });
-      if (!foundProject) {
+      if (!user.IsUserInProject(project)) {
         user.projects.push(project);
         project.team_members.push(user);
       }
@@ -78,63 +75,43 @@ export class TaskService {
     if (task_reporter != undefined) {
       task_reporter.tasks.push(t);
       //if the task_reporter in not a team member, add him to the team.
-      let foundProject = false;
-      task_reporter.projects.forEach(p => {
-        if (p.id == project.id)
-          foundProject = true;
-      });
-      if (!foundProject) {
+      if (!task_reporter.IsUserInProject(project)) {
         task_reporter.projects.push(project);
         project.team_members.push(task_reporter);
       }
     }
-
-
-
-
-
     this.projectService.UpdateFullProject(project);
     if (flagTickEvent)
       this.TasksChanged.next(this.tasks.slice());
-
-
-    Task.count++;
   }
 
   GetTasks() {
     return this.tasks.slice();
   }
-
-  GetTaskLocById(id: number) {
-    id = Number(id); //#bug? like in users this is getting converted to string no idea why
-    for (let loc = 0; loc < this.tasks.length; loc++) {
-      if (this.tasks[loc].id === id)
-        return loc
-    }
-    return -1;
+  GetTaskLoc(t: Task)
+  {
+    return _.findIndex(this.tasks, {id: t.id});
+  }
+  GetTaskLocById(id: string)
+  {
+    return _.findIndex(this.tasks, {id: id});
   }
 
   GetTaskByLoc(loc: number) {
     return this.tasks[loc];
   }
-  GetTaskById(id: number) {
-    return this.tasks[this.GetTaskLocById(id)];
+  GetTaskById(id: string) {
+    return _.find(this.tasks, tasks => tasks.id == id)
   }
   DelTask(t: Task) {
-    for (let i = 0; i < this.tasks.length; i++) {
-      if (this.tasks[i] === t) {
-        this.tasks.splice(i, 1);
-        this.TasksChanged.next(this.tasks.slice());
-        break;
-      }
-    }
-    return -1;
+    this.tasks.splice(this.GetTaskLoc(t), 1);
+    this.TasksChanged.next(this.tasks.slice());
   }
   DelTaskByLoc(loc: number) {
     this.tasks.splice(loc, 1);
     this.TasksChanged.next(this.tasks.slice());
   }
-  DelTaskById(id: number) {
+  DelTaskById(id: string) {
     this.tasks.splice(this.GetTaskLocById(id), 1);
     this.TasksChanged.next(this.tasks.slice());
   }
@@ -166,7 +143,7 @@ export class TaskService {
   }
 
   UpdateFullTask(t: Task) {
-    const loc = this.GetTaskLocById(t.id);
+    const loc = this.GetTaskLoc(t);
     this.tasks[loc] = t;
     this.TasksChanged.next(this.tasks.slice());
   }
@@ -202,9 +179,9 @@ export class TaskService {
   LoadTasks(t: Task[], flagCleanAll: boolean = true) {
     if (flagCleanAll) {
       this.tasks = [];
-      Task.count = 0;
     }
-
+    if (t==null)
+      return false;
     t.forEach(val => {
       this.NewTask(val.name,
         val.project,
@@ -219,5 +196,6 @@ export class TaskService {
         false)
     });
     this.TasksChanged.next(this.tasks.slice());
+    return true;
   }
 }

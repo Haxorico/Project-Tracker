@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { User } from '../user.model';
-import { UserService } from '../user.service';
+import { UserService } from '../../../Shared/user.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { LoginService } from 'src/app/login/login.service';
+import { LoginService } from 'src/Shared/login.service';
 
 @Component({
   selector: 'app-user-details',
@@ -11,12 +11,10 @@ import { LoginService } from 'src/app/login/login.service';
 })
 export class UserDetailsComponent implements OnInit {
   user: User;
-  userId: number;
   
   loggedUser: User;
   @ViewChild('skill', { static: false }) skill;
   constructor(private userService : UserService,
-              /* private loginService : LoginService, */
               private route: ActivatedRoute,
               private router: Router) { }
 
@@ -24,12 +22,10 @@ export class UserDetailsComponent implements OnInit {
     this.route.params.subscribe(
       (params: Params) =>
       {
-        this.userId = params['id'];
-        this.user = this.userService.GetUserById(this.userId);
+        const id = params['id'];
+        this.user = this.userService.GetUserById(id);
       }
     )
-    
-    /* this.loggedUser = this.loginService.GetLogedUser(); */
     this.loggedUser = this.userService.GetCurrentUser();
   }
   onEditUserClicked()
@@ -38,7 +34,7 @@ export class UserDetailsComponent implements OnInit {
   }
   onDeleteUserClicked()
   {
-    this.userService.DelUserById(this.userId);
+    this.userService.DelUser(this.user);
     this.router.navigate(["../"], {relativeTo: this.route}); 
   }
 

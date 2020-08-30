@@ -1,9 +1,9 @@
 import { User } from './../users/user.model'
+import * as _ from "lodash";
 
 export class Project {
 
-  public static count = 0;
-  public id: number;
+  public id: string;
   constructor(
     public name: string,
     public type: string,
@@ -16,14 +16,11 @@ export class Project {
   ) { }
 
   private getWorkerLoc(u: User) {
-    for (let loc = 0; loc < this.team_members.length; loc++) {
-      if (this.team_members[loc].id == u.id && this.team_members[loc].name == u.name) {
-        return loc;
-      }
-    }
-    return -1;
+      return _.findIndex(this.team_members, {id: u.id});
   }
-
+  public IsUserInTeam(u: User){
+    return (_.find(this.team_members, user => user.id == u.id) != undefined)
+  }
   RemoveTeamMember(u: User): void {
     const loc = this.getWorkerLoc(u);
     if (loc == -1)
@@ -31,12 +28,7 @@ export class Project {
     this.team_members.splice(loc, 1);
   }
   public AddTeamMember(u: User): void {
-
-    let newMember = true;
-    this.team_members.forEach(member => {
-      if (member == u)
-        newMember = false;
-    });
+    let newMember = !this.IsUserInTeam(u);
     if (newMember) {
       //add the user to the team array
       this.team_members.push(u);

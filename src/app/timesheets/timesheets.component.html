@@ -5,7 +5,7 @@
                 <button class="btn btn-success" (click)="onNewProjectClicked()" *ngIf="loggedUser.rank >= 50">New
                     Project</button>
                 <div *ngFor="let project of projects">
-                    <div *ngIf='IsMemberInTeam(project,loggedUser)'>
+                    <div *ngIf='project.IsUserInTeam(loggedUser)'>
                         <a style="cursor: pointer;" class="list-group-item clearfix">
                             <div class="pull-left">
                                 <h4 class="list-group-item-heading"> {{project.name}} - {{project.description}}</h4>
@@ -43,26 +43,25 @@
                                         </table>
                                         <div>
                                             <div class="container">
+                                                <form (ngSubmit)="AddWorkTime(task)" #f="ngForm">
                                                 <div class="input-group">
 
                                                     <span class="input-group-text">
                                                         <label for="date">Date</label>
                                                     </span>
-                                                    <input id="date_{{task.id}}" type="text" class="form-control">
+                                                    <input type="text" id="date" class="form-control" ngModel name="date" required>
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">Time (HH:MM)</span>
                                                     </div>
 
-                                                    <input type="number" aria-label="Hours" class="form-control"
-                                                        id="hh_{{task.id}}">
-                                                    <input type="number" aria-label="Minutes" class="form-control"
-                                                        id="mm_{{task.id}}">
+                                                    <input type="number" id="hh" aria-label="Hours" class="form-control" ngModel name="hh" required>
+                                                    <input type="number" id="mm" aria-label="Minutes" class="form-control" ngModel name="mm" required>
                                                 </div>
                                                 <label for="comment">Comment</label>
-                                                <input type="text" aria-label="Comment" class="form-control"
-                                                    id="comment_{{task.id}}">
-                                                <button class="btn btn-primary" (click)="AddWorkTime(task)">Add Work
+                                                <input type="text" id="comment" aria-label="Comment" class="form-control" ngModel name="comment" required>
+                                                <button class="btn btn-primary" type="submit" [disabled]="f.invalid">Add Work
                                                     Time</button>
+                                                </form>
                                             </div>
                                         </div>
 
