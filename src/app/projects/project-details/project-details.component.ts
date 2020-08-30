@@ -18,8 +18,7 @@ export class ProjectDetailsComponent implements OnInit {
   showMembers: boolean = false;
   Users: User[] = [];
 
-  constructor(/* private loginService: LoginService, */
-    private projectService: ProjectService,
+  constructor(private projectService: ProjectService,
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router) { }

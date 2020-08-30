@@ -25,7 +25,6 @@ export class TasksComponent implements OnInit, OnDestroy {
   closedTasks: Task[] = [];
   tableSize = [];
   constructor(private taskService: TaskService,
-    /* private loginService: LoginService, */
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,) { }

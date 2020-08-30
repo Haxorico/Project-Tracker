@@ -19,14 +19,12 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   loggedUser: User; 
   constructor(
     private projectService: ProjectService,
-    /* private loginService: LoginService, */
     private userService: UserService,
     private router : Router,
     private route : ActivatedRoute) { }
 
   ngOnInit(): void {
     this.projects = this.projectService.GetProjects();
-    //this.loggedUser = this.loginService.GetLogedUser();
     this.loggedUser = this.userService.GetCurrentUser();
     this.projectSub = this.projectService.ProjectsChanged.subscribe((p : Project[]) => {
       this.projects = p;
