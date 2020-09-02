@@ -30,13 +30,12 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/']);
     }
   }
-  onSubmitButtonClicked()
-  {
+  onSubmitButtonClicked() {
     const name = this.loginForm.value.name;
     const pw : string = Md5.hashStr(this.loginForm.value.password).toString();
     if (this.loginService.Login(name,pw)){
       this.router.navigate(['/']);
-    } 
+    }
 
   }
 }
