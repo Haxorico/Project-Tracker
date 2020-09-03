@@ -34,5 +34,4 @@ export class LocalStorageComponent implements OnInit {
       console.log("No projects data found.");
     }
   }
-
 }
