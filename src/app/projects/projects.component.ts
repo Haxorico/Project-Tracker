@@ -43,7 +43,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.projects = temp.filter(p => (
       //currently filtering by name and client name. Can add any otehr type of filter if needed...
       p.name.toLowerCase().includes(val) || 
-      p.client_name.toLowerCase().includes(val)
-      ));
+      p.client_name.toLowerCase().includes(val)));
   }
 }

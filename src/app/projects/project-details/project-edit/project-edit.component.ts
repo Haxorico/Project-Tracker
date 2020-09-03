@@ -22,15 +22,13 @@ export class ProjectEditComponent implements OnInit {
   ngOnInit(): void {
     //get the project from the path
     this.route.params.subscribe(
-      (params: Params) =>
-      {
+      (params: Params) =>{
         const id = params['id'];
         this.project = this.projectService.GetProjectById(id);
       })
   }
 
-  onSubmitButtonClicked()
-  {
+  onSubmitButtonClicked(){
       const loc = this.projectService.GetProjectLoc(this.project);
       this.projectService.UpdateProject(loc,
       this.editForm.value.name,

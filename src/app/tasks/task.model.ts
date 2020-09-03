@@ -14,8 +14,7 @@ export class Task {
     public description: string,
     public user: User,
     public reporter: User
-  ) {
-  }
+  ) {}
 
   GetStatus() {
     if (this.status == 0)
@@ -54,8 +53,7 @@ export class Task {
     this.work_times.push({ user, date, time_hh, time_mm, comment });
   }
 
-  Number2Time(n : number)
-  {
+  Number2Time(n : number){
     let ret : string = "";
     if (n < 10)
       ret = "0"

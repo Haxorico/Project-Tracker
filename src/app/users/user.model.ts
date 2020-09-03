@@ -16,8 +16,7 @@ export class User {
     public address: string,
     public skype: string,
     public phone_number: string
-  ) {
-  }
+  ) {}
 
   GetTitle() {
     if (this.rank <= 0)

@@ -88,12 +88,10 @@ export class TaskService {
   GetTasks() {
     return this.tasks.slice();
   }
-  GetTaskLoc(t: Task)
-  {
+  GetTaskLoc(t: Task){
     return _.findIndex(this.tasks, {id: t.id});
   }
-  GetTaskLocById(id: string)
-  {
+  GetTaskLocById(id: string){
     return _.findIndex(this.tasks, {id: id});
   }
 

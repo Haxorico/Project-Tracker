@@ -85,7 +85,6 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.tasks = temp.filter(task => (
       //currently filtering by name and description. Can add any otehr type of filter if needed...
       task.name.toLowerCase().includes(val) ||
-      task.description.toLowerCase().includes(val)
-    ));
+      task.description.toLowerCase().includes(val)));
   }
 }

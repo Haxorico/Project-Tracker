@@ -15,8 +15,7 @@ export class TaskNewComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  onSubmitButtonClicked()
-  {
+  onSubmitButtonClicked(){
     this.taskService.NewTask(
     this.newTaskForm.value.name,
     null,

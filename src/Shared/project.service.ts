@@ -39,8 +39,7 @@ export class ProjectService {
   GetProjectById(id: string) {
     return _.find(this.projects, project => project.id == id)
   }
-  GetProjectLoc(project: Project)
-  {
+  GetProjectLoc(project: Project){
     return _.findIndex(this.projects, {id: project.id});
   }
   GetProjectLocById(id: string) {
@@ -70,7 +69,6 @@ export class ProjectService {
       this.ProjectsChanged.next(this.projects.slice());
 
   }
-
 
   DeleteProj(project: Project){
     const loc = this.GetProjectLoc(project);
