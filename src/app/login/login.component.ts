@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { LoginService } from '../../Shared/login.service';
+import { LoginService } from '../../shared/login.service';
 import { User } from '../users/user.model';
 import { Router } from '@angular/router';
-import { UserService } from '../../Shared/user.service';
+import { UserService } from '../../shared/user.service';
 import {Md5} from 'ts-md5/dist/md5';
 
 

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/users/user.model';
-import { LoginService } from 'src/Shared/login.service';
-import { ProjectService } from '../../../Shared/project.service';
+import { ProjectService } from '../../../shared/project.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Project } from '../project.model';
-import { UserService } from 'src/Shared/user.service';
+import { UserService } from 'src/shared/user.service';
 
 @Component({
   selector: 'app-project-details',
