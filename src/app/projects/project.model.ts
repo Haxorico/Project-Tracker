@@ -15,25 +15,25 @@ export class Project {
     public team_members: User[]
   ) { }
 
-  private getWorkerLoc(u: User) {
-      return _.findIndex(this.team_members, {id: u.id});
+  private getWorkerLoc(user : User) {
+      return _.findIndex(this.team_members, {id: user.id});
   }
-  public IsUserInTeam(u: User){
-    return (_.find(this.team_members, user => user.id == u.id) != undefined)
+  public IsUserInTeam(userToFind: User){
+    return (_.find(this.team_members, user => user.id == userToFind.id) != undefined)
   }
-  RemoveTeamMember(u: User): void {
-    const loc = this.getWorkerLoc(u);
-    if (loc == -1)
+  RemoveTeamMember(userToRemove: User): void {
+    const index = this.getWorkerLoc(userToRemove);
+    if (index == -1)
       return;
-    this.team_members.splice(loc, 1);
+    this.team_members.splice(index, 1);
   }
-  public AddTeamMember(u: User): void {
-    let newMember = !this.IsUserInTeam(u);
+  public AddTeamMember(userToAdd: User): void {
+    let newMember = !this.IsUserInTeam(userToAdd);
     if (newMember) {
       //add the user to the team array
-      this.team_members.push(u);
+      this.team_members.push(userToAdd);
       //sort the array by rank.
-
+      userToAdd
       this.team_members = this.team_members.sort((a, b) => {
         if (a.rank > b.rank) {
           return -1;
@@ -44,7 +44,7 @@ export class Project {
         return 0;
       })
       //add the project to the user
-      u.projects.push(this);
+      userToAdd.projects.push(this);
     }
   }
 }

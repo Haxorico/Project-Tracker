@@ -13,9 +13,7 @@ import { ProjectService } from '../../../Shared/project.service';
 export class ProjectNewComponent implements OnInit {
 
   @ViewChild('f', {static: false}) newProjectForm: NgForm;
-  constructor(private projectService : ProjectService,
-    private route : ActivatedRoute,
-    private router : Router) { }
+  constructor(private projectService : ProjectService) { }
 
   ngOnInit(): void {
   }
