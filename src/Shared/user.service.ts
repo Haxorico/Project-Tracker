@@ -62,10 +62,10 @@ export class UserService {
     phone_number: string = "NO_PHONE_NUMBER",
     skills: string[] = [],
     flagTickEvent: boolean = true) {
-    const u = new User(name, password, rank, photo, date_of_birth, location, address, skype, phone_number);
-    u.id = uuidv4();
-    u.skills = skills;
-    this.users.push(u);
+    const newUser = new User(name, password, rank, photo, date_of_birth, location, address, skype, phone_number);
+    newUser.id = uuidv4();
+    newUser.skills = skills;
+    this.users.push(newUser);
     if (flagTickEvent)
       this.usersChanged.next(this.users.slice());
   }
@@ -104,8 +104,8 @@ export class UserService {
   }
 
 
-  SetCurrentUser(u: User) {
-    this.user = u;
+  SetCurrentUser(user: User) {
+    this.user = user;
     this.userLogedChanged.next();
   }
   UpdateFullUser(newUser: User) {
@@ -142,13 +142,13 @@ export class UserService {
     return this.guest;
   }
 
-  LoadUsers(u: User[], flagCleanAll: boolean = true) {
+  LoadUsers(usersToLoad: User[], flagCleanAll: boolean = true) {
     if (flagCleanAll) {
       this.users = [];
     }
-    if (u==null)
+    if (usersToLoad==null)
       return false;
-    u.forEach(val => {
+      usersToLoad.forEach(val => {
       this.NewUser(val.name,
         val.password,
         val.rank,
