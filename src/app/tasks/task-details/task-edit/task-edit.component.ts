@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Task } from '../../task.model';
-import { TaskService } from '../../../../Shared/task.service';
+import { TaskService } from '../../../../shared/task.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
 @Component({

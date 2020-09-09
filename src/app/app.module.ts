@@ -8,10 +8,10 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 
-import { LoginService } from '../Shared/login.service';
+import { LoginService } from '../shared/login.service';
 import { LoginComponent } from './login/login.component';
 
-import { UserService } from '../Shared/user.service';
+import { UserService } from '../shared/user.service';
 import { UsersComponent } from './users/users.component';
 import { UserDetailsComponent } from './users/user-details/user-details.component';
 import { UserEditComponent } from './users/user-details/user-edit/user-edit.component';
