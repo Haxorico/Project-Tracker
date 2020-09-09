@@ -30,28 +30,26 @@ export class ProjectDetailsComponent implements OnInit {
         this.project = this.projectService.GetProjectById(id);
         this.showMembers = false;
         this.Users = this.userService.GetUsers();
-      }
-    )
-    //this.loggedUser = this.loginService.GetLogedUser();
+      })
     this.loggedUser = this.userService.GetCurrentUser();
   }
 
-  onRemoveUserClicked(u: User) {
-    this.project.RemoveTeamMember(u);
+  onRemoveUserClicked(userToRemove: User) {
+    this.project.RemoveTeamMember(userToRemove);
     this.projectService.UpdateFullProject(this.project);
   }
 
   onShowFreeMemberClicked() {
     this.showMembers = !this.showMembers;
   }
-  onAddMemberClicked(u: User) {
-    this.project.AddTeamMember(u);
+  onAddMemberClicked(userToAdd: User) {
+    this.project.AddTeamMember(userToAdd);
 
     //update the project service
     this.projectService.UpdateFullProject(this.project);
 
     //update the user service
-    this.userService.UpdateFullUser(u);
+    this.userService.UpdateFullUser(userToAdd);
   }
   onEditProjectClicked() {
     this.router.navigate(["edit"], { relativeTo: this.route });

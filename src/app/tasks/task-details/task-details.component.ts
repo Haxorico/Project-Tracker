@@ -111,4 +111,3 @@ export class TaskDetailsComponent implements OnInit {
     this.isShowingAllUsers = false;
   }
 }
-

@@ -43,6 +43,7 @@ const appRoutes: Routes = [
     ]
   },
   { path: 'login', component: LoginComponent },
+  { path: 'logout', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'projects', component: ProjectsComponent, children: [
       { path: 'new', component: ProjectNewComponent },

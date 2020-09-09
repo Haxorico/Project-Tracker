@@ -32,8 +32,8 @@ export class LoginComponent implements OnInit {
   }
   onSubmitButtonClicked() {
     const name = this.loginForm.value.name;
-    const pw : string = Md5.hashStr(this.loginForm.value.password).toString();
-    if (this.loginService.Login(name,pw)){
+    const password : string = Md5.hashStr(this.loginForm.value.password).toString();
+    if (this.loginService.Login(name,password)){
       this.router.navigate(['/']);
     }
 
