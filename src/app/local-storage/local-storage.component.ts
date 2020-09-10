@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertService } from '../_alert';
 import { UserService } from '../../shared/user.service';
 import { TaskService } from '../../shared/task.service';
 import { ProjectService } from '../../shared/project.service';
+
 
 @Component({
   selector: 'app-local-storage',
@@ -12,8 +14,9 @@ export class LocalStorageComponent implements OnInit {
 
   constructor(private userService: UserService,
     private taskService: TaskService,
-    private projectService: ProjectService) { }
-
+    private projectService: ProjectService,
+    protected alertService: AlertService) { }
+  
   ngOnInit(): void {
   }
   onSaveDataClicked() {
@@ -23,15 +26,18 @@ export class LocalStorageComponent implements OnInit {
     localStorage.setItem('projects', JSON.stringify(this.projectService.GetProjects()));
   }
   onLoadDataClicked() {
-    //#TODO - Show the error message on the page and not on console..
+    const options = {
+      autoClose: true,
+    keepAfterRouteChange: false
+  };
     if (!this.userService.LoadUsers(JSON.parse(localStorage.getItem('users')))){
-        console.log("No users data found.");
+        this.alertService.error('Error: No users data found.',options);
       }
     if (!this.taskService.LoadTasks(JSON.parse(localStorage.getItem('tasks')))){
-      console.log("No tasks data found.");
+      this.alertService.error('No tasks data found.',options);
     }
     if (!this.projectService.LoadProjects(JSON.parse(localStorage.getItem('projects')))){
-      console.log("No projects data found.");
+      this.alertService.error('No projects data found.',options);
     }
   }
 }

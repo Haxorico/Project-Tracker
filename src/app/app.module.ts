@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
-
+import { AlertModule } from './_alert';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -87,6 +87,7 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
+    AlertModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [UserService, LoginService],
