@@ -17,8 +17,7 @@ export class ProjectNewComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  onSubmitButtonClicked()
-  {
+  onSubmitButtonClicked(){
     this.projectService.AddNewProject(
     this.newProjectForm.value.name,
     this.newProjectForm.value.type,

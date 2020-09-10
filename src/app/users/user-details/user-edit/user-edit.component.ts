@@ -34,8 +34,7 @@ export class UserEditComponent implements OnInit {
   onSubmitButtonClicked() {
     let rank = this.editForm.value.rank;
     // do not allow users edit those who are a higher rank
-    if (this.editingUser.rank > this.loggedUser.rank) 
-    {
+    if (this.editingUser.rank > this.loggedUser.rank) {
       this.router.navigate(['../../'], { relativeTo: this.route })
       return;
     } 

@@ -25,8 +25,7 @@ export class LoginComponent implements OnInit {
     protected alertService: AlertService) { }
 
   ngOnInit(): void {
-    if (this.userService.GetCurrentUser() != this.loginService.GetGuestUser())
-    {
+    if (this.userService.GetCurrentUser() != this.loginService.GetGuestUser()){
       this.loginService.Logout();
       this.router.navigate(['/']);
     }

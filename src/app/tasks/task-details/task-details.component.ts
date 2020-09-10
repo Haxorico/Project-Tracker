@@ -97,8 +97,7 @@ export class TaskDetailsComponent implements OnInit {
     //set the task to the new user
     this.task.reporter = newReporter;
     //if the user in not a team member, add him to the team.
-    if (!newReporter.IsUserInProject(this.task.project))
-    {
+    if (!newReporter.IsUserInProject(this.task.project)){
       newReporter.projects.push(this.task.project);
       this.task.project.AddTeamMember(newReporter);
     }

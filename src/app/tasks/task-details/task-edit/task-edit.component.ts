@@ -25,14 +25,12 @@ export class TaskEditComponent implements OnInit {
     
     //get the task from the path
     this.route.params.subscribe(
-      (params: Params) =>
-      {
+      (params: Params) =>{
         const id = params['id'];
         this.task = this.taskService.GetTaskById(id);
       })
   }
-  onSubmitButtonClicked()
-  {
+  onSubmitButtonClicked(){
     const loc = this.taskService.GetTaskLoc(this.task);
       this.taskService.UpdateTask(loc,
       this.editForm.value.name,
