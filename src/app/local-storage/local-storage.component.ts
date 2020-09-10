@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../Shared/user.service';
-import { TaskService } from '../../Shared/task.service';
-import { ProjectService } from '../../Shared/project.service';
 import { AlertService } from '../_alert';
+import { UserService } from '../../shared/user.service';
+import { TaskService } from '../../shared/task.service';
+import { ProjectService } from '../../shared/project.service';
+
 
 @Component({
   selector: 'app-local-storage',
@@ -39,5 +40,4 @@ export class LocalStorageComponent implements OnInit {
       this.alertService.error('No projects data found.',options);
     }
   }
-
 }

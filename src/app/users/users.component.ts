@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from './user.model';
-import { UserService } from '../../Shared/user.service';
+import { UserService } from '../../shared/user.service';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LoginService } from '../../Shared/login.service';
+import { LoginService } from '../../shared/login.service';
 
 @Component({
   selector: 'app-users',

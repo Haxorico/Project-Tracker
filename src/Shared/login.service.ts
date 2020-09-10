@@ -12,10 +12,10 @@ export class LoginService {
   Login(name: string, password: string) : boolean{
     name = name.toLowerCase();
     const users = this.userService.GetUsers();
-    const u = _.find(users, user => user.name.toLowerCase() == name && user.password == password )
-    if (u==undefined)
+    const userToFind = _.find(users, user => user.name.toLowerCase() == name && user.password == password )
+    if (userToFind==undefined)
       return false;
-    this.userService.SetCurrentUser(u);
+    this.userService.SetCurrentUser(userToFind);
     return true;
   }
 

@@ -1,14 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
-
-import { ProjectService } from '../../Shared/project.service';
+import { ProjectService } from '../../shared/project.service';
 import { Project } from '../projects/project.model';
 import { User } from '../users/user.model';
-import { TaskService } from '../../Shared/task.service';
+import { TaskService } from '../../shared/task.service';
 import { Task } from '../tasks/task.model';
-import { UserService } from '../../Shared/user.service';
-
+import { UserService } from '../../shared/user.service';
 import * as _ from "lodash";
 
 @Component({
