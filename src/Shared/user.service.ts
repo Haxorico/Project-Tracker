@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { User } from '../app/users/user.model';
 import { v4 as uuidv4 } from 'uuid';
 import * as _ from "lodash";
-//#DEBUG importing Md5 for the dummy data. Not needed for final product 
 import {Md5} from 'ts-md5/dist/md5';
 
-import { User } from '../app/users/user.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -26,29 +25,29 @@ export class UserService {
 
   GenerateStubs() {
     //just some dummy data to work with
-    this.NewUser("a", Md5.hashStr("a").toString(), 100, "", "1/1/90", "Grand Master Office", "Floor 4", "the_admin_1337", "050-1333337");
-    this.NewUser("Admin", Md5.hashStr("aAbBtEst-1237").toString(), 99, "", "1/1/91", "Master Office", "Floor 3", "my_name", "050-248741");
-    this.NewUser("Abba", Md5.hashStr("aAbBtEst-1537").toString(), 99, "", "1/1/92", "Master Office", "Floor 3", "love_is_life", "050-248741");
-    this.NewUser("Imma", Md5.hashStr("adeTEst-12537").toString(), 80, "", "1/3/90", "Master Office", "Floor 3", "girl_power", "050-245551");
+    this.NewUser("a", "a", 100, "", "1/1/90", "Grand Master Office", "Floor 4", "the_admin_1337", "050-1333337");
+    this.NewUser("Admin", "aAbBtEst-1237", 99, "", "1/1/91", "Master Office", "Floor 3", "my_name", "050-248741");
+    this.NewUser("Abba", "aAbBtEst-1537", 99, "", "1/1/92", "Master Office", "Floor 3", "love_is_life", "050-248741");
+    this.NewUser("Imma", "adeTEst-12537", 80, "", "1/3/90", "Master Office", "Floor 3", "girl_power", "050-245551");
 
-    this.NewUser("John", Md5.hashStr("abcd1234").toString(), 30, "", "10/5/91", "Small Office", "Villa", "humble_mod", "050-0500505");
-    this.NewUser("Daniel", Md5.hashStr("abcd1234").toString(), 25, "", "10/5/91", "Small Office", "Villa", "humble_mod", "050-0500505");
-    this.NewUser("Shay", Md5.hashStr("abcd1234").toString(), 24, "", "10/5/91", "Small Office", "Villa", "humble_mod", "050-0500505");
-    this.NewUser("May", Md5.hashStr("abcd1234").toString(), 23, "", "10/5/91", "Small Office", "Villa", "humble_mod", "050-0500505");
-    this.NewUser("Sami", Md5.hashStr("abcd1234").toString(), 20, "", "10/5/91", "Small Office", "Villa", "humble_mod", "050-0500505");
+    this.NewUser("John", "abcd1234", 30, "", "10/5/91", "Small Office", "Villa", "humble_mod", "050-0500505");
+    this.NewUser("Daniel", "abcd1234", 25, "", "10/5/91", "Small Office", "Villa", "humble_mod", "050-0500505");
+    this.NewUser("Shay", "abcd1234", 24, "", "10/5/91", "Small Office", "Villa", "humble_mod", "050-0500505");
+    this.NewUser("May", "abcd1234", 23, "", "10/5/91", "Small Office", "Villa", "humble_mod", "050-0500505");
+    this.NewUser("Sami", "abcd1234", 20, "", "10/5/91", "Small Office", "Villa", "humble_mod", "050-0500505");
 
-    this.NewUser("Refael", Md5.hashStr("123456").toString(), 1, "", "20/10/95", "Cubical", "House", "work_work", "050-6666666");
-    this.NewUser("Dave", Md5.hashStr("123456").toString(), 2, "", "20/10/95", "Cubical - 1A", "House", "work_work", "050-6666666");
-    this.NewUser("Steve", Md5.hashStr("123456").toString(), 3, "", "20/10/95", "Cubical - 2A", "House", "work_work", "050-6666666");
-    this.NewUser("Homer", Md5.hashStr("123456").toString(), 1, "", "20/10/95", "Cubical - 3A", "House", "work_work", "050-6666666");
-    this.NewUser("Katya", Md5.hashStr("123456").toString(), 1, "", "20/10/95", "Cubical - 1B", "House", "work_work", "050-6666666");
-    this.NewUser("Anna", Md5.hashStr("123456").toString(), 5, "", "20/10/95", "Cubical - 2B", "House", "work_work", "050-6666666");
-    this.NewUser("Mark", Md5.hashStr("123456").toString(), 6, "", "20/10/95", "Cubical - 2C", "House", "work_work", "050-6666666");
-    this.NewUser("Yaniv", Md5.hashStr("123456").toString(), 1, "", "20/10/95", "Cubical - 3A", "House", "work_work", "050-6666666");
-    this.NewUser("Jay", Md5.hashStr("123456").toString(), 8, "", "20/10/95", "Cubical - 3B", "House", "work_work", "050-6666666");
-    this.NewUser("Ben", Md5.hashStr("123456").toString(), 1, "", "20/10/95", "Cubical - 3C", "House", "work_work", "050-6666666");
-    this.NewUser("Derek", Md5.hashStr("123456").toString(), 2, "", "20/10/95", "Cubical - 4A", "House", "work_work", "050-6666666");
-    this.NewUser("Ali", Md5.hashStr("123456").toString(), 1, "", "20/10/95", "Cubical - 4B", "House", "work_work", "050-6666666");
+    this.NewUser("Refael", "123456", 1, "", "20/10/95", "Cubical", "House", "work_work", "050-6666666");
+    this.NewUser("Dave", "123456", 2, "", "20/10/95", "Cubical - 1A", "House", "work_work", "050-6666666");
+    this.NewUser("Steve", "123456", 3, "", "20/10/95", "Cubical - 2A", "House", "work_work", "050-6666666");
+    this.NewUser("Homer", "123456", 1, "", "20/10/95", "Cubical - 3A", "House", "work_work", "050-6666666");
+    this.NewUser("Katya", "123456", 1, "", "20/10/95", "Cubical - 1B", "House", "work_work", "050-6666666");
+    this.NewUser("Anna", "123456", 5, "", "20/10/95", "Cubical - 2B", "House", "work_work", "050-6666666");
+    this.NewUser("Mark", "123456", 6, "", "20/10/95", "Cubical - 2C", "House", "work_work", "050-6666666");
+    this.NewUser("Yaniv", "123456", 1, "", "20/10/95", "Cubical - 3A", "House", "work_work", "050-6666666");
+    this.NewUser("Jay", "123456", 8, "", "20/10/95", "Cubical - 3B", "House", "work_work", "050-6666666");
+    this.NewUser("Ben", "123456", 1, "", "20/10/95", "Cubical - 3C", "House", "work_work", "050-6666666");
+    this.NewUser("Derek", "123456", 2, "", "20/10/95", "Cubical - 4A", "House", "work_work", "050-6666666");
+    this.NewUser("Ali", "123456", 1, "", "20/10/95", "Cubical - 4B", "House", "work_work", "050-6666666");
 
   }
   NewUser(name: string = "EMPTY_NAME",
@@ -62,10 +61,12 @@ export class UserService {
     phone_number: string = "NO_PHONE_NUMBER",
     skills: string[] = [],
     flagTickEvent: boolean = true) {
+    password = Md5.hashStr(password).toString();
     const newUser = new User(name, password, rank, photo, date_of_birth, location, address, skype, phone_number);
     newUser.id = uuidv4();
     newUser.skills = skills;
     this.users.push(newUser);
+
     if (flagTickEvent)
       this.usersChanged.next(this.users.slice());
   }

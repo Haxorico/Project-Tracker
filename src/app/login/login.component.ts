@@ -4,7 +4,6 @@ import { LoginService } from '../../shared/login.service';
 import { User } from '../users/user.model';
 import { Router } from '@angular/router';
 import { UserService } from '../../shared/user.service';
-import {Md5} from 'ts-md5/dist/md5';
 import { AlertService } from '../_alert';
 
 
@@ -36,7 +35,8 @@ export class LoginComponent implements OnInit {
     keepAfterRouteChange: false
   };
     const name = this.loginForm.value.name;
-    const pw : string = Md5.hashStr(this.loginForm.value.password).toString();
+    const pw = this.loginForm.value.password;
+    console.log(pw);
     if (this.loginService.Login(name,pw)){
       this.router.navigate(['/']);  
       this.alertService.success("Login Success",options);
