@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
-import { ProjectService } from '../../../Shared/project.service';
+import { ProjectService } from '../../../shared/project.service';
 
 
 @Component({
@@ -13,14 +13,11 @@ import { ProjectService } from '../../../Shared/project.service';
 export class ProjectNewComponent implements OnInit {
 
   @ViewChild('f', {static: false}) newProjectForm: NgForm;
-  constructor(private projectService : ProjectService,
-    private route : ActivatedRoute,
-    private router : Router) { }
+  constructor(private projectService : ProjectService) { }
 
   ngOnInit(): void {
   }
-  onSubmitButtonClicked()
-  {
+  onSubmitButtonClicked(){
     this.projectService.AddNewProject(
     this.newProjectForm.value.name,
     this.newProjectForm.value.type,

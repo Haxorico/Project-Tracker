@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { TaskService } from '../../../Shared/task.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { TaskService } from '../../../shared/task.service';
 
 @Component({
   selector: 'app-task-new',
@@ -15,8 +14,7 @@ export class TaskNewComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  onSubmitButtonClicked()
-  {
+  onSubmitButtonClicked(){
     this.taskService.NewTask(
     this.newTaskForm.value.name,
     null,

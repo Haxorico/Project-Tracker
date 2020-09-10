@@ -2,12 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Task } from './task.model';
-import { TaskService } from '../../Shared/task.service';
-import { LoginService } from '../../Shared/login.service';
+import { TaskService } from '../../shared/task.service';
 import { Subscription } from 'rxjs';
 import { User } from '../users/user.model';
 import { newArray } from '@angular/compiler/src/util';
-import { UserService } from '../../Shared/user.service';
+import { UserService } from '../../shared/user.service';
 
 @Component({
   selector: 'app-tasks',
@@ -85,7 +84,6 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.tasks = temp.filter(task => (
       //currently filtering by name and description. Can add any otehr type of filter if needed...
       task.name.toLowerCase().includes(val) ||
-      task.description.toLowerCase().includes(val)
-    ));
+      task.description.toLowerCase().includes(val)));
   }
 }

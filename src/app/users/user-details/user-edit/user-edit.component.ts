@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { User } from '../../user.model';
 import { Params, ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../../../../Shared/user.service';
+import { UserService } from '../../../../shared/user.service';
 import {Md5} from 'ts-md5/dist/md5';
 
 @Component({
@@ -34,8 +34,7 @@ export class UserEditComponent implements OnInit {
   onSubmitButtonClicked() {
     let rank = this.editForm.value.rank;
     // do not allow users edit those who are a higher rank
-    if (this.editingUser.rank > this.loggedUser.rank) 
-    {
+    if (this.editingUser.rank > this.loggedUser.rank) {
       this.router.navigate(['../../'], { relativeTo: this.route })
       return;
     } 

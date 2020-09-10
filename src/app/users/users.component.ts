@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from './user.model';
-import { UserService } from '../../Shared/user.service';
+import { UserService } from '../../shared/user.service';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LoginService } from '../../Shared/login.service';
+import { LoginService } from '../../shared/login.service';
 
 @Component({
   selector: 'app-users',
@@ -22,8 +22,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.users = this.userService.GetUsers();
-    this.userSub = this.userService.usersChanged.subscribe((u : User[]) => 
-    {
+    this.userSub = this.userService.usersChanged.subscribe((u : User[]) => {
       this.users = u;
     })
     this.user = this.userService.GetCurrentUser();
@@ -34,19 +33,16 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.userSub.unsubscribe();
   }
 
-  onNewUserClicked()
-  {
+  onNewUserClicked(){
       this.router.navigate(['new'],{relativeTo:this.route});
   }
-  onFilterChanged(val)
-  {
+  onFilterChanged(val){
     val = val.toLowerCase();
     const temp = this.userService.GetUsers();
     this.users = temp.filter(user => (
       //currently filtering by name and skype. Can add any otehr type of filter if needed...
       user.name.toLowerCase().includes(val) || 
-      user.skype.toLowerCase().includes(val)
-      ));
+      user.skype.toLowerCase().includes(val)));
   }
 
 }
