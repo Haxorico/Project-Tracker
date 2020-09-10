@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ProjectService } from '../../Shared/project.service';
-
+import { ProjectService } from '../../shared/project.service';
 import { Project } from './project.model';
 import { User } from '../users/user.model';
-import { LoginService } from '../../Shared/login.service';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UserService } from '../../Shared/user.service';
+import { UserService } from '../../shared/user.service';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -40,9 +38,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   onFilterChanged(val){
     val = val.toLowerCase();
     const temp = this.projectService.GetProjects();
-    this.projects = temp.filter(p => (
+    this.projects = temp.filter(filetredProjects => (
       //currently filtering by name and client name. Can add any otehr type of filter if needed...
-      p.name.toLowerCase().includes(val) || 
-      p.client_name.toLowerCase().includes(val)));
+      filetredProjects.name.toLowerCase().includes(val) || 
+      filetredProjects.client_name.toLowerCase().includes(val)
+      ));
   }
 }

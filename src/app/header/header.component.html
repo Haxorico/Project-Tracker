@@ -1,3 +1,4 @@
+<alert></alert>
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="nabar-header">
@@ -13,7 +14,7 @@
                     <li><a routerLink="/login">Guest - Login</a></li>
                 </div>
                 <ng-template #logoutBlock>
-                    <li><a routerLink="/login">{{loggedUser.name}} - Logout</a></li>
+                    <li><a routerLink="/logout">{{loggedUser.name}} - Logout</a></li>
                 </ng-template>
                 <!-- Buttons only logged users can use -->
                 <div *ngIf="loggedUser.rank > 0">

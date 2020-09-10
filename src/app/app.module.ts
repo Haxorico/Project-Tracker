@@ -2,16 +2,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
-
+import { AlertModule } from './_alert';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 
-import { LoginService } from '../Shared/login.service';
+import { LoginService } from '../shared/login.service';
 import { LoginComponent } from './login/login.component';
 
-import { UserService } from '../Shared/user.service';
+import { UserService } from '../shared/user.service';
 import { UsersComponent } from './users/users.component';
 import { UserDetailsComponent } from './users/user-details/user-details.component';
 import { UserEditComponent } from './users/user-details/user-edit/user-edit.component';
@@ -43,6 +43,7 @@ const appRoutes: Routes = [
     ]
   },
   { path: 'login', component: LoginComponent },
+  { path: 'logout', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'projects', component: ProjectsComponent, children: [
       { path: 'new', component: ProjectNewComponent },
@@ -86,6 +87,7 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
+    AlertModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [UserService, LoginService],

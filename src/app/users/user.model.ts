@@ -32,7 +32,7 @@ export class User {
     }
     return "Unknown Title";
   }
-  IsUserInProject(p : Project){
-    return (_.find(this.projects, project => project.id == p.id) != undefined)
+  IsUserInProject(project : Project){
+    return (_.find(this.projects, project => project.id == project.id) != undefined)
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Project } from '../../project.model';
 import { NgForm } from '@angular/forms';
-import { ProjectService } from '../../../../Shared/project.service';
+import { ProjectService } from '../../../../shared/project.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
 @Component({
@@ -28,9 +28,11 @@ export class ProjectEditComponent implements OnInit {
       })
   }
 
-  onSubmitButtonClicked(){
-      const loc = this.projectService.GetProjectLoc(this.project);
-      this.projectService.UpdateProject(loc,
+
+  onSubmitButtonClicked()
+  {
+      const index = this.projectService.GetProjectLoc(this.project);
+      this.projectService.UpdateProject(index,
       this.editForm.value.name,
       this.editForm.value.type,
       this.editForm.value.logo,
