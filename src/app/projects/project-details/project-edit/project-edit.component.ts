@@ -31,7 +31,7 @@ export class ProjectEditComponent implements OnInit {
 
   onSubmitButtonClicked()
   {
-      const index = this.projectService.GetProjectLoc(this.project);
+      const index = this.projectService.GetProjectIndex(this.project);
       this.projectService.UpdateProject(index,
       this.editForm.value.name,
       this.editForm.value.type,

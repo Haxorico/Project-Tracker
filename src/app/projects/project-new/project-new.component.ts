@@ -16,14 +16,14 @@ export class ProjectNewComponent implements OnInit {
   ngOnInit(): void {
   }
   onSubmitButtonClicked(){
-    this.projectService.AddNewProject(
-    this.newProjectForm.value.name,
-    this.newProjectForm.value.type,
-    this.newProjectForm.value.logo,
-    this.newProjectForm.value.client_name,
-    this.newProjectForm.value.start_date,
-    this.newProjectForm.value.end_date,
-    this.newProjectForm.value.description,
-    this.newProjectForm.value.team_members);
+    this.projectService.AddNewProject({
+    name : this.newProjectForm.value.name,
+    type : this.newProjectForm.value.type,
+    logo : this.newProjectForm.value.logo,
+    client_name : this.newProjectForm.value.client_name,
+    start_date : this.newProjectForm.value.start_date,
+    end_date: this.newProjectForm.value.end_date,
+    description: this.newProjectForm.value.description,
+    team_members: this.newProjectForm.value.team_members});
   }
 }

@@ -25,63 +25,66 @@ export class UserService {
 
   GenerateStubs() {
     //just some dummy data to work with
-    this.NewUser("a", "a", 100, "", "1/1/90", "Grand Master Office", "Floor 4", "the_admin_1337", "050-1333337");
-    this.NewUser("Admin", "aAbBtEst-1237", 99, "", "1/1/91", "Master Office", "Floor 3", "my_name", "050-248741");
-    this.NewUser("Abba", "aAbBtEst-1537", 99, "", "1/1/92", "Master Office", "Floor 3", "love_is_life", "050-248741");
-    this.NewUser("Imma", "adeTEst-12537", 80, "", "1/3/90", "Master Office", "Floor 3", "girl_power", "050-245551");
+    //NewUser({name = "EMPTY_NAME",password,rank,photo = "NO_PHOTO",date_of_birth = "NO_DATE_OF_BIRTH",location = "NO_LOCATION",address = "NO_ADDRESS",skype = "NO_SKYPE",phone_number = "NO_PHONE_NUMBER",skills,flagTickEvent = true}) {
+    this.NewUser({name : "a", password : "a", rank : 100, date_of_birth : "1/1/90", location : "Grand Master Office", address : "Floor 4", skype: "the_admin_1337", phone_number : "050-1333337"});
+    this.NewUser({name : "Admin", password : "aAbBtEst-1237", rank : 99, date_of_birth : "1/1/91",  location : "Master Office",  address : "Floor 3", skype: "my_name",  phone_number : "050-248741"});
+    this.NewUser({name : "Abba", password : "aAbBtEst-1537", rank : 99,  date_of_birth : "1/1/92",  location : "Master Office",  address : "Floor 3", skype: "love_is_life",  phone_number : "050-248741"});
+    this.NewUser({name : "Imma", password : "adeTEst-12537", rank : 80,  date_of_birth : "1/3/90",  location : "Master Office",  address : "Floor 3", skype: "girl_power",  phone_number : "050-245551"});
 
-    this.NewUser("John", "abcd1234", 30, "", "10/5/91", "Small Office", "Villa", "humble_mod", "050-0500505");
-    this.NewUser("Daniel", "abcd1234", 25, "", "10/5/91", "Small Office", "Villa", "humble_mod", "050-0500505");
-    this.NewUser("Shay", "abcd1234", 24, "", "10/5/91", "Small Office", "Villa", "humble_mod", "050-0500505");
-    this.NewUser("May", "abcd1234", 23, "", "10/5/91", "Small Office", "Villa", "humble_mod", "050-0500505");
-    this.NewUser("Sami", "abcd1234", 20, "", "10/5/91", "Small Office", "Villa", "humble_mod", "050-0500505");
+    this.NewUser({name : "John", password : "abcd1234", rank : 30,  date_of_birth : "10/5/91",  location : "Small Office",  address : "Villa", skype: "humble_mod",  phone_number : "050-0500505"});
+    this.NewUser({name : "Daniel", password : "abcd1234", rank : 25,  date_of_birth : "10/5/91",  location : "Small Office",  address : "Villa", skype: "humble_mod",  phone_number : "050-0500505"});
+    this.NewUser({name : "Shay", password : "abcd1234", rank : 24,  date_of_birth : "10/5/91",  location : "Small Office",  address : "Villa", skype: "humble_mod",  phone_number : "050-0500505"});
+    this.NewUser({name : "May", password : "abcd1234", rank : 23,  date_of_birth : "10/5/91",  location : "Small Office",  address : "Villa", skype: "humble_mod",  phone_number : "050-0500505"});
+    this.NewUser({name : "Sami", password : "abcd1234", rank : 20,  date_of_birth : "10/5/91",  location : "Small Office",  address : "Villa", skype: "humble_mod",  phone_number : "050-0500505"});
 
-    this.NewUser("Refael", "123456", 1, "", "20/10/95", "Cubical", "House", "work_work", "050-6666666");
-    this.NewUser("Dave", "123456", 2, "", "20/10/95", "Cubical - 1A", "House", "work_work", "050-6666666");
-    this.NewUser("Steve", "123456", 3, "", "20/10/95", "Cubical - 2A", "House", "work_work", "050-6666666");
-    this.NewUser("Homer", "123456", 1, "", "20/10/95", "Cubical - 3A", "House", "work_work", "050-6666666");
-    this.NewUser("Katya", "123456", 1, "", "20/10/95", "Cubical - 1B", "House", "work_work", "050-6666666");
-    this.NewUser("Anna", "123456", 5, "", "20/10/95", "Cubical - 2B", "House", "work_work", "050-6666666");
-    this.NewUser("Mark", "123456", 6, "", "20/10/95", "Cubical - 2C", "House", "work_work", "050-6666666");
-    this.NewUser("Yaniv", "123456", 1, "", "20/10/95", "Cubical - 3A", "House", "work_work", "050-6666666");
-    this.NewUser("Jay", "123456", 8, "", "20/10/95", "Cubical - 3B", "House", "work_work", "050-6666666");
-    this.NewUser("Ben", "123456", 1, "", "20/10/95", "Cubical - 3C", "House", "work_work", "050-6666666");
-    this.NewUser("Derek", "123456", 2, "", "20/10/95", "Cubical - 4A", "House", "work_work", "050-6666666");
-    this.NewUser("Ali", "123456", 1, "", "20/10/95", "Cubical - 4B", "House", "work_work", "050-6666666");
+    this.NewUser({name : "Refael",password :  "123456", rank : 1, date_of_birth : "20/10/95",  location : "Cubical",  address : "House", skype: "work_work",  phone_number : "050-6666666"});
+    this.NewUser({name : "Dave", password : "123456", rank : 2, date_of_birth : "20/10/95",  location : "Cubical - 1A",  address : "House", skype: "work_work",  phone_number : "050-6666666"});
+    this.NewUser({name : "Steve", password : "123456", rank : 3, date_of_birth : "20/10/95",  location : "Cubical - 2A",  address : "House", skype: "work_work", phone_number :  "050-6666666"});
+    this.NewUser({name : "Homer", password : "123456", rank : 1, date_of_birth : "20/10/95",  location : "Cubical - 3A",  address : "House", skype: "work_work", phone_number :  "050-6666666"});
+    this.NewUser({name : "Katya", password : "123456", rank : 1, date_of_birth : "20/10/95",  location : "Cubical - 1B", address :  "House", skype: "work_work", phone_number :  "050-6666666"});
+    this.NewUser({name : "Anna", password : "123456",rank :  5, date_of_birth : "20/10/95",  location : "Cubical - 2B", address :  "House", skype: "work_work", phone_number :  "050-6666666"});
+    this.NewUser({name : "Mark", password : "123456", rank : 6, date_of_birth : "20/10/95",  location : "Cubical - 2C", address :  "House", skype: "work_work",  phone_number : "050-6666666"});
+    this.NewUser({name : "Yaniv", password : "123456", rank : 1, date_of_birth : "20/10/95",  location : "Cubical - 3A",  address : "House", skype: "work_work", phone_number :  "050-6666666"});
+    this.NewUser({name : "Jay", password : "123456", rank : 8, date_of_birth : "20/10/95",  location : "Cubical - 3B", address :  "House",skype:  "work_work", phone_number :  "050-6666666"});
+    this.NewUser({name : "Ben", password : "123456", rank : 1, date_of_birth : "20/10/95",  location : "Cubical - 3C",  address : "House", skype: "work_work",  phone_number : "050-6666666"});
+    this.NewUser({name : "Derek", password : "123456",rank :  2, date_of_birth : "20/10/95",  location : "Cubical - 4A",  address : "House", skype: "work_work",  phone_number : "050-6666666"});
+    this.NewUser({name : "Ali",password :  "123456",rank :  1, date_of_birth : "20/10/95",  location : "Cubical - 4B",  address : "House", skype: "work_work",  phone_number : "050-6666666"});
 
   }
-  NewUser(name: string = "EMPTY_NAME",
-    password: string,
-    rank: number,
-    photo: string = "NO_PHOTO",
-    date_of_birth: string = "NO_DATE_OF_BIRTH",
-    location: string = "NO_LOCATION",
-    address: string = "NO_ADDRESS",
-    skype: string = "NO_SKYPE",
-    phone_number: string = "NO_PHONE_NUMBER",
-    skills: string[] = [],
-    flagTickEvent: boolean = true) {
+
+  NewUser({
+    name = "EMPTY_NAME",
+    password,
+    rank,
+    photo = "NO_PHOTO",
+    date_of_birth = "NO_DATE_OF_BIRTH",
+    location = "NO_LOCATION",
+    address = "NO_ADDRESS",
+    skype = "NO_SKYPE",
+    phone_number = "NO_PHONE_NUMBER",
+    skills = [],
+    flagTickEvent = true}) {
     password = Md5.hashStr(password).toString();
-    const newUser = new User(name, password, rank, photo, date_of_birth, location, address, skype, phone_number);
-    newUser.id = uuidv4();
-    newUser.skills = skills;
-    this.users.push(newUser);
+    const userToCreate = new User(name, password, rank, photo, date_of_birth, location, address, skype, phone_number);
+    userToCreate.id = uuidv4();
+    userToCreate.skills = skills;
+    this.users.push(userToCreate);
 
     if (flagTickEvent)
       this.usersChanged.next(this.users.slice());
   }
   DelUser(user: User){
-    const loc = this.GetUserLoc(user);
-    this.users.splice(loc, 1);
+    const index = this.GetUserIndex(user);
+    this.users.splice(index, 1);
     this.usersChanged.next(this.users.slice());
   }
-  DelUserByLoc(loc: number) {
-    this.users.splice(loc, 1);
+  DelUserByIndex(index: number) {
+    this.users.splice(index, 1);
     this.usersChanged.next(this.users.slice());
   }
   DelUserById(id: string) {
-    const loc = this.GetUserLocById(id);
-    this.users.splice(loc, 1);
+    const index = this.GetUserIndexById(id);
+    this.users.splice(index, 1);
     this.usersChanged.next(this.users.slice());
   }
 
@@ -91,16 +94,16 @@ export class UserService {
   GetCurrentUser() {
     return this.user;
   }
-  GetUserByLoc(loc: number) {
-    return this.users[loc];
+  GetUserByIndex(index: number) {
+    return this.users[index];
   }
   GetUserById(id: string) {
     return _.find(this.users, user => user.id == id)
   }
-  GetUserLocById(id: string){
+  GetUserIndexById(id: string){
     return _.findIndex(this.users, {id: id});
   }
-  GetUserLoc(user: User){
+  GetUserIndex(user: User){
     return _.findIndex(this.users, {id: user.id});
   }
 
@@ -109,13 +112,13 @@ export class UserService {
     this.user = user;
     this.userLogedChanged.next();
   }
-  UpdateFullUser(newUser: User) {
-    const loc: number = this.GetUserLoc(newUser);
-    this.users[loc] = newUser;
+  UpdateUser(newUser: User) {
+    const index: number = this.GetUserIndex(newUser);
+    this.users[index] = newUser;
     this.usersChanged.next(this.users.slice());
   }
 
-  UpdateUser(loc: number,
+  /* UpdateUser(loc: number,
     name: string,
     password: string,
     rank: number,
@@ -137,7 +140,7 @@ export class UserService {
 
 
     this.usersChanged.next(this.users.slice());
-  }
+  } */
 
   GetGuestUser(): User {
     return this.guest;
@@ -149,18 +152,19 @@ export class UserService {
     }
     if (usersToLoad==null)
       return false;
-      usersToLoad.forEach(val => {
-      this.NewUser(val.name,
-        val.password,
-        val.rank,
-        val.photo,
-        val.date_of_birth,
-        val.location,
-        val.address,
-        val.skype,
-        val.phone_number,
-        val.skills,
-        false)
+      usersToLoad.forEach(userToLoad => {
+      this.NewUser({
+        name : userToLoad.name,
+        password : userToLoad.password,
+        rank : userToLoad.rank,
+        photo : userToLoad.photo,
+        date_of_birth : userToLoad.date_of_birth,
+        location : userToLoad.location,
+        address : userToLoad.address,
+        skype : userToLoad.skype,
+        phone_number : userToLoad.phone_number,
+        skills : userToLoad.skills,
+        flagTickEvent : false})
     });
     this.usersChanged.next(this.users.slice());
     return true;

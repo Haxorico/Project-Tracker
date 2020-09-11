@@ -16,28 +16,27 @@ export class TaskService {
   private tasks: Task[] = [];
   public TasksChanged = new Subject<Task[]>();
 
-
   constructor(private projectService: ProjectService,
     private userService: UserService) {
     //generate some dummy data
     this.GenerteStubs();
-
   }
 
   GenerteStubs() {
     //some test tasks to work with.
-    this.NewTask("Task 1A name", this.projectService.GetProjectByLoc(0), 0, 0, "1/1/2021", "1/1/2020", "1/1/2021", "Task1 descrition", this.userService.GetUserByLoc(18), this.userService.GetUserByLoc(0));
-    this.NewTask("Task 2A name", this.projectService.GetProjectByLoc(0), 0, 0, "1/1/2021", "1/2/2020", "1/1/2021", "Task2 descrition", this.userService.GetUserByLoc(18), this.userService.GetUserByLoc(0));
-    this.NewTask("Task 3A name", this.projectService.GetProjectByLoc(0), 3, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task3 descrition", this.userService.GetUserByLoc(18), this.userService.GetUserByLoc(0));
-    this.NewTask("Task 4A name", this.projectService.GetProjectByLoc(0), 2, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task4 descrition", this.userService.GetUserByLoc(19), this.userService.GetUserByLoc(0));
-    this.NewTask("Making Sure", this.projectService.GetProjectByLoc(0), 0, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Make sure tasks 1-4 are completed", this.userService.GetUserByLoc(19), this.userService.GetUserByLoc(1));
+    this.NewTask({name : "Task 1A name", project : this.projectService.GetProjectByIndex(0), status : 0, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "1/1/2021", description : "Task1 descrition", user : this.userService.GetUserByIndex(18), task_reporter: this.userService.GetUserByIndex(0)});
+    this.NewTask({name : "Task 2A name", project : this.projectService.GetProjectByIndex(0), status : 0, type : 0, estimate : "1/1/2021", start_date : "1/2/2020", end_date : "1/1/2021", description : "Task2 descrition", user : this.userService.GetUserByIndex(18), task_reporter: this.userService.GetUserByIndex(0)});
+    this.NewTask({name : "Task 3A name", project : this.projectService.GetProjectByIndex(0), status : 3, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Task3 descrition", user : this.userService.GetUserByIndex(18), task_reporter: this.userService.GetUserByIndex(0)});
+    this.NewTask({name : "Task 4A name", project : this.projectService.GetProjectByIndex(0), status : 2, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Task4 descrition", user : this.userService.GetUserByIndex(19), task_reporter: this.userService.GetUserByIndex(0)});
+    this.NewTask({name : "Making Sure", project : this.projectService.GetProjectByIndex(0), status : 0, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Make sure tasks 1-4 are completed", user : this.userService.GetUserByIndex(19), task_reporter: this.userService.GetUserByIndex(1)});
 
-    this.NewTask("Task 1B name", this.projectService.GetProjectByLoc(1), 0, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task 1b descrition", this.userService.GetUserByLoc(20), this.userService.GetUserByLoc(2));
-    this.NewTask("Task 2B name", this.projectService.GetProjectByLoc(1), 2, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task 2b descrition", this.userService.GetUserByLoc(20), this.userService.GetUserByLoc(2));
-    this.NewTask("Task 3B name", this.projectService.GetProjectByLoc(1), 1, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task 3b descrition", this.userService.GetUserByLoc(16), this.userService.GetUserByLoc(3));
+    this.NewTask({name : "Task 1B name", project : this.projectService.GetProjectByIndex(1), status : 0, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Task 1b descrition", user : this.userService.GetUserByIndex(20), task_reporter: this.userService.GetUserByIndex(2)});
+    this.NewTask({name : "Task 2B name", project : this.projectService.GetProjectByIndex(1), status : 2, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Task 2b descrition", user : this.userService.GetUserByIndex(20), task_reporter: this.userService.GetUserByIndex(2)});
+    this.NewTask({name : "Task 3B name", project : this.projectService.GetProjectByIndex(1), status : 1, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Task 3b descrition", user : this.userService.GetUserByIndex(16), task_reporter: this.userService.GetUserByIndex(3)});
 
-    this.NewTask("Task 1C name", this.projectService.GetProjectByLoc(2), 0, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task 1c descrition", this.userService.GetUserByLoc(15), this.userService.GetUserByLoc(4));
-    this.NewTask("Task 2C name", this.projectService.GetProjectByLoc(2), 2, 0, "1/1/2021", "1/1/2020", "31/12/2020", "Task 2c descrition", this.userService.GetUserByLoc(10), this.userService.GetUserByLoc(4));
+    this.NewTask({name : "Task 1C name", project : this.projectService.GetProjectByIndex(2), status : 0, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Task 1c descrition", user : this.userService.GetUserByIndex(15), task_reporter: this.userService.GetUserByIndex(4)});
+    this.NewTask({name : "Task 2C name", project : this.projectService.GetProjectByIndex(2), status : 2, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Task 2c descrition", user : this.userService.GetUserByIndex(10), task_reporter: this.userService.GetUserByIndex(4)});
+    
     this.tasks[0].AddWorkTime("01/01/2020", 8, 30, "First day");
     this.tasks[0].AddWorkTime("02/01/2020", 6, 0, "Still learning");
     this.tasks[0].AddWorkTime("03/01/2020", 9, 30, "Gettin better");
@@ -45,22 +44,21 @@ export class TaskService {
     this.tasks[0].AddWorkTime("05/01/2020", 1, 35, "Just checking");
   }
 
-  NewTask(
-    name: string = "EMPTY_NAME",
-    project: Project,
-    status: number = -1,
-    type: number = -1,
-    estimate: string = "NO_ESTIMATION",
-    start_date: string = "NO_START_DATE",
-    end_date: string = "NO_END_DATE",
-    description: string = "NO_DESCRIPTION_NUMBER",
-    user: User,
-    task_reporter: User,
-    flagTickEvent: boolean = true) {
-    const t = new Task(name, project, status, type, estimate, start_date, end_date, description, user, task_reporter);
-    t.id = uuidv4();
-    this.tasks.push(t);
-
+  NewTask({
+    name = "EMPTY_NAME",
+    project = null,
+    status = -1,
+    type = -1,
+    estimate = "NO_ESTIMATION",
+    start_date = "NO_START_DATE",
+    end_date = "NO_END_DATE",
+    description = "NO_DESCRIPTION_NUMBER",
+    user = null,
+    task_reporter = null,
+    flagTickEvent = true}) {
+    const taskToCreate = new Task(name, project, status, type, estimate, start_date, end_date, description, user, task_reporter);
+    taskToCreate.id = uuidv4();
+    this.tasks.push(taskToCreate);
     //update the users
     if (user != undefined) {
       //if the user in not a team member, add him to the team.
@@ -68,12 +66,12 @@ export class TaskService {
         user.projects.push(project);
         project.team_members.push(user);
       }
-      user.tasks.push(t);
-      this.userService.UpdateFullUser(user);
+      user.tasks.push(taskToCreate);
+      this.userService.UpdateUser(user);
     }
     //update the task reporter
     if (task_reporter != undefined) {
-      task_reporter.tasks.push(t);
+      task_reporter.tasks.push(taskToCreate);
       //if the task_reporter in not a team member, add him to the team.
       if (!task_reporter.IsUserInProject(project)) {
         task_reporter.projects.push(project);
@@ -88,61 +86,35 @@ export class TaskService {
   GetTasks() {
     return this.tasks.slice();
   }
-  GetTaskLoc(t: Task){
-    return _.findIndex(this.tasks, {id: t.id});
+  GetTaskIndex(taskToFind: Task){
+    return _.findIndex(this.tasks, {id: taskToFind.id});
   }
-  GetTaskLocById(id: string){
+  GetTaskIndexById(id: string){
     return _.findIndex(this.tasks, {id: id});
   }
 
-  GetTaskByLoc(loc: number) {
-    return this.tasks[loc];
+  GetTaskByIndex(index: number) {
+    return this.tasks[index];
   }
   GetTaskById(id: string) {
     return _.find(this.tasks, tasks => tasks.id == id)
   }
-  DelTask(t: Task) {
-    this.tasks.splice(this.GetTaskLoc(t), 1);
+  DelTask(taskToDelete: Task) {
+    this.tasks.splice(this.GetTaskIndex(taskToDelete), 1);
     this.TasksChanged.next(this.tasks.slice());
   }
-  DelTaskByLoc(loc: number) {
-    this.tasks.splice(loc, 1);
+  DelTaskByIndex(index: number) {
+    this.tasks.splice(index, 1);
     this.TasksChanged.next(this.tasks.slice());
   }
   DelTaskById(id: string) {
-    this.tasks.splice(this.GetTaskLocById(id), 1);
+    this.tasks.splice(this.GetTaskIndexById(id), 1);
     this.TasksChanged.next(this.tasks.slice());
   }
 
-  UpdateTask(loc: number,
-    name: string = "EMPTY_NAME",
-    project: Project,
-    status: number = -1,
-    type: number = -1,
-    estimate: string = "NO_ESTIMATION",
-    start_date: string = "NO_START_DATE",
-    end_date: string = "NO_END_DATE",
-    description: string = "NO_DESCRIPTION_NUMBER",
-    user: User,
-    task_reporter: User) {
-
-    this.tasks[loc].name = name;
-    this.tasks[loc].project = project;
-    this.tasks[loc].status = status;
-    this.tasks[loc].type = type;
-    this.tasks[loc].estimate = estimate;
-    this.tasks[loc].start_date = start_date;
-    this.tasks[loc].end_date = end_date;
-    this.tasks[loc].description = description;
-    this.tasks[loc].user = user;
-    this.tasks[loc].reporter = task_reporter;
-
-    this.TasksChanged.next(this.tasks.slice());
-  }
-
-  UpdateFullTask(t: Task) {
-    const loc = this.GetTaskLoc(t);
-    this.tasks[loc] = t;
+  UpdateTask(taskToUpdate: Task) {
+    const index = this.GetTaskIndex(taskToUpdate);
+    this.tasks[index] = taskToUpdate;
     this.TasksChanged.next(this.tasks.slice());
   }
   GetStatusString(status: number) {
@@ -174,24 +146,25 @@ export class TaskService {
     return "Error - Wrong type number.";
   }
 
-  LoadTasks(t: Task[], flagCleanAll: boolean = true) {
+  LoadTasks(tasksToLoad: Task[], flagCleanAll: boolean = true) {
     if (flagCleanAll) {
       this.tasks = [];
     }
-    if (t==null)
+    if (tasksToLoad==null)
       return false;
-    t.forEach(val => {
-      this.NewTask(val.name,
-        val.project,
-        val.status,
-        val.type,
-        val.estimate,
-        val.start_date,
-        val.end_date,
-        val.description,
-        val.user,
-        val.reporter,
-        false)
+      tasksToLoad.forEach(taskToLoad => {
+      this.NewTask({
+        name : taskToLoad.name,
+        project : taskToLoad.project,
+        status : taskToLoad.status,
+        type : taskToLoad.type,
+        estimate : taskToLoad.estimate,
+        start_date : taskToLoad.start_date,
+        end_date : taskToLoad.end_date,
+        description : taskToLoad.description,
+        user : taskToLoad.user,
+        task_reporter : taskToLoad.reporter,
+        flagTickEvent : false})
     });
     this.TasksChanged.next(this.tasks.slice());
     return true;

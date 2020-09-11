@@ -41,20 +41,17 @@ export class UserEditComponent implements OnInit {
     // make sure you cant give someone a higher rank than you posses
     if (rank > this.loggedUser.rank)
       rank = this.editingUser.rank;
-    // use stringhash for password.
-    const pw = Md5.hashStr(this.editForm.value.password).toString();
-    const loc = this.userService.GetUserLoc(this.editingUser);
-    this.userService.UpdateUser(loc,
-      this.editForm.value.name,
-      pw,
-      rank,
-      this.editForm.value.photo,
-      this.editForm.value.date_of_birth,
-      this.editForm.value.location,
-      this.editForm.value.address,
-      this.editForm.value.skype,
-      this.editForm.value.phone_number);
-
+      
+    this.editingUser.name = this.editForm.value.name;
+    this.editingUser.password = Md5.hashStr(this.editForm.value.password).toString();
+    this.editingUser.photo = this.editForm.value.photo;
+    this.editingUser.date_of_birth = this.editForm.value.date_of_birth;
+    this.editingUser.location = this.editForm.value.location;
+    this.editingUser.address = this.editForm.value.address;
+    this.editingUser.skype = this.editForm.value.skype;
+    this.editingUser.phone_number = this.editForm.value.phone_number;
+    this.editingUser.rank = rank;
+    this.userService.UpdateUser(this.editingUser);
     this.router.navigate(['../../'], { relativeTo: this.route })
   }
 }

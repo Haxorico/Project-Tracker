@@ -64,9 +64,9 @@ export class TaskDetailsComponent implements OnInit {
   SetAsUser(newUser: User) {
     //remove the task from the old user
     const pastUser = this.task.user;
-    const tloc = this.taskService.GetTaskLocById(this.task.id);
-    pastUser.tasks.splice(tloc, 1);
-    this.userService.UpdateFullUser(pastUser);
+    const taskIndex = this.taskService.GetTaskIndex(this.task);
+    pastUser.tasks.splice(taskIndex, 1);
+    this.userService.UpdateUser(pastUser);
     //set the task to the new user
     this.task.user = newUser;
     //add the task to the user
@@ -77,8 +77,8 @@ export class TaskDetailsComponent implements OnInit {
       this.task.project.AddTeamMember(newUser);
     }
     //update the services
-    this.taskService.UpdateFullTask(this.task);
-    this.userService.UpdateFullUser(newUser);
+    this.taskService.UpdateTask(this.task);
+    this.userService.UpdateUser(newUser);
     //remove the users list
     this.isShowingAllUsers = false;
   }
@@ -91,9 +91,9 @@ export class TaskDetailsComponent implements OnInit {
 
     //remove the task from the old user
     const pastUser = this.task.reporter;
-    const tloc = this.taskService.GetTaskLocById(this.task.id);
-    pastUser.tasks.splice(tloc, 1);
-    this.userService.UpdateFullUser(pastUser);
+    const taskIndex = this.taskService.GetTaskIndex(this.task);
+    pastUser.tasks.splice(taskIndex, 1);
+    this.userService.UpdateUser(pastUser);
     //set the task to the new user
     this.task.reporter = newReporter;
     //if the user in not a team member, add him to the team.
@@ -104,8 +104,8 @@ export class TaskDetailsComponent implements OnInit {
     //add the task to the user
     newReporter.tasks.push(this.task);
     //update the services
-    this.taskService.UpdateFullTask(this.task);
-    this.userService.UpdateFullUser(newReporter);
+    this.taskService.UpdateTask(this.task);
+    this.userService.UpdateUser(newReporter);
     //remove the users list
     this.isShowingAllUsers = false;
   }
