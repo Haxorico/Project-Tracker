@@ -35,11 +35,11 @@ export class UserDetailsComponent implements OnInit {
 
   addSkill(){
     this.user.skills.push(this.skill.nativeElement.value);
-    this.userService.UpdateFullUser(this.user);
+    this.userService.UpdateUser(this.user);
     this.skill.nativeElement.value = "";
   }
   removeSkill(loc : number){
     this.user.skills.splice(loc,1);
-    this.userService.UpdateFullUser(this.user);
+    this.userService.UpdateUser(this.user);
   }
 }

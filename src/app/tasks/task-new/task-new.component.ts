@@ -15,15 +15,14 @@ export class TaskNewComponent implements OnInit {
   ngOnInit(): void {
   }
   onSubmitButtonClicked(){
-    this.taskService.NewTask(
-    this.newTaskForm.value.name,
-    null,
-    this.newTaskForm.value.status,
-    this.newTaskForm.value.type,
-    this.newTaskForm.value.estimate,
-    this.newTaskForm.value.start_date,
-    this.newTaskForm.value.end_date,
-    this.newTaskForm.value.description,
-    null,null);
+    this.taskService.NewTask({
+    name : this.newTaskForm.value.name,
+    status : this.newTaskForm.value.status,
+    type : this.newTaskForm.value.type,
+    estimate : this.newTaskForm.value.estimate,
+    start_date : this.newTaskForm.value.start_date,
+    end_date : this.newTaskForm.value.end_date,
+    description : this.newTaskForm.value.description
+  });
   }
 }

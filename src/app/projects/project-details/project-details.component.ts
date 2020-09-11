@@ -49,7 +49,7 @@ export class ProjectDetailsComponent implements OnInit {
     this.projectService.UpdateFullProject(this.project);
 
     //update the user service
-    this.userService.UpdateFullUser(userToAdd);
+    this.userService.UpdateUser(userToAdd);
   }
   onEditProjectClicked() {
     this.router.navigate(["edit"], { relativeTo: this.route });

@@ -24,16 +24,16 @@ export class UserNewComponent implements OnInit {
     
   }
   onSubmitButtonClicked() {
-    this.userService.NewUser(
-    this.newUserForm.value.name,
-    this.newUserForm.value.password,
-    this.newUserForm.value.rank,
-    this.newUserForm.value.photo,
-    this.newUserForm.value.date_of_birth,
-    this.newUserForm.value.location,
-    this.newUserForm.value.address,
-    this.newUserForm.value.skype,
-    this.newUserForm.value.phone_number);
+    this.userService.NewUser({
+    name : this.newUserForm.value.name,
+    password : this.newUserForm.value.password,
+    rank : this.newUserForm.value.rank,
+    photo : this.newUserForm.value.photo,
+    date_of_birth : this.newUserForm.value.date_of_birth,
+    location : this.newUserForm.value.location,
+    address : this.newUserForm.value.address,
+    skype : this.newUserForm.value.skype,
+    phone_number : this.newUserForm.value.phone_number});
     
     this.router.navigate(['../'], {relativeTo : this.route})
   }

@@ -40,9 +40,9 @@ export class TimesheetsComponent implements OnInit {
     this.loggedUser = this.userService.GetCurrentUser();
   }
 
-  AddWorkTime(t: Task) {
+  AddWorkTime(taskToEdit: Task) {
     const d = this.newTaskForm.value;
-    t.AddWorkTime(d.date,d.hh,d.mm, d.comment);
-    this.taskService.UpdateFullTask(t); 
+    taskToEdit.AddWorkTime(d.date,d.hh,d.mm, d.comment);
+    this.taskService.UpdateTask(taskToEdit); 
   }
 }
