@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Project } from '../../project.model';
 import { NgForm } from '@angular/forms';
-import { ProjectService } from '../../../shared_temp/project.service';
+import { ProjectService } from '../../../shared/project.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
 @Component({

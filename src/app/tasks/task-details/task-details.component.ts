@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from 'src/app/users/user.model';
 import { Task } from '../task.model';
-import { LoginService } from 'src/app/shared_temp/login.service';
-import { TaskService } from '../../shared_temp/task.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { UserService } from 'src/app/shared_temp/user.service';
-import { ProjectService } from 'src/app/shared_temp/project.service';
+import { LoginService } from 'src/app/shared/login.service';
+import { TaskService } from '../../shared/task.service';
+import { UserService } from 'src/app/shared/user.service';
+import { ProjectService } from 'src/app/shared/project.service';
 
 @Component({
   selector: 'app-task-details',

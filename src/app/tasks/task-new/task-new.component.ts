@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { TaskService } from '../../shared_temp/task.service';
+import { TaskService } from '../../shared/task.service';
 
 @Component({
   selector: 'app-task-new',

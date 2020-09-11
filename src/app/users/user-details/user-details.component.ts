@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { User } from '../user.model';
-import { UserService } from '../../shared_temp/user.service';
+import { UserService } from '../../shared/user.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
 @Component({

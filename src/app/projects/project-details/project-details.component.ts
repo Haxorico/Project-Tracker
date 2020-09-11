@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/users/user.model';
-import { ProjectService } from '../../shared_temp/project.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Project } from '../project.model';
-import { UserService } from 'src/app/shared_temp/user.service';
+import { UserService } from 'src/app/shared/user.service';
+import { ProjectService } from '../../shared/project.service';
 
 @Component({
   selector: 'app-project-details',
