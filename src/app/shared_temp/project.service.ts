@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Project } from '../app/projects/project.model';
-import { User } from '../app/users/user.model';
+import { Project } from '../projects/project.model';
+import { User } from '../users/user.model';
 import { Subject } from 'rxjs';
 import { UserService } from './user.service';
 import * as _ from "lodash";

@@ -2,11 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Task } from './task.model';
-import { TaskService } from '../../shared/task.service';
+import { TaskService } from '../shared_temp/task.service';
 import { Subscription } from 'rxjs';
 import { User } from '../users/user.model';
 import { newArray } from '@angular/compiler/src/util';
-import { UserService } from '../../shared/user.service';
+import { UserService } from '../shared_temp/user.service';
 
 @Component({
   selector: 'app-tasks',

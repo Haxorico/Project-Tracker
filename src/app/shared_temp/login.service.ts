@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserService } from './user.service';
-import { User } from '../app/users/user.model';
-
+import { User } from '../users/user.model';
 import * as _ from "lodash";
 import {Md5} from 'ts-md5/dist/md5';
 

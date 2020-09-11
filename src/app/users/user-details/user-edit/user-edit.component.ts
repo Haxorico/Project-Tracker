@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { User } from '../../user.model';
 import { Params, ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../../../../shared/user.service';
+import { UserService } from '../../../shared_temp/user.service';
 import {Md5} from 'ts-md5/dist/md5';
 
 @Component({
