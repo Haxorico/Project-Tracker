@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, Component } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 import { AlertModule } from './_alert';
 
 import { AppComponent } from './app.component';
@@ -26,11 +27,9 @@ import { TaskDetailsComponent } from './tasks/task-details/task-details.componen
 import { TaskNewComponent } from './tasks/task-new/task-new.component';
 import { TaskEditComponent } from './tasks/task-details/task-edit/task-edit.component';
 import { TimesheetsComponent } from './timesheets/timesheets.component';
-import { LocalStorageComponent } from './local-storage/local-storage.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'timesheet', pathMatch: 'full' },
-  { path: 'localstorage', component: LocalStorageComponent, pathMatch: 'full' },
   { path: 'userinfo', component: HomeComponent,children: [
     { path: ':id', component: UserDetailsComponent },
     { path: ':id/edit', component: UserEditComponent }
@@ -81,11 +80,11 @@ const appRoutes: Routes = [
     TaskDetailsComponent,
     TaskNewComponent,
     TaskEditComponent,
-    TimesheetsComponent,
-    LocalStorageComponent,
+    TimesheetsComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     FormsModule,
     AlertModule,
     RouterModule.forRoot(appRoutes)

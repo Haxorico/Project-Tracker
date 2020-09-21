@@ -13,12 +13,13 @@ export class LoginService {
   Login(name: string, password: string) : boolean{
     password = Md5.hashStr(password).toString();
     name = name.toLowerCase();
+    
     const users = this.userService.GetUsers();
-    const userToFind = _.find(users, user => user.name.toLowerCase() == name && user.password == password )
-    if (userToFind==undefined)
+    const userToFind = _.find(users, user => user.name.toLowerCase() == name)
+    if (userToFind==undefined || userToFind.password != password)
       return false;
     this.userService.SetCurrentUser(userToFind);
-    return true;
+    return true; 
   }
 
   GetGuestUser() : User{

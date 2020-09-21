@@ -38,11 +38,13 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
   onFilterChanged(val){
     val = val.toLowerCase();
+    
     const temp = this.userService.GetUsers();
     this.users = temp.filter(user => (
       //currently filtering by name and skype. Can add any otehr type of filter if needed...
       user.name.toLowerCase().includes(val) || 
-      user.skype.toLowerCase().includes(val)));
+      user.skype.toLowerCase().includes(val))); 
+      
   }
 
 }

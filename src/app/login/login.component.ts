@@ -36,7 +36,6 @@ export class LoginComponent implements OnInit {
   };
     const name = this.loginForm.value.name;
     const pw = this.loginForm.value.password;
-    console.log(pw);
     if (this.loginService.Login(name,pw)){
       this.router.navigate(['/']);  
       this.alertService.success("Login Success",options);
