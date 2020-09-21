@@ -7,8 +7,8 @@
         <div class="navbar-collapse">
             <ul class="nav navbar-nav">
                 <!-- Buttons everyone can use (even guests) -->
+                
                 <li><a routerLink="/">Home Page</a></li>
-                <li><a routerLink="/localstorage">Save/Load Data</a></li>
                 <!-- Show a "[name] - Logout" button. or a "Guest - Login" message -->
                 <div *ngIf="loggedUser.rank == 0; else logoutBlock">
                     <li><a routerLink="/login">Guest - Login</a></li>

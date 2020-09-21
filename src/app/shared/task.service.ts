@@ -37,11 +37,11 @@ export class TaskService {
     this.NewTask({name : "Task 1C name", project : this.projectService.GetProjectByIndex(2), status : 0, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Task 1c descrition", user : this.userService.GetUserByIndex(15), task_reporter: this.userService.GetUserByIndex(4)});
     this.NewTask({name : "Task 2C name", project : this.projectService.GetProjectByIndex(2), status : 2, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Task 2c descrition", user : this.userService.GetUserByIndex(10), task_reporter: this.userService.GetUserByIndex(4)});
     
-    this.tasks[0].AddWorkTime("01/01/2020", 8, 30, "First day");
+    /* this.tasks[0].AddWorkTime("01/01/2020", 8, 30, "First day");
     this.tasks[0].AddWorkTime("02/01/2020", 6, 0, "Still learning");
     this.tasks[0].AddWorkTime("03/01/2020", 9, 30, "Gettin better");
     this.tasks[0].AddWorkTime("04/01/2020", 7, 30, "Long marathon");
-    this.tasks[0].AddWorkTime("05/01/2020", 1, 35, "Just checking");
+    this.tasks[0].AddWorkTime("05/01/2020", 1, 35, "Just checking"); */
   }
 
   NewTask({
@@ -56,7 +56,7 @@ export class TaskService {
     user = null,
     task_reporter = null,
     flagTickEvent = true}) {
-    const taskToCreate = new Task(name, project, status, type, estimate, start_date, end_date, description, user, task_reporter);
+    /* const taskToCreate = new Task(name, project, status, type, estimate, start_date, end_date, description, user, task_reporter);
     taskToCreate.id = uuidv4();
     this.tasks.push(taskToCreate);
     //update the users
@@ -80,7 +80,7 @@ export class TaskService {
     }
     this.projectService.UpdateFullProject(project);
     if (flagTickEvent)
-      this.TasksChanged.next(this.tasks.slice());
+      this.TasksChanged.next(this.tasks.slice()); */
   }
 
   GetTasks() {

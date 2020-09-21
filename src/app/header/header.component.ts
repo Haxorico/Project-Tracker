@@ -12,6 +12,7 @@ import { LoginService } from '../shared/login.service';
 export class HeaderComponent implements OnInit, OnDestroy {
   userSub: Subscription;
   loggedUser: User = this.loginService.GetGuestUser();
+  TEST : User[] = [];
   constructor(private loginService: LoginService,
     private userService: UserService) { }
 

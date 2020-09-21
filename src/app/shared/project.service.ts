@@ -56,7 +56,7 @@ export class ProjectService {
     description = "NO_DESCRIPTION",
     team_members = [],
     flagTickEvent = true}){
-    const projectToCreate = new Project(name, type, logo, client_name, start_date, end_date, description, team_members);
+    /* const projectToCreate = new Project(name, type, logo, client_name, start_date, end_date, description, team_members);
     projectToCreate.id = uuidv4();
     this.projects.push(projectToCreate);
     //update the team-members
@@ -66,7 +66,7 @@ export class ProjectService {
     });
 
     if (flagTickEvent)
-      this.ProjectsChanged.next(this.projects.slice());
+      this.ProjectsChanged.next(this.projects.slice()); */
   }
 
   DeleteProj(project: Project){
