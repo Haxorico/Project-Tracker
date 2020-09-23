@@ -29,7 +29,7 @@ export class ProjectDetailsComponent implements OnInit {
         const id = params['id'];
         this.project = this.projectService.GetProjectById(id);
         this.showMembers = false;
-        this.Users = this.userService.GetUsers();
+        //this.Users = this.userService.GetUsers();
       })
     this.loggedUser = this.userService.GetCurrentUser();
   }

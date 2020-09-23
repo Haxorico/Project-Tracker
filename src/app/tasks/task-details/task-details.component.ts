@@ -16,11 +16,11 @@ export class TaskDetailsComponent implements OnInit {
 
   loggedUser: User;
   task: Task;
-  users: User[];
-  constructor(private loginService: LoginService,
+  //users: User[];
+  constructor(//private loginService: LoginService,
     private taskService: TaskService,
     private userService: UserService,
-    private projectService: ProjectService,
+    //private projectService: ProjectService,
     private route: ActivatedRoute,
     private router: Router) { }
   isShowingAllUsers: Boolean = false;
@@ -33,7 +33,7 @@ export class TaskDetailsComponent implements OnInit {
       this.isShowingAllManagers = false;
     })
     this.loggedUser = this.userService.GetCurrentUser();
-    this.users = this.userService.GetUsers();
+    //this.users = this.userService.GetUsers();
   }
   onTaskReportedClicked() {
     const id = this.task.reporter.id;
@@ -65,17 +65,29 @@ export class TaskDetailsComponent implements OnInit {
     //remove the task from the old user
     const pastUser = this.task.user;
     const taskIndex = this.taskService.GetTaskIndex(this.task);
-    pastUser.tasks.splice(taskIndex, 1);
+    
+    
+    //#FIX LATER WITH IDS
+    //pastUser.tasks.splice(taskIndex, 1);
+    
     this.userService.UpdateUser(pastUser);
     //set the task to the new user
     this.task.user = newUser;
     //add the task to the user
-    newUser.tasks.push(this.task);
+
+    //#FIX LATER WITH IDS
+    //newUser.tasks.push(this.task);
+    
     //if the user in not a team member, add him to the team.
-    if (!newUser.IsUserInProject(this.task.project)){
-      newUser.projects.push(this.task.project);
+
+    //#FIX LATER WITH IDS
+    /* if (!newUser.IsUserInProject(this.task.project)){
+      
+      //#FIX LATER WITH IDS
+      //newUser.projects.push(this.task.project);
+      
       this.task.project.AddTeamMember(newUser);
-    }
+    } */
     //update the services
     this.taskService.UpdateTask(this.task);
     this.userService.UpdateUser(newUser);
@@ -92,17 +104,28 @@ export class TaskDetailsComponent implements OnInit {
     //remove the task from the old user
     const pastUser = this.task.reporter;
     const taskIndex = this.taskService.GetTaskIndex(this.task);
-    pastUser.tasks.splice(taskIndex, 1);
+    
+    //#FIX LATER WITH IDS
+    //pastUser.tasks.splice(taskIndex, 1);
+   
     this.userService.UpdateUser(pastUser);
     //set the task to the new user
     this.task.reporter = newReporter;
     //if the user in not a team member, add him to the team.
-    if (!newReporter.IsUserInProject(this.task.project)){
-      newReporter.projects.push(this.task.project);
-      this.task.project.AddTeamMember(newReporter);
-    }
+   
+   //#FIX LATER WITH IDS
+    //if (!newReporter.IsUserInProject(this.task.project)){
+      //#FIX LATER WITH IDS
+      //newReporter.projects.push(this.task.project);
+      
+      //this.task.project.AddTeamMember(newReporter);
+    //}
+    //#ENDOFFIX
     //add the task to the user
-    newReporter.tasks.push(this.task);
+    
+    //#FIX LATER WITH IDS
+    //newReporter.tasks.push(this.task);
+    
     //update the services
     this.taskService.UpdateTask(this.task);
     this.userService.UpdateUser(newReporter);
