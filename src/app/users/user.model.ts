@@ -3,8 +3,8 @@ import * as _ from "lodash";
 
 export class User {
   public id: string;
-  public tasks = [];
-  public projects = [];
+  public task_ids = [];
+  public project_ids = [];
   public skills : string[] = [];
   constructor(
     public name: string,
@@ -33,6 +33,7 @@ export class User {
     return "Unknown Title";
   }
   IsUserInProject(project : Project){
-    return (_.find(this.projects, project => project.id == project.id) != undefined)
+    //#FIX LATER WITH IDS
+    //return (_.find(this.projects, project => project.id == project.id) != undefined)
   }
 }

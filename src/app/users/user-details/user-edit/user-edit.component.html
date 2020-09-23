@@ -5,35 +5,35 @@
                 <div id="user-data">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" id="name" class="form-control" ngModel name="name" required [ngModel]="editingUser.name">
+                        <input type="text" id="name" class="form-control" ngModel name="name" required [ngModel]="userBeingEdited.name">
                     </div>
                     <div class="form-group">
                         <label for="location">Password</label>
-                        <input type="password" id="password" class="form-control" ngModel name="password" required [ngModel]="editingUser.password">
+                        <input type="password" id="password" class="form-control" ngModel name="password" required [ngModel]="userBeingEdited.password">
                     </div>
                     <div class="form-group">
                         <label for="rank">Rank</label>
-                        <input type="number" id="rank" class="form-control" ngModel name="rank" required [ngModel]="editingUser.rank">
+                        <input type="number" id="rank" class="form-control" ngModel name="rank" required [ngModel]="userBeingEdited.rank">
                     </div>
                     <div class="form-group">
                         <label for="photo">Photo</label>
-                        <input type="text" id="photo" class="form-control" ngModel name="photo" [ngModel]="editingUser.photo">
+                        <input type="text" id="photo" class="form-control" ngModel name="photo" [ngModel]="userBeingEdited.photo">
                     </div>
                     <div class="form-group">
                         <label for="date_of_birth">Date of Birth</label>
-                        <input type="text" id="date_of_birth" class="form-control" ngModel name="date_of_birth" required [ngModel]="editingUser.date_of_birth">
+                        <input type="text" id="date_of_birth" class="form-control" ngModel name="date_of_birth" required [ngModel]="userBeingEdited.date_of_birth">
                     </div>
                     <div class="form-group">
                         <label for="address">address</label>
-                        <input type="text" id="address" class="form-control" ngModel name="address" required [ngModel]="editingUser.address">
+                        <input type="text" id="address" class="form-control" ngModel name="address" required [ngModel]="userBeingEdited.address">
                     </div>
                     <div class="form-group">
                         <label for="skype">Skype</label>
-                        <input type="text" id="skype" class="form-control" ngModel name="skype" required [ngModel]="editingUser.skype">
+                        <input type="text" id="skype" class="form-control" ngModel name="skype" required [ngModel]="userBeingEdited.skype">
                     </div>
                     <div class="form-group">
                         <label for="phone_number">Phone Number</label>
-                        <input type="text" id="phone_number" class="form-control" ngModel name="phone_number" required [ngModel]="editingUser.phone_number">
+                        <input type="text" id="phone_number" class="form-control" ngModel name="phone_number" required [ngModel]="userBeingEdited.phone_number">
                     </div>
                 </div>
                 <button class="btn btn-primary" type="submit" [disabled]="f.invalid">Submit</button>

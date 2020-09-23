@@ -1,12 +1,12 @@
 <div class="col-md-5">
     <div class="row">
         <div class="col-xs-12">
-            <img [src]=user.photo alt="{{user.name}}" class="img-responsive" style="height: 200px;">
+            <img [src]=shownUser.photo alt="{{shownUser.name}}" class="img-responsive" style="height: 200px;">
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <h1>{{user.name}}</h1>
+            <h1>{{shownUser.name}}</h1>
         </div>
     </div>
     <div class="row">
@@ -21,40 +21,41 @@
 
     <div class="row">
         <div class="col-xs-12">
-            Name: {{user.name}} <br>
-            Title: {{user.GetTitle()}} <br>
-            Location: {{user.location}}<br>
-            Date of Birth: {{user.date_of_birth}}<br>
-            Address: {{user.address}}<br>
-            Skype: {{user.skype}}<br>
-            Phone Number: {{user.phone_number}}
+            Name: {{shownUser.name}} <br>
+            Title: {{shownUser.GetTitle()}} <br>
+            Location: {{shownUser.location}}<br>
+            Date of Birth: {{shownUser.date_of_birth}}<br>
+            Address: {{shownUser.address}}<br>
+            Skype: {{shownUser.skype}}<br>
+            Phone Number: {{shownUser.phone_number}}
         </div>
     </div>
     <hr>
     <h4>Projects: </h4>
-    <div *ngFor='let p of user.projects'>
+    <!-- //#FIX LATER WITH IDS
+    <div *ngFor='let p of shownUser.projects'>
         <a  [routerLink]="['/projects', p.id]">{{p.name}}</a> 
        
-    </div>
+    </div> -->
     <hr>
-    <h5>Tasks: </h5>
-    <div *ngFor='let t of user.tasks'>
+    <h5>Tasks: </h5><!-- //#FIX LATER WITH IDS
+    <div *ngFor='let t of shownUser.tasks'>
        <a  [routerLink]="['/tasks', t.id]">{{t.project.name}}: {{t.name}}</a> 
-    </div>
+    </div> -->
     <hr>
     <div class="row">
         <div class="col-xs-12">
             Skills:<br>
 
             <ul>
-                <li *ngFor='let skill of user.skills; let i = index'>
+                <li *ngFor='let skill of shownUser.skills; let i = index'>
                     {{skill}}
 
-                    <b *ngIf='loggedUser.id===user.id'><a (click)='removeSkill(i)'> - Remove Skill</a></b>
+                    <b *ngIf='loggedUser.id===shownUser.id'><a (click)='removeSkill(i)'> - Remove Skill</a></b>
 
                 </li>
             </ul>
-            <div *ngIf='loggedUser.id===user.id || loggedUser.rank > 30'>
+            <div *ngIf='loggedUser.id===shownUser.id || loggedUser.rank > 30'>
                 <hr>
                 <label for="skill">New Skill</label>
                 <input #skill type="text" id="skill" name="skill">

@@ -44,7 +44,8 @@ export class Project {
         return 0;
       })
       //add the project to the user
-      userToAdd.projects.push(this);
+      //#FIX LATER WITH IDS
+      /* userToAdd.projects.push(this); */
     }
   }
 }

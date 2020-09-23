@@ -4,33 +4,31 @@ import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LoginService } from '../shared/login.service';
 import { UserService } from '../shared/user.service';
+import { forEach } from 'lodash';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css']
 })
-export class UsersComponent implements OnInit, OnDestroy {
-  userSub : Subscription;
-  users: User[];
-  user: User;
+export class UsersComponent implements OnInit {
+  currentUser: User;
+  usersToShow: User[];
   constructor(
     private userService: UserService,
     private router: Router,
-    private route: ActivatedRoute,
-    private loginService : LoginService) {  }
+    private route: ActivatedRoute) {  }
 
   ngOnInit(): void {
-    this.users = this.userService.GetUsers();
-    this.userSub = this.userService.usersChanged.subscribe((u : User[]) => {
-      this.users = u;
+    this.currentUser = this.userService.GetCurrentUser();
+    this.userService.GetUsers().subscribe(users => {
+      this.usersToShow = [];
+      users.forEach(user => {
+        this.usersToShow.push(this.userService.ObjectToUser(user));
+      });
+      //#ASK_ALEX - Seems like it doesnt recognize the functions. As in the users are objects but not the model User.
+      //console.log(this.usersToShow[2].GetTitle());
     })
-    this.user = this.userService.GetCurrentUser();
-    
-  }
-
-  ngOnDestroy(){
-    this.userSub.unsubscribe();
   }
 
   onNewUserClicked(){
@@ -38,13 +36,17 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
   onFilterChanged(val){
     val = val.toLowerCase();
-    
-    const temp = this.userService.GetUsers();
-    this.users = temp.filter(user => (
-      //currently filtering by name and skype. Can add any otehr type of filter if needed...
-      user.name.toLowerCase().includes(val) || 
-      user.skype.toLowerCase().includes(val))); 
-      
+    this.userService.GetUsers().subscribe(users => {
+      const tempArray = [];
+      users.forEach(user => {
+        tempArray.push(this.userService.ObjectToUser(user));
+      })
+      this.usersToShow = tempArray.filter( user => (
+        //currently filtering by name and skype. Can add any otehr type of filter if needed...
+        user.name.toLowerCase().includes(val) || 
+        user.skype.toLowerCase().includes(val)
+      ));
+    });
   }
 
 }

@@ -6,6 +6,7 @@ import * as _ from "lodash";
 import { Md5 } from 'ts-md5/dist/md5';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { result } from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -21,18 +22,81 @@ export class UserService {
   private REST_API_SERVER = "http://localhost:9000/users/";
 
   constructor(private httpClient: HttpClient) {
-    //#ASK_ALEX -- Not sure how to use the DB as it always returns an observable and not the array.
-    //so I think I just initilize the db and I assume it auto updates? and thus the users array is updated at all time
-    this.dbGetUsers().subscribe(users =>{
-      this.users = users;
-    });
+    
   }
 
-  private addUserToDB(userToAdd: User) {
-    this.httpClient.post(this.REST_API_SERVER, userToAdd).subscribe(responseData => {
-    });
-  }
+  
 
+  //#ASK_ALEX Is there a way to convert an object into a class (User) without a use of this kind of function?
+  //using <User> or "as User" did not work.
+  /*    var test1 : User = <User>user;
+        var test2 : User = user as User; 
+        console.log(typeof(test2));
+        console.log(typeof(test1));*/
+    public ObjectToUser(obj){
+    //console.log(obj);
+      const retUser = new User(obj.name, obj.password, obj.rank, obj.photo, obj.date_of_birth, obj.location, obj.address, obj.skype, obj.phone_number);  
+      retUser.id = obj.id;
+      retUser.task_ids = obj.task_ids;
+      retUser.project_ids = obj.project_ids;
+      retUser.skills = obj.skills;
+      return retUser;
+    }
+  
+    private getDBUserById(userID: string) {
+      const url = this.REST_API_SERVER + userID
+      return this.httpClient.get(url);
+    }
+  
+    private getDBUsers(){
+      return this.httpClient
+      .get(this.REST_API_SERVER)
+      .pipe(
+        map((responseData: { [key: string]: User }) => {
+          const tempArray = [];
+          for (const key in responseData) {
+            if (responseData.hasOwnProperty(key)) {
+              tempArray.push({ ...responseData[key] });
+            }
+          }
+          return tempArray;
+        }));
+    }
+    private delDBUser(user : User){
+      const url = this.REST_API_SERVER + user.id;
+      console.log("deleting user id: "+ user.id);
+      this.httpClient.delete(url);
+    }
+    private addDBUser(userToAdd: User) {
+      this.httpClient.post(this.REST_API_SERVER, userToAdd).subscribe();
+    }
+    private updateDBUser(userToUpdate: User){
+      const url : string = this.REST_API_SERVER + userToUpdate.id;
+      this.httpClient.put(url, userToUpdate).subscribe();
+    
+    }
+    public GetUsers()  {
+      return this.getDBUsers();
+      //return this.users.slice();
+    }
+    public GetUserById(id: string) {
+      return this.getDBUserById(id);
+      //return _.find(this.users, user => user.id == id)
+    }
+
+    public UpdateUser(newUser: User) {
+      /* const index: number = this.GetUserIndex(newUser);
+      this.users[index] = newUser;
+      this.usersChanged.next(this.users.slice()); */
+      this.updateDBUser(newUser);
+    }
+    DelUser(user: User) {
+      this.delDBUser(user);
+      /* 
+      const index = this.GetUserIndex(user);
+      this.users.splice(index, 1);
+      this.usersChanged.next(this.users.slice()); */
+    }
   NewUser({
     name = "EMPTY_NAME",
     password,
@@ -51,12 +115,7 @@ export class UserService {
     userToCreate.skills = skills;
     if (flagTickEvent)
       this.usersChanged.next(this.users.slice());
-    this.addUserToDB(userToCreate);
-  }
-  DelUser(user: User) {
-    const index = this.GetUserIndex(user);
-    this.users.splice(index, 1);
-    this.usersChanged.next(this.users.slice());
+    this.addDBUser(userToCreate);
   }
   DelUserByIndex(index: number) {
     this.users.splice(index, 1);
@@ -68,27 +127,7 @@ export class UserService {
     this.usersChanged.next(this.users.slice());
   }
 
-  GetDBUserById(userID: string) {
-    return this.httpClient.get(this.REST_API_SERVER + userID);
-  }
-
-  private dbGetUsers(){
-    return this.httpClient
-    .get(this.REST_API_SERVER)
-    .pipe(
-      map((responseData: { [key: string]: User }) => {
-        const tempArray = [];
-        for (const key in responseData) {
-          if (responseData.hasOwnProperty(key)) {
-            tempArray.push({ ...responseData[key], id: key });
-          }
-        }
-        return tempArray;
-      }));
-  }
-  public GetUsers() : User[] {
-    return this.users.slice();
-  }
+  
 
   GetCurrentUser() {
     return this.user;
@@ -96,9 +135,7 @@ export class UserService {
   GetUserByIndex(index: number) {
     return this.users[index];
   }
-  GetUserById(id: string) {
-    return _.find(this.users, user => user.id == id)
-  }
+  
   GetUserIndexById(id: string) {
     return _.findIndex(this.users, { id: id });
   }
@@ -109,11 +146,6 @@ export class UserService {
   SetCurrentUser(user: User) {
     this.user = user;
     this.userLogedChanged.next();
-  }
-  UpdateUser(newUser: User) {
-    const index: number = this.GetUserIndex(newUser);
-    this.users[index] = newUser;
-    this.usersChanged.next(this.users.slice());
   }
 
   GetGuestUser(): User {
