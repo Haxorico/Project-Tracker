@@ -28,8 +28,8 @@ export class UserEditComponent implements OnInit {
       (params: Params) => {
         const id = params['id'];
         this.userService.GetUserById(id).subscribe(user => {
-          this.userBeingEdited = this.userService.ObjectToUser(user);
-        });
+          this.userBeingEdited = user;
+        }); 
       })
       this.loggedUser = this.userService.GetCurrentUser();
   }
@@ -53,7 +53,7 @@ export class UserEditComponent implements OnInit {
     this.userBeingEdited.skype = this.editForm.value.skype;
     this.userBeingEdited.phone_number = this.editForm.value.phone_number;
     this.userBeingEdited.rank = rank;
-    this.userService.UpdateUser(this.userBeingEdited);
+    this.userService.UpdateUser(this.userBeingEdited).subscribe();
     this.router.navigate(['../../'], { relativeTo: this.route })
   }
 }
