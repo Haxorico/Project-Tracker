@@ -70,7 +70,7 @@ export class TaskDetailsComponent implements OnInit {
     //#FIX LATER WITH IDS
     //pastUser.tasks.splice(taskIndex, 1);
     
-    this.userService.UpdateUser(pastUser);
+    this.userService.UpdateUser(pastUser).subscribe();
     //set the task to the new user
     this.task.user = newUser;
     //add the task to the user
@@ -90,7 +90,7 @@ export class TaskDetailsComponent implements OnInit {
     } */
     //update the services
     this.taskService.UpdateTask(this.task);
-    this.userService.UpdateUser(newUser);
+    this.userService.UpdateUser(newUser).subscribe();
     //remove the users list
     this.isShowingAllUsers = false;
   }
@@ -108,7 +108,7 @@ export class TaskDetailsComponent implements OnInit {
     //#FIX LATER WITH IDS
     //pastUser.tasks.splice(taskIndex, 1);
    
-    this.userService.UpdateUser(pastUser);
+    this.userService.UpdateUser(pastUser).subscribe();
     //set the task to the new user
     this.task.reporter = newReporter;
     //if the user in not a team member, add him to the team.
@@ -128,7 +128,7 @@ export class TaskDetailsComponent implements OnInit {
     
     //update the services
     this.taskService.UpdateTask(this.task);
-    this.userService.UpdateUser(newReporter);
+    this.userService.UpdateUser(newReporter).subscribe();
     //remove the users list
     this.isShowingAllUsers = false;
   }

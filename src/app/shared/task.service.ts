@@ -18,31 +18,9 @@ export class TaskService {
 
   constructor(private projectService: ProjectService,
     private userService: UserService) {
-    //generate some dummy data
-    this.GenerteStubs();
   }
 
-  GenerteStubs() {
-    //some test tasks to work with.
-    this.NewTask({name : "Task 1A name", project : this.projectService.GetProjectByIndex(0), status : 0, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "1/1/2021", description : "Task1 descrition", user : this.userService.GetUserByIndex(18), task_reporter: this.userService.GetUserByIndex(0)});
-    this.NewTask({name : "Task 2A name", project : this.projectService.GetProjectByIndex(0), status : 0, type : 0, estimate : "1/1/2021", start_date : "1/2/2020", end_date : "1/1/2021", description : "Task2 descrition", user : this.userService.GetUserByIndex(18), task_reporter: this.userService.GetUserByIndex(0)});
-    this.NewTask({name : "Task 3A name", project : this.projectService.GetProjectByIndex(0), status : 3, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Task3 descrition", user : this.userService.GetUserByIndex(18), task_reporter: this.userService.GetUserByIndex(0)});
-    this.NewTask({name : "Task 4A name", project : this.projectService.GetProjectByIndex(0), status : 2, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Task4 descrition", user : this.userService.GetUserByIndex(19), task_reporter: this.userService.GetUserByIndex(0)});
-    this.NewTask({name : "Making Sure", project : this.projectService.GetProjectByIndex(0), status : 0, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Make sure tasks 1-4 are completed", user : this.userService.GetUserByIndex(19), task_reporter: this.userService.GetUserByIndex(1)});
-
-    this.NewTask({name : "Task 1B name", project : this.projectService.GetProjectByIndex(1), status : 0, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Task 1b descrition", user : this.userService.GetUserByIndex(20), task_reporter: this.userService.GetUserByIndex(2)});
-    this.NewTask({name : "Task 2B name", project : this.projectService.GetProjectByIndex(1), status : 2, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Task 2b descrition", user : this.userService.GetUserByIndex(20), task_reporter: this.userService.GetUserByIndex(2)});
-    this.NewTask({name : "Task 3B name", project : this.projectService.GetProjectByIndex(1), status : 1, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Task 3b descrition", user : this.userService.GetUserByIndex(16), task_reporter: this.userService.GetUserByIndex(3)});
-
-    this.NewTask({name : "Task 1C name", project : this.projectService.GetProjectByIndex(2), status : 0, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Task 1c descrition", user : this.userService.GetUserByIndex(15), task_reporter: this.userService.GetUserByIndex(4)});
-    this.NewTask({name : "Task 2C name", project : this.projectService.GetProjectByIndex(2), status : 2, type : 0, estimate : "1/1/2021", start_date : "1/1/2020", end_date : "31/12/2020", description : "Task 2c descrition", user : this.userService.GetUserByIndex(10), task_reporter: this.userService.GetUserByIndex(4)});
-    
-    /* this.tasks[0].AddWorkTime("01/01/2020", 8, 30, "First day");
-    this.tasks[0].AddWorkTime("02/01/2020", 6, 0, "Still learning");
-    this.tasks[0].AddWorkTime("03/01/2020", 9, 30, "Gettin better");
-    this.tasks[0].AddWorkTime("04/01/2020", 7, 30, "Long marathon");
-    this.tasks[0].AddWorkTime("05/01/2020", 1, 35, "Just checking"); */
-  }
+ 
 
   NewTask({
     name = "EMPTY_NAME",

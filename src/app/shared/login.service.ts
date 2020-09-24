@@ -11,10 +11,7 @@ export class LoginService {
   allUsers : User[];
   constructor(private userService: UserService) {
     this.userService.GetUsers().subscribe(users =>{
-      this.allUsers = [];
-      users.forEach(user => {
-        this.allUsers.push(userService.ObjectToUser(user));
-      })
+      this.allUsers = users;
     })
   }
 

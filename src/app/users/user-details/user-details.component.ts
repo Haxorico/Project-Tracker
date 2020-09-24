@@ -13,35 +13,40 @@ export class UserDetailsComponent implements OnInit {
   loggedUser: User;
 
   @ViewChild('skill', { static: false }) skill;
-  constructor(private userService : UserService,
-              private route: ActivatedRoute,
-              private router: Router) { }
+  constructor(private userService: UserService,
+    private route: ActivatedRoute,
+    private router: Router) {  }
 
   ngOnInit(): void {
-    this.route.params.subscribe(
-      (params: Params) =>{
-        const id = params['id'];
-        this.userService.GetUserById(id).subscribe(user =>{
-            this.shownUser = this.userService.ObjectToUser(user);
-          });
-        })
+    //#ASK_ALEX: Currently it shows the user but also shows an error message.
+    //seems like angular is trying to show the "shownUser" before it can get a value from the function.
+    //so for now just set it to a guest and then it gets the data from the subscribe.
+    //need a refresher again on how to use await / promise
+    this.shownUser = this.userService.GetGuestUser();
     this.loggedUser = this.userService.GetCurrentUser();
+    this.route.params.subscribe(
+      (params: Params) => {
+        const id = params['id'];
+        this.userService.GetUserById(id).subscribe(user => {
+          this.shownUser = user;
+        });
+      })
   }
-  onEditUserClicked(){
-    this.router.navigate(["edit"], {relativeTo: this.route});
+  onEditUserClicked() {
+    this.router.navigate(["edit"], { relativeTo: this.route });
   }
-  onDeleteUserClicked(){
-    this.userService.DelUser(this.shownUser);
-    this.router.navigate(["../"], {relativeTo: this.route}); 
+  onDeleteUserClicked() {
+    this.userService.DeleteUser(this.shownUser).subscribe();
+    this.router.navigate(["../"], { relativeTo: this.route });
   }
 
-  addSkill(){
+  addSkill() {
     this.shownUser.skills.push(this.skill.nativeElement.value);
-    this.userService.UpdateUser(this.shownUser);
+    this.userService.UpdateUser(this.shownUser).subscribe();
     this.skill.nativeElement.value = "";
   }
-  removeSkill(loc : number){
-    this.shownUser.skills.splice(loc,1);
-    this.userService.UpdateUser(this.shownUser);
+  removeSkill(index: number) {
+    this.shownUser.skills.splice(index, 1);
+    this.userService.UpdateUser(this.shownUser).subscribe();
   }
 }

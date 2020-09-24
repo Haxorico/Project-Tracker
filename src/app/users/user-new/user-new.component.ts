@@ -18,11 +18,8 @@ export class UserNewComponent implements OnInit {
     private route : ActivatedRoute,
     private router : Router) {}
 
-  ngOnInit(): void {
-    
-    
-    
-  }
+  ngOnInit(): void {}
+  
   onSubmitButtonClicked() {
     this.userService.NewUser({
     name : this.newUserForm.value.name,
