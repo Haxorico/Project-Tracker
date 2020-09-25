@@ -27,26 +27,30 @@ export class ProjectDetailsComponent implements OnInit {
     this.route.params.subscribe(
       (params: Params) => {
         const id = params['id'];
-        this.project = this.projectService.GetProjectById(id);
+        this.projectService.GetProjectById(id).subscribe(project => {
+          this.project = project;
+        })
         this.showMembers = false;
-        //this.Users = this.userService.GetUsers();
+        this.userService.GetUsers().subscribe(users => {
+          this.Users = users;
+        });
       })
     this.loggedUser = this.userService.GetCurrentUser();
   }
 
   onRemoveUserClicked(userToRemove: User) {
-    this.project.RemoveTeamMember(userToRemove);
-    this.projectService.UpdateFullProject(this.project);
+    this.project.RemoveTeamMember(userToRemove.id);
+    this.projectService.UpdateProject(this.project);
   }
 
   onShowFreeMemberClicked() {
     this.showMembers = !this.showMembers;
   }
   onAddMemberClicked(userToAdd: User) {
-    this.project.AddTeamMember(userToAdd);
+    this.project.AddTeamMember(userToAdd.id);
 
     //update the project service
-    this.projectService.UpdateFullProject(this.project);
+    this.projectService.UpdateProject(this.project);
 
     //update the user service
     this.userService.UpdateUser(userToAdd).subscribe();
@@ -56,7 +60,7 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   onDeleteProjectClicked() {
-    this.projectService.DeleteProj(this.project);
+    this.projectService.DeleteProject(this.project);
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 }

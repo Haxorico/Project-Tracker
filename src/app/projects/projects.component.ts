@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Project } from './project.model';
 import { User } from '../users/user.model';
-import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../shared/project.service';
 import { UserService } from '../shared/user.service';
@@ -11,9 +10,8 @@ import { UserService } from '../shared/user.service';
   styleUrls: ['./projects.component.css']
 })
 
-export class ProjectsComponent implements OnInit, OnDestroy {
+export class ProjectsComponent implements OnInit {
   projects: Project[];
-  projectSub: Subscription;
   loggedUser: User; 
   constructor(
     private projectService: ProjectService,
@@ -22,26 +20,24 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     private route : ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.projects = this.projectService.GetProjects();
+    this.projectService.GetProjects().subscribe(projects => {
+      this.projects = projects;
+    });
     this.loggedUser = this.userService.GetCurrentUser();
-    this.projectSub = this.projectService.ProjectsChanged.subscribe((p : Project[]) => {
-      this.projects = p;
-    })
   }
 
-  ngOnDestroy(){
-    this.projectSub.unsubscribe();
-  }
   onNewProjectClicked() {
     this.router.navigate(['new'],{relativeTo: this.route});
   }
   onFilterChanged(val){
     val = val.toLowerCase();
-    const temp = this.projectService.GetProjects();
-    this.projects = temp.filter(filetredProjects => (
-      //currently filtering by name and client name. Can add any otehr type of filter if needed...
-      filetredProjects.name.toLowerCase().includes(val) || 
-      filetredProjects.client_name.toLowerCase().includes(val)
-      ));
+    this.projectService.GetProjects().subscribe(projects => {
+      this.projects = projects.filter(filetredProjects => (
+        //currently filtering by name and client name. Can add any otehr type of filter if needed...
+        filetredProjects.name.toLowerCase().includes(val) || 
+        filetredProjects.client_name.toLowerCase().includes(val)
+        ));
+    });
+    
   }
 }
