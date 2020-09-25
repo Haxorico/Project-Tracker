@@ -33,7 +33,9 @@ export class TimesheetsComponent implements OnInit {
       this.projects = p;
     })
 
-    this.tasks = this.taskService.GetTasks();
+    this.taskService.GetTasks().subscribe(tasks =>{
+      this.tasks = tasks;
+    });
     this.taskSub = this.taskService.TasksChanged.subscribe((t: Task[]) => {
       this.tasks = t;
     })

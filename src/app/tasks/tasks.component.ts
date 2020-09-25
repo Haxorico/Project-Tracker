@@ -29,14 +29,17 @@ export class TasksComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,) { }
 
   ngOnInit(): void {
-    this.tasks = this.taskService.GetTasks();
-    this.sortTasksIntoGroups()
-    this.taskSub = this.taskService.TasksChanged.subscribe((t: Task[]) => {
-      this.tasks = t;
+    this.taskService.GetTasks().subscribe(tasks => {
+      this.tasks = tasks;
       this.sortTasksIntoGroups()
+      this.taskSub = this.taskService.TasksChanged.subscribe((t: Task[]) => {
+        this.tasks = t;
+        this.sortTasksIntoGroups()
+      })
+      this.user = this.userService.GetCurrentUser();
     })
     //this.loggedUser = this.loginService.GetLogedUser();
-    this.user = this.userService.GetCurrentUser(); 
+
   }
 
   ngOnDestroy() {
@@ -77,13 +80,13 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.router.navigate(['new'], { relativeTo: this.route });
   }
 
-
   onFilterChanged(val) {
     val = val.toLowerCase();
-    const temp = this.taskService.GetTasks();
-    this.tasks = temp.filter(task => (
-      //currently filtering by name and description. Can add any otehr type of filter if needed...
-      task.name.toLowerCase().includes(val) ||
-      task.description.toLowerCase().includes(val)));
+    this.taskService.GetTasks().subscribe(tasks => {
+      this.tasks = tasks.filter(task => (
+        task.name.toLowerCase().includes(val) ||
+        task.description.toLowerCase().includes(val)
+      ))
+    });
   }
 }

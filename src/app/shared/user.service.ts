@@ -14,14 +14,14 @@ import { result } from 'lodash';
 
 export class UserService {
   private users: User[] = [];
-  guest: User = new User({name : "Guest", rank : 0});
+  guest: User = new User({ name: "Guest", rank: 0 });
   private user: User = this.guest;
   usersChanged = new Subject<User[]>();
   userLogedChanged = new Subject<void>();
 
   private REST_API_SERVER = "http://localhost:9000/users/";
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   NewUser({
     name = "EMPTY_NAME",
@@ -33,14 +33,12 @@ export class UserService {
     address = "NO_ADDRESS",
     skype = "NO_SKYPE",
     phone_number = "NO_PHONE_NUMBER",
-    skills = [],
-    flagTickEvent = true }) {
+    skills = [] }) {
     password = Md5.hashStr(password).toString();
     const id = uuidv4()
-    const userToCreate = new User({name, password, rank, photo, date_of_birth, location, address, skype, phone_number,id, skills});
-    if (flagTickEvent)
-      this.usersChanged.next(this.users.slice());
+    const userToCreate = new User({ name, password, rank, photo, date_of_birth, location, address, skype, phone_number, id, skills });
     this.addDBUser(userToCreate).subscribe();
+    this.usersChanged.next(this.users.slice());
   }
 
   public ObjectToUser(obj) {
@@ -49,7 +47,7 @@ export class UserService {
 
   private getDBUserById(userID: string) {
     const url = this.REST_API_SERVER + userID
-    return this.httpClient.get(url).pipe(map(userData =>{
+    return this.httpClient.get(url).pipe(map(userData => {
       return this.ObjectToUser(userData);
     }));
   }
@@ -85,12 +83,12 @@ export class UserService {
   public GetUsers() {
     return this.getDBUsers();
   }
-  
+
   public GetUserById(userID: string) {
     return this.getDBUserById(userID);
   }
 
-  public DeleteUser(userToDelete: User){
+  public DeleteUser(userToDelete: User) {
     return this.delDBUser(userToDelete);
   }
 
@@ -109,5 +107,17 @@ export class UserService {
 
   public GetGuestUser(): User {
     return this.guest;
+  }
+
+  public RemoveTaskFromUser(userIdToRemove: string, taskID: string, userIdToAdd: string = undefined) {
+    this.getDBUserById(userIdToRemove).subscribe(user => {
+      user.RemoveFromTask(taskID);
+    });
+    if (userIdToAdd != undefined) {
+      this.getDBUserById(userIdToAdd).subscribe(user => {
+        user.AddToTask(taskID);
+      });
+    }
+
   }
 }

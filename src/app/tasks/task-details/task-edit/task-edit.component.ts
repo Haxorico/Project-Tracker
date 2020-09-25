@@ -27,11 +27,12 @@ export class TaskEditComponent implements OnInit {
     this.route.params.subscribe(
       (params: Params) =>{
         const id = params['id'];
-        this.task = this.taskService.GetTaskById(id);
+        this.taskService.GetTaskById(id).subscribe(task =>{
+          this.task = task;
+        })
       })
   }
   onSubmitButtonClicked(){
-    const index = this.taskService.GetTaskIndex(this.task);
     this.task.name = this.editForm.value.name;
     this.task.status = this.editForm.value.status
     this.task.type = this.editForm.value.type;
@@ -39,8 +40,8 @@ export class TaskEditComponent implements OnInit {
     this.task.start_date = this.editForm.value.start_date;
     this.task.end_date = this.editForm.value.end_date;
     this.task.description = this.editForm.value.description;
-    this.task.user = this.task.user;
-    this.task.reporter = this.task.reporter;
+    this.task.worker_id = this.task.worker_id;
+    this.task.reporter_id = this.task.reporter_id;
     this.taskService.UpdateTask(this.task);
     this.router.navigate(['../../'], {relativeTo : this.route})
   }

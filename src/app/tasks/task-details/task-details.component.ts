@@ -1,11 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/users/user.model';
 import { Task } from '../task.model';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { LoginService } from 'src/app/shared/login.service';
 import { TaskService } from '../../shared/task.service';
 import { UserService } from 'src/app/shared/user.service';
-import { ProjectService } from 'src/app/shared/project.service';
 
 @Component({
   selector: 'app-task-details',
@@ -16,11 +14,9 @@ export class TaskDetailsComponent implements OnInit {
 
   loggedUser: User;
   task: Task;
-  //users: User[];
-  constructor(//private loginService: LoginService,
-    private taskService: TaskService,
+  users: User[];
+  constructor(private taskService: TaskService,
     private userService: UserService,
-    //private projectService: ProjectService,
     private route: ActivatedRoute,
     private router: Router) { }
   isShowingAllUsers: Boolean = false;
@@ -28,29 +24,34 @@ export class TaskDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
       const id = params['id'];
-      this.task = this.taskService.GetTaskById(id);
+      this.taskService.GetTaskById(id).subscribe(task =>{
+        this.task = task;
+      })
       this.isShowingAllUsers = false;
       this.isShowingAllManagers = false;
     })
     this.loggedUser = this.userService.GetCurrentUser();
-    //this.users = this.userService.GetUsers();
+    this.userService.GetUsers().subscribe(users => {
+      this.users = users;
+    });
   }
   onTaskReportedClicked() {
-    const id = this.task.reporter.id;
+    const id = this.task.reporter_id;
     this.router.navigate(["/users/" + id]);
   }
   onTaskUserClicked() {
-    const id = this.task.user.id;
+    const id = this.task.worker_id;
     this.router.navigate(["/users/" + id]);
   }
 
   onProjectClicked() {
-    let id = this.task.project.id;
+    const id = this.task.project_id;
     this.router.navigate(["/projects/" + id]);
   }
 
   onDeleteTaskClicked() {
-    this.taskService.DelTask(this.task);
+    
+    this.taskService.DeleteTask(this.task);
     this.router.navigate(["../"], { relativeTo: this.route });
   }
   onEditTaskClicked() {
@@ -62,36 +63,9 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   SetAsUser(newUser: User) {
-    //remove the task from the old user
-    const pastUser = this.task.user;
-    const taskIndex = this.taskService.GetTaskIndex(this.task);
-    
-    
-    //#FIX LATER WITH IDS
-    //pastUser.tasks.splice(taskIndex, 1);
-    
-    this.userService.UpdateUser(pastUser).subscribe();
-    //set the task to the new user
-    this.task.user = newUser;
-    //add the task to the user
-
-    //#FIX LATER WITH IDS
-    //newUser.tasks.push(this.task);
-    
-    //if the user in not a team member, add him to the team.
-
-    //#FIX LATER WITH IDS
-    /* if (!newUser.IsUserInProject(this.task.project)){
-      
-      //#FIX LATER WITH IDS
-      //newUser.projects.push(this.task.project);
-      
-      this.task.project.AddTeamMember(newUser);
-    } */
-    //update the services
+    this.userService.RemoveTaskFromUser(this.task.worker_id,this.task.id,newUser.id);
+    this.task.worker_id = newUser.id;
     this.taskService.UpdateTask(this.task);
-    this.userService.UpdateUser(newUser).subscribe();
-    //remove the users list
     this.isShowingAllUsers = false;
   }
 
@@ -100,36 +74,9 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   SetAsReporter(newReporter: User) {
-
-    //remove the task from the old user
-    const pastUser = this.task.reporter;
-    const taskIndex = this.taskService.GetTaskIndex(this.task);
-    
-    //#FIX LATER WITH IDS
-    //pastUser.tasks.splice(taskIndex, 1);
-   
-    this.userService.UpdateUser(pastUser).subscribe();
-    //set the task to the new user
-    this.task.reporter = newReporter;
-    //if the user in not a team member, add him to the team.
-   
-   //#FIX LATER WITH IDS
-    //if (!newReporter.IsUserInProject(this.task.project)){
-      //#FIX LATER WITH IDS
-      //newReporter.projects.push(this.task.project);
-      
-      //this.task.project.AddTeamMember(newReporter);
-    //}
-    //#ENDOFFIX
-    //add the task to the user
-    
-    //#FIX LATER WITH IDS
-    //newReporter.tasks.push(this.task);
-    
-    //update the services
+    this.userService.RemoveTaskFromUser(this.task.reporter_id,this.task.id,newReporter.id);
+    this.task.reporter_id = newReporter.id;
     this.taskService.UpdateTask(this.task);
-    this.userService.UpdateUser(newReporter).subscribe();
-    //remove the users list
     this.isShowingAllUsers = false;
   }
 }

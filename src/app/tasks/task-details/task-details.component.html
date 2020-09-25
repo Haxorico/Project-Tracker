@@ -16,15 +16,17 @@
     <div class="col-xs-12">
 
         Name: {{task.name}}<br>
-        <a (click)="onProjectClicked()">Project: {{task.project.name}}</a><br>
+        <!-- #FIX LATER WITH IDs 
+            <a (click)="onProjectClicked()">Project: {{task.project.name}}</a><br> -->
         Status: {{task.GetStatus()}}<br>
         Type: {{task.GetType()}}<br>
         Estimate: {{task.estimate}}<br>
         Start Date: {{task.start_date}}<br>
         End Date: {{task.end_date}}<br>
         Description: {{task.description}}<br>
-        <a (click)="onTaskUserClicked()">Task User: {{task.user.name}}</a> <br>
-        <a (click)="onTaskReportedClicked()">Task Reporter: {{task.reporter.name}}</a><br>
+        <!-- #FIX LATER WITH IDs 
+            <a (click)="onTaskUserClicked()">Task User: {{task.user.name}}</a> <br>
+        <a (click)="onTaskReportedClicked()">Task Reporter: {{task.reporter.name}}</a><br> -->
         <button class="btn btn-primary" (click)="ShowAllUsers()"
             *ngIf='isShowingAllUsers==false && isShowingAllManagers==false'>Change User</button>
         <button class="btn btn-info" (click)="ShowAllManagers()"

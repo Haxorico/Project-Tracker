@@ -1,20 +1,30 @@
-import { Project } from '../projects/project.model';
-import { User } from '../users/user.model'
 export class Task {
   public id: string;
-  public work_times = [];
-  constructor(
-    public name: string,
-    public project: Project,
-    public status: number,
-    public type: number,
-    public estimate: string,
-    public start_date: string,
-    public end_date: string,
-    public description: string,
-    public user: User,
-    public reporter: User
-  ) {}
+  public work_times;
+  public name: string;
+  public project_id: string;
+  public status: number;
+  public type: number;
+  public estimate: string;
+  public start_date: string;
+  public end_date: string;
+  public description: string;
+  public worker_id: string;
+  public reporter_id: string;
+  constructor(obj) {
+     this.id = obj.id; 
+     this.work_times = obj.work_times;
+     this.name = obj.name;
+     this.project_id = obj.project_id;
+     this.status = obj.status;
+     this.type = obj.type;
+     this.estimate = obj.estimate;
+     this.start_date = obj.start_date;
+     this.end_date = obj.end_date;
+     this.description = obj.description;
+     this.worker_id = obj.worker_id;
+     this.reporter_id = obj.reporter_id;
+  }
 
   GetStatus() {
     if (this.status == 0)
@@ -46,11 +56,12 @@ export class Task {
   }
 
   AddWorkTime(date: string, time_hh: number, time_mm: number, comment : string = "") {
-    const user = this.user;
     //sometimes this gets converted into string so need to re-convert it back to number
     time_hh = Number(time_hh);
     time_mm = Number(time_mm);
-    this.work_times.push({ user, date, time_hh, time_mm, comment });
+    //#TODO
+    //Need a way to get user name by ID
+    //this.work_times.push({ user, date, time_hh, time_mm, comment });
   }
 
   Number2Time(n : number){
@@ -74,4 +85,6 @@ export class Task {
     let mm = this.Number2Time(totalM);
     return hh + ":" + mm;
   }
+
+  
 }

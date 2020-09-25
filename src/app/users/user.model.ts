@@ -48,4 +48,42 @@ export class User {
     IsUserInProject(projectID: string) {
       return (_.find(this.project_ids, project => project == projectID) != undefined);
   } 
+
+  public IsUserInTask(taskID: string){
+    return (_.find(this.task_ids, task => task == taskID) != undefined);
+  }
+  private getTaskIndex(taskID : string){
+    return (_.findIndex(this.task_ids, task => task == taskID));
+  }
+  public AddToTask(taskID : string){
+    //check if user already in task
+    if (this.IsUserInTask(taskID)){
+      return;
+    }
+    //add to the list of tasks
+    this.task_ids.push(taskID);
+    
+    //#FIX LATER WITH IDS
+    /* if (!newUser.IsUserInProject(this.task.project)){
+      
+      //#FIX LATER WITH IDS
+      //newUser.projects.push(this.task.project);
+      
+      this.task.project.AddTeamMember(newUser);
+    } */
+
+    //update the user.
+    //#ASK_ALEX where to use the update user function. Should it be in model? 
+
+  }
+  public RemoveFromTask(taskID : string){
+    //check if user already in task
+    if (!this.IsUserInTask(taskID)){
+      return;
+    }
+    //add to the list of tasks
+    this.task_ids.splice(this.getTaskIndex(taskID));
+    //update the user.
+    //#ASK_ALEX where to use the update user function. Should it be in model? 
+  }
 }
