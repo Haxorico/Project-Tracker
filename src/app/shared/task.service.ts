@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Task } from '../tasks/task.model';
-import { User } from '../users/user.model';
-import { Project } from '../projects/project.model';
-import { ProjectService } from './project.service';
-import { UserService } from './user.service';
 import * as _ from "lodash";
 import { v4 as uuidv4 } from 'uuid';
+import { HttpClient } from '@angular/common/http';
 
 
 @Injectable({
@@ -15,28 +13,27 @@ import { v4 as uuidv4 } from 'uuid';
 export class TaskService {
   private tasks: Task[] = [];
   public TasksChanged = new Subject<Task[]>();
+  private REST_API_SERVER = "http://localhost:9000/tasks/";
 
-  constructor(private projectService: ProjectService,
-    private userService: UserService) {
-  }
-
- 
-
-  NewTask({
+  constructor(private httpClient: HttpClient) {}
+  public NewTask({
     name = "EMPTY_NAME",
-    project = null,
+    project_id = "",
     status = -1,
     type = -1,
-    estimate = "NO_ESTIMATION",
-    start_date = "NO_START_DATE",
-    end_date = "NO_END_DATE",
-    description = "NO_DESCRIPTION_NUMBER",
-    user = null,
-    task_reporter = null,
-    flagTickEvent = true}) {
-    /* const taskToCreate = new Task(name, project, status, type, estimate, start_date, end_date, description, user, task_reporter);
-    taskToCreate.id = uuidv4();
+    estimate = "",
+    start_date = "",
+    end_date = "",
+    description = "",
+    worker_id = "",
+    reporter_id = "",
+    id = uuidv4()}) {
+    const taskToCreate = new Task({id, name, project_id, status, type, estimate, start_date, end_date, description, worker_id, reporter_id});
     this.tasks.push(taskToCreate);
+    this.AddTask(taskToCreate);
+    
+    /* 
+    //#TODO - Add task to user and reporter
     //update the users
     if (user != undefined) {
       //if the user in not a team member, add him to the team.
@@ -56,95 +53,62 @@ export class TaskService {
         project.team_members.push(task_reporter);
       }
     }
-    this.projectService.UpdateFullProject(project);
-    if (flagTickEvent)
-      this.TasksChanged.next(this.tasks.slice()); */
+    this.projectService.UpdateFullProject(project); */
+    this.TasksChanged.next(this.tasks.slice()); 
   }
 
-  GetTasks() {
-    return this.tasks.slice();
+  public ObjectToTask(obj) {
+    return new Task(obj);
   }
-  GetTaskIndex(taskToFind: Task){
-    return _.findIndex(this.tasks, {id: taskToFind.id});
+  private dbAddTask(taskToAdd){
+    return this.httpClient.post(this.REST_API_SERVER, taskToAdd);
   }
-  GetTaskIndexById(id: string){
-    return _.findIndex(this.tasks, {id: id});
-  }
-
-  GetTaskByIndex(index: number) {
-    return this.tasks[index];
-  }
-  GetTaskById(id: string) {
-    return _.find(this.tasks, tasks => tasks.id == id)
-  }
-  DelTask(taskToDelete: Task) {
-    this.tasks.splice(this.GetTaskIndex(taskToDelete), 1);
-    this.TasksChanged.next(this.tasks.slice());
-  }
-  DelTaskByIndex(index: number) {
-    this.tasks.splice(index, 1);
-    this.TasksChanged.next(this.tasks.slice());
-  }
-  DelTaskById(id: string) {
-    this.tasks.splice(this.GetTaskIndexById(id), 1);
-    this.TasksChanged.next(this.tasks.slice());
+  private dbGetAllTasks() {
+    return this.httpClient
+      .get(this.REST_API_SERVER)
+      .pipe(
+        map((responseData: { [key: string]: Task }) => {
+          const tempArray = [];
+          for (const key in responseData) {
+            if (responseData.hasOwnProperty(key)) {
+              tempArray.push(this.ObjectToTask({ ...responseData[key] }));
+            }
+          }
+          return tempArray;
+        }));
   }
 
-  UpdateTask(taskToUpdate: Task) {
-    const index = this.GetTaskIndex(taskToUpdate);
-    this.tasks[index] = taskToUpdate;
-    this.TasksChanged.next(this.tasks.slice());
-  }
-  GetStatusString(status: number) {
-    if (status == 0)
-      return "Open";
-    if (status == 1)
-      return "Development";
-    if (status == 2)
-      return "Ready for QA";
-    if (status == 3)
-      return "Closed";
-    if (status == -1)
-      return "No status given";
-    return "Error - Wrong status number.";
-  }
-  GetTypeString(type: number) {
-    if (type == 0)
-      return "Technical Task";
-    if (type == 1)
-      return "Bug";
-    if (type == 2)
-      return "Improvement";
-    if (type == 3)
-      return "Feature";
-    if (type == 4)
-      return "Task";
-    if (type == -1)
-      return "No type given";
-    return "Error - Wrong type number.";
+  private dbGetTaskById(taskID : string){
+    const url = this.REST_API_SERVER + taskID
+    return this.httpClient.get(url).pipe(map(data =>{
+      return this.ObjectToTask(data);
+    }));
   }
 
-  LoadTasks(tasksToLoad: Task[], flagCleanAll: boolean = true) {
-    if (flagCleanAll) {
-      this.tasks = [];
-    }
-    if (tasksToLoad==null)
-      return false;
-      tasksToLoad.forEach(taskToLoad => {
-      this.NewTask({
-        name : taskToLoad.name,
-        project : taskToLoad.project,
-        status : taskToLoad.status,
-        type : taskToLoad.type,
-        estimate : taskToLoad.estimate,
-        start_date : taskToLoad.start_date,
-        end_date : taskToLoad.end_date,
-        description : taskToLoad.description,
-        user : taskToLoad.user,
-        task_reporter : taskToLoad.reporter,
-        flagTickEvent : false})
-    });
-    this.TasksChanged.next(this.tasks.slice());
-    return true;
+  private dbUpdateTask(taskToUpdate: Task) {
+    const url: string = this.REST_API_SERVER + taskToUpdate.id;
+    return this.httpClient.put(url, taskToUpdate);
   }
+  private dbDeleteTask(taskToDelete: Task) {
+    const url = this.REST_API_SERVER + taskToDelete.id;
+    return this.httpClient.delete(url);
+  }
+  public AddTask(taskToAdd : Task){
+    return this.dbAddTask(taskToAdd).subscribe();
+  }
+  public GetTasks() {
+    return this.dbGetAllTasks();
+  }
+
+  public GetTaskById(taskID: string) {
+    return this.dbGetTaskById(taskID);
+  }
+  public UpdateTask(taskToUpdate: Task) {
+    return this.dbUpdateTask(taskToUpdate).subscribe();
+  }
+  public DeleteTask(taskToDelete: Task) {
+    return this.dbDeleteTask(taskToDelete).subscribe();
+  }
+
+  
 }

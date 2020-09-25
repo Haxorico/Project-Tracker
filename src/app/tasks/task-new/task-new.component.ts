@@ -12,8 +12,8 @@ export class TaskNewComponent implements OnInit {
   @ViewChild('f', {static: false}) newTaskForm: NgForm;
   constructor(private taskService : TaskService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
+  
   onSubmitButtonClicked(){
     this.taskService.NewTask({
     name : this.newTaskForm.value.name,
