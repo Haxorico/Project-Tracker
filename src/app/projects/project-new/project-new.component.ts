@@ -24,6 +24,6 @@ export class ProjectNewComponent implements OnInit {
     start_date : this.newProjectForm.value.start_date,
     end_date: this.newProjectForm.value.end_date,
     description: this.newProjectForm.value.description,
-    team_members: this.newProjectForm.value.team_members});
+    team_members_ids: this.newProjectForm.value.team_members});
   }
 }

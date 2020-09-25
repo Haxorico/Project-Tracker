@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { Project } from '../projects/project.model';
 import { User } from '../users/user.model';
 import { Task } from '../tasks/task.model';
@@ -16,9 +15,7 @@ import * as _ from "lodash";
 })
 export class TimesheetsComponent implements OnInit {
   projects: Project[] = [];
-  projectSub: Subscription;
   tasks: Task[] = [];
-  taskSub: Subscription;
   loggedUser: User;
   @ViewChild('f', {static: false}) newTaskForm: NgForm;
   constructor(private projectService: ProjectService,
@@ -26,19 +23,13 @@ export class TimesheetsComponent implements OnInit {
     private userService: UserService) { }
 
   ngOnInit(): void {
-    this.projects = this.projectService.GetProjects();
-    this.loggedUser = this.userService.GetCurrentUser();
-
-    this.projectSub = this.projectService.ProjectsChanged.subscribe((p: Project[]) => {
-      this.projects = p;
+    this.projectService.GetProjects().subscribe(projects => {
+      this.projects = projects;
     })
-
+    this.loggedUser = this.userService.GetCurrentUser();
     this.taskService.GetTasks().subscribe(tasks =>{
       this.tasks = tasks;
     });
-    this.taskSub = this.taskService.TasksChanged.subscribe((t: Task[]) => {
-      this.tasks = t;
-    })
     this.loggedUser = this.userService.GetCurrentUser();
   }
 

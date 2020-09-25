@@ -12,25 +12,28 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 export class ProjectEditComponent implements OnInit {
 
   @ViewChild('f', { static: false }) editForm: NgForm;
-  project : Project;
-  submited : boolean = false;
+  project: Project;
+  submited: boolean = false;
 
-  constructor(private projectService : ProjectService,
+  constructor(private projectService: ProjectService,
     private route: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit(): void {
     //get the project from the path
     this.route.params.subscribe(
-      (params: Params) =>{
+      (params: Params) => {
         const id = params['id'];
-        this.project = this.projectService.GetProjectById(id);
+        this.projectService.GetProjectById(id).subscribe(project => {
+          this.project = project;
+        });
       })
   }
 
 
-  onSubmitButtonClicked()
-  {
+  onSubmitButtonClicked() {
+    //#TODO ReWork this as I cant remember what it was. sorry.
+    /* 
       const index = this.projectService.GetProjectIndex(this.project);
       this.projectService.UpdateProject(index,
       this.editForm.value.name,
@@ -40,8 +43,8 @@ export class ProjectEditComponent implements OnInit {
       this.editForm.value.start_date,
       this.editForm.value.end_date,
       this.editForm.value.description,
-      this.editForm.value.team_members);
-      
-      this.router.navigate(['../../'], {relativeTo : this.route})
+      this.editForm.value.team_members); */
+
+    this.router.navigate(['../../'], { relativeTo: this.route })
   }
 }
