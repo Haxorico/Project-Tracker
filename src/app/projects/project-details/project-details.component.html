@@ -1,40 +1,53 @@
-<div class="row">
-    <div class="col-xs-12">
-        <img [src]=project.logo alt="{{project.name}}" class="img-responsive" style="height: 200px;">
+<div *ngIf='project'>
+    <div class="row">
+        <div class="col-xs-12">
+            <img [src]=project.logo alt="{{project.name}}" class="img-responsive" style="height: 200px;">
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <h1>{{project.name}}</h1>
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>{{project.name}}</h1>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <button type="button" class="btn btn-danger" (click)="onDeleteProjectClicked()" *ngIf="loggedUser.rank >= 50">Delete Project</button>
-        <button type="button" class="btn btn-warning" (click)="onEditProjectClicked()" *ngIf="loggedUser.rank > 9">Edit Project</button>
-        
-    </div>
-</div>
+    <div class="row">
+        <div class="col-xs-12">
+            <button type="button" class="btn btn-danger" (click)="onDeleteProjectClicked()"
+                *ngIf="loggedUser.rank >= 50">Delete Project</button>
+            <button type="button" class="btn btn-warning" (click)="onEditProjectClicked()"
+                *ngIf="loggedUser.rank > 9">Edit
+                Project</button>
 
-<div class="row">
-    <div class="col-xs-12">
-        
-    Name:  {{project.name}}<br>
-    Type: {{project.type}}<br>
-    Client Name: {{project.client_name}}<br>
-    Start Date: {{project.start_date}}<br>
-    End Date: {{project.end_date}}<br>
-    Description: {{project.description}}<br> 
-    Team Members: 
-    <ul>
-        <!-- #FIX WITH IDs -->
-     <!--    <li *ngFor="let member of project.team_members"><a [routerLink]="['/users', member.id]">{{member.name}}</a>  | {{member.GetTitle()}} | {{member.skype}}  <b *ngIf='loggedUser.rank > 9'>- [<a  (click)="onRemoveUserClicked(member)">Remove Worker?</a>]</b>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+
+            Name: {{project.name}}<br>
+            Type: {{project.type}}<br>
+            Client Name: {{project.client_name}}<br>
+            Start Date: {{project.start_date}}<br>
+            End Date: {{project.end_date}}<br>
+            Description: {{project.description}}<br>
+            Tasks:
+            <ul>
+                <li *ngFor="let task of tasks">
+                    <a [routerLink]="['/tasks', task.id]">{{task.name}}</a>
+            </ul>
+            Team Members:
+            <ul>
+                <!-- #FIX WITH IDs -->
+                <!--    <li *ngFor="let member of project.team_members"><a [routerLink]="['/users', member.id]">{{member.name}}</a>  | {{member.GetTitle()}} | {{member.skype}}  <b *ngIf='loggedUser.rank > 9'>- [<a  (click)="onRemoveUserClicked(member)">Remove Worker?</a>]</b>
      -->
-    </ul>
-    <button type="button" class="btn btn-primary" (click)="onShowFreeMemberClicked()" *ngIf="loggedUser.rank > 9">Add Member</button>
-    <div *ngIf="showMembers">
-        <ul>
-            <li *ngFor="let member of Users">{{member.name}} - <b><a (click)="onAddMemberClicked(member)">ADD</a></b></li> 
-        </ul>
+            </ul>
+            <button type="button" class="btn btn-primary" (click)="onShowFreeMemberClicked()"
+                *ngIf="loggedUser.rank > 9">Add Member</button>
+            <div *ngIf="showMembers">
+                <ul>
+                    <li *ngFor="let member of Users">{{member.name}} - <b><a
+                                (click)="onAddMemberClicked(member)">ADD</a></b></li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>

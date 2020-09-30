@@ -6,39 +6,26 @@ import * as _ from "lodash";
 import { Md5 } from 'ts-md5/dist/md5';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { result } from 'lodash';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class UserService {
-  private users: User[] = [];
+  //private users: User[] = [];
   guest: User = new User({ name: "Guest", rank: 0 });
   private user: User = this.guest;
-  usersChanged = new Subject<User[]>();
+  UsersChanged = new Subject<{action: string, user : User}>();
   userLogedChanged = new Subject<void>();
 
   private REST_API_SERVER = "http://localhost:9000/users/";
 
   constructor(private httpClient: HttpClient) { }
 
-  NewUser({
-    name = "EMPTY_NAME",
-    password,
-    rank,
-    photo = "NO_PHOTO",
-    date_of_birth = "NO_DATE_OF_BIRTH",
-    location = "NO_LOCATION",
-    address = "NO_ADDRESS",
-    skype = "NO_SKYPE",
-    phone_number = "NO_PHONE_NUMBER",
-    skills = [] }) {
-    password = Md5.hashStr(password).toString();
-    const id = uuidv4()
-    const userToCreate = new User({ name, password, rank, photo, date_of_birth, location, address, skype, phone_number, id, skills });
-    this.addDBUser(userToCreate).subscribe();
-    this.usersChanged.next(this.users.slice());
+  NewUser(obj) {
+    obj.password = Md5.hashStr(obj.password).toString();
+    obj.id = uuidv4()
+    this.AddUser(new User(obj));
   }
 
   public ObjectToUser(obj) {
@@ -88,13 +75,21 @@ export class UserService {
     return this.getDBUserById(userID);
   }
 
-  public DeleteUser(userToDelete: User) {
-    return this.delDBUser(userToDelete);
+  public AddUser(userToAdd: User){
+    this.addDBUser(userToAdd).subscribe();
+    this.UsersChanged.next({action : "Created", user : userToAdd});
+  }
+  public UpdateUser(userToUpdate: User) {
+    this.updateDBUser(userToUpdate).subscribe();
+    this.UsersChanged.next({action : "Updated", user : userToUpdate});
   }
 
-  public UpdateUser(userToUpdate: User) {
-    return this.updateDBUser(userToUpdate);
+  public DeleteUser(userToDelete: User) {
+    this.delDBUser(userToDelete).subscribe();
+    this.UsersChanged.next({action : "Deleted", user : userToDelete});
   }
+
+  
 
   public GetCurrentUser() {
     return this.user;
@@ -107,17 +102,5 @@ export class UserService {
 
   public GetGuestUser(): User {
     return this.guest;
-  }
-
-  public RemoveTaskFromUser(userIdToRemove: string, taskID: string, userIdToAdd: string = undefined) {
-    this.getDBUserById(userIdToRemove).subscribe(user => {
-      user.RemoveFromTask(taskID);
-    });
-    if (userIdToAdd != undefined) {
-      this.getDBUserById(userIdToAdd).subscribe(user => {
-        user.AddToTask(taskID);
-      });
-    }
-
   }
 }

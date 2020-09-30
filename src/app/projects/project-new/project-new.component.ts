@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../../shared/project.service';
 
 
@@ -11,7 +12,9 @@ import { ProjectService } from '../../shared/project.service';
 export class ProjectNewComponent implements OnInit {
 
   @ViewChild('f', {static: false}) newProjectForm: NgForm;
-  constructor(private projectService : ProjectService) { }
+  constructor(private projectService : ProjectService,
+    private route : ActivatedRoute,
+    private router : Router) { }
 
   ngOnInit(): void {
   }
@@ -25,5 +28,6 @@ export class ProjectNewComponent implements OnInit {
     end_date: this.newProjectForm.value.end_date,
     description: this.newProjectForm.value.description,
     team_members_ids: this.newProjectForm.value.team_members});
+    this.router.navigate(['../'], {relativeTo : this.route});
   }
 }

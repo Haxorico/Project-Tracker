@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { User } from '../../user.model';
 import { Params, ActivatedRoute, Router } from '@angular/router';
+import { User } from '../../user.model';
+import { Project } from 'src/app/projects/project.model';
 import { UserService } from '../../../shared/user.service';
+import { ProjectService } from '../../../shared/project.service';
 import {Md5} from 'ts-md5/dist/md5';
 
 @Component({
@@ -15,9 +17,11 @@ export class UserEditComponent implements OnInit {
   @ViewChild('f', { static: false }) editForm: NgForm;
 
   userBeingEdited: User;
-  submited: boolean = false;
   loggedUser: User;
+  userProjects: Project[];
+  submited: boolean = false;
   constructor(private userService: UserService,
+    private ProjectService: ProjectService,
     private route: ActivatedRoute,
     private router: Router) { }
 
@@ -29,6 +33,9 @@ export class UserEditComponent implements OnInit {
         const id = params['id'];
         this.userService.GetUserById(id).subscribe(user => {
           this.userBeingEdited = user;
+          this.ProjectService.GetProjectsWithUserId(user.id).subscribe(projects=>{
+            this.userProjects = projects;
+          });
         }); 
       })
       this.loggedUser = this.userService.GetCurrentUser();
@@ -53,7 +60,7 @@ export class UserEditComponent implements OnInit {
     this.userBeingEdited.skype = this.editForm.value.skype;
     this.userBeingEdited.phone_number = this.editForm.value.phone_number;
     this.userBeingEdited.rank = rank;
-    this.userService.UpdateUser(this.userBeingEdited).subscribe();
+    this.userService.UpdateUser(this.userBeingEdited);
     this.router.navigate(['../../'], { relativeTo: this.route })
   }
 }
