@@ -1,60 +1,29 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Task } from '../tasks/task.model';
 import * as _ from "lodash";
 import { v4 as uuidv4 } from 'uuid';
-import { HttpClient } from '@angular/common/http';
-
+import { Task } from '../tasks/task.model';
+import { Project } from '../projects/project.model';
+import { ProjectService } from './project.service';
+import { User } from '../users/user.model';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
-  private tasks: Task[] = [];
-  public TasksChanged = new Subject<Task[]>();
+  public TaskChanged = new Subject<{action : string, task : Task}>();
   private REST_API_SERVER = "http://localhost:9000/tasks/";
 
-  constructor(private httpClient: HttpClient) {}
-  public NewTask({
-    name = "EMPTY_NAME",
-    project_id = "",
-    status = -1,
-    type = -1,
-    estimate = "",
-    start_date = "",
-    end_date = "",
-    description = "",
-    worker_id = "",
-    reporter_id = "",
-    id = uuidv4()}) {
-    const taskToCreate = new Task({id, name, project_id, status, type, estimate, start_date, end_date, description, worker_id, reporter_id});
-    this.tasks.push(taskToCreate);
-    this.AddTask(taskToCreate);
-    
-    /* 
-    //#TODO - Add task to user and reporter
-    //update the users
-    if (user != undefined) {
-      //if the user in not a team member, add him to the team.
-      if (!user.IsUserInProject(project)) {
-        user.projects.push(project);
-        project.team_members.push(user);
-      }
-      user.tasks.push(taskToCreate);
-      this.userService.UpdateUser(user);
-    }
-    //update the task reporter
-    if (task_reporter != undefined) {
-      task_reporter.tasks.push(taskToCreate);
-      //if the task_reporter in not a team member, add him to the team.
-      if (!task_reporter.IsUserInProject(project)) {
-        task_reporter.projects.push(project);
-        project.team_members.push(task_reporter);
-      }
-    }
-    this.projectService.UpdateFullProject(project); */
-    this.TasksChanged.next(this.tasks.slice()); 
+  constructor(private httpClient: HttpClient,
+    private userService: UserService,
+    private projectService: ProjectService) {}
+
+  public NewTask(obj) {
+    obj.id = uuidv4();
+    this.AddTask(new Task(obj));
   }
 
   public ObjectToTask(obj) {
@@ -84,7 +53,19 @@ export class TaskService {
       return this.ObjectToTask(data);
     }));
   }
-
+  private dbGetTasksWithProjectId(projectID: string) {
+    const url = this.REST_API_SERVER + "?project_id=" + projectID
+    return this.httpClient.get(url).pipe(
+      map((responseData: { [key: string]: Task }) => {
+        const tempArray = [];
+        for (const key in responseData) {
+          if (responseData.hasOwnProperty(key)) {
+            tempArray.push(this.ObjectToTask({ ...responseData[key] }));
+          }
+        }
+        return tempArray;
+      }));
+  }
   private dbUpdateTask(taskToUpdate: Task) {
     const url: string = this.REST_API_SERVER + taskToUpdate.id;
     return this.httpClient.put(url, taskToUpdate);
@@ -93,9 +74,6 @@ export class TaskService {
     const url = this.REST_API_SERVER + taskToDelete.id;
     return this.httpClient.delete(url);
   }
-  public AddTask(taskToAdd : Task){
-    return this.dbAddTask(taskToAdd).subscribe();
-  }
   public GetTasks() {
     return this.dbGetAllTasks();
   }
@@ -103,12 +81,35 @@ export class TaskService {
   public GetTaskById(taskID: string) {
     return this.dbGetTaskById(taskID);
   }
+  
+  public GetTasksWithProjectId(projID : string){
+    return this.dbGetTasksWithProjectId(projID);
+  }
+  public AddTask(taskToAdd : Task){
+    this.updateUsersAndProjectsIds(taskToAdd);
+    this.dbAddTask(taskToAdd).subscribe();
+    this.TaskChanged.next({action: "Created", task : taskToAdd});
+  }
   public UpdateTask(taskToUpdate: Task) {
-    return this.dbUpdateTask(taskToUpdate).subscribe();
+    this.updateUsersAndProjectsIds(taskToUpdate, true);
+    this.dbUpdateTask(taskToUpdate).subscribe();
+    this.TaskChanged.next({action: "Updated", task : taskToUpdate});
   }
   public DeleteTask(taskToDelete: Task) {
-    return this.dbDeleteTask(taskToDelete).subscribe();
+    this.updateUsersAndProjectsIds(taskToDelete);
+    this.dbDeleteTask(taskToDelete).subscribe();
+    this.TaskChanged.next({action: "Deleted", task : taskToDelete});
   }
 
-  
+  private updateUsersAndProjectsIds(task: Task, update: boolean = false){
+    let project : Project;
+    this.projectService.GetProjectById(task.project_id).subscribe(data =>{
+      project = data;
+    });
+    project.team_members_ids.forEach(userID => {
+      if (userID == task.worker_id || userID == task.reporter_id){
+        
+      }
+    });
+  }
 }

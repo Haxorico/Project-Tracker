@@ -17,18 +17,20 @@
                             </tr>
                         </thead>
                         <tbody>
+
+                            <!-- #FIX IDs -->
                             <tr *ngFor='let j of tableSize; let i = index'>
                                 <td><a *ngIf='openTasks.length > i'
-                                        [routerLink]="['/tasks', openTasks[i].id]">{{openTasks[i].name}}<br>{{openTasks[i].project.client_name}}</a>
+                                        [routerLink]="['/tasks', openTasks[i].id]">{{openTasks[i].name}}<br><!-- {{openTasks[i].project.client_name}} --></a>
                                 </td>
                                 <td><a *ngIf='devTasks.length > i'
-                                        [routerLink]="['/tasks', devTasks[i].id]">{{devTasks[i].name}}<br>{{openTasks[i].project.client_name}}</a>
+                                        [routerLink]="['/tasks', devTasks[i].id]">{{devTasks[i].name}}<br><!-- {{openTasks[i].project.client_name}} --></a>
                                 </td>
                                 <td><a *ngIf='qaTasks.length > i'
-                                        [routerLink]="['/tasks', qaTasks[i].id]">{{qaTasks[i].name}}<br>{{openTasks[i].project.client_name}}</a>
+                                        [routerLink]="['/tasks', qaTasks[i].id]">{{qaTasks[i].name}}<br><!-- {{openTasks[i].project.client_name}} --></a>
                                 </td>
                                 <td><a *ngIf='closedTasks.length > i'
-                                        [routerLink]="['/tasks', closedTasks[i].id]">{{closedTasks[i].name}}<br>{{openTasks[i].project.client_name}}</a>
+                                        [routerLink]="['/tasks', closedTasks[i].id]">{{closedTasks[i].name}}<br><!-- {{openTasks[i].project.client_name}} --></a>
                                 </td>
                             </tr>
                         </tbody>

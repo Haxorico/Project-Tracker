@@ -85,6 +85,4 @@ export class Task {
     let mm = this.Number2Time(totalM);
     return hh + ":" + mm;
   }
-
-  
 }

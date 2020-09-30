@@ -5,7 +5,8 @@
                 <button class="btn btn-success" (click)="onNewProjectClicked()" *ngIf="loggedUser.rank >= 50">New
                     Project</button>
                 <div *ngFor="let project of projects">
-                    <div *ngIf='project.IsUserInTeam(loggedUser)'>
+                    <!-- #TODO #FIX #NEW-FORMULA 
+                        <div *ngIf='project.IsUserInTeam(loggedUser)'>
                         <a style="cursor: pointer;" class="list-group-item clearfix">
                             <div class="pull-left">
                                 <h4 class="list-group-item-heading"> {{project.name}} - {{project.description}}</h4>
@@ -69,7 +70,7 @@
                                 </div>
                             </div>
                         </ul>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

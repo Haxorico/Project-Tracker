@@ -7,6 +7,12 @@
                     <input type="text" id="name" class="form-control" ngModel name="name" required>
                 </div>
                 <div class="form-group">
+                    <label for="project">Project</label>
+                    <select id="project" class="form-control" [ngModel]="0" name="project" required>
+                        <option *ngFor='let project of Projects; let i = index' [value]="project.id">{{project.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="status">Status</label>
                     <select id="status" class="form-control" [ngModel]="0" name="status" required>
                         <option value="0">Open</option>

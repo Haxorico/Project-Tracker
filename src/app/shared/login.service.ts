@@ -19,10 +19,8 @@ export class LoginService {
     password = Md5.hashStr(password).toString();
     name = name.toLowerCase();
     console.log(password);
-    console.log(this.allUsers);
     //#TODO move this logic to node.js. Have it been handle server sided.
     const userToFind = _.find(this.allUsers, user => user.name.toLowerCase() == name)
-    console.log(userToFind);
     if (userToFind==undefined || userToFind.password != password)
       return false;
     this.userService.SetCurrentUser(userToFind); 

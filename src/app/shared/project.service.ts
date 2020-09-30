@@ -10,11 +10,16 @@ import { v4 as uuidv4 } from 'uuid';
   providedIn: 'root'
 })
 export class ProjectService {
-  private projects: Project[] = [];
-  ProjectsChanged = new Subject<Project[]>();
+  ProjectChanged = new Subject<{ action: string, project: Project }>();
   private REST_API_SERVER = "http://localhost:9000/projects/";
 
   constructor(private httpClient: HttpClient) { }
+
+  AddNewProject(obj) {
+    obj.id = uuidv4();
+    const projecToCreate = new Project(obj);
+    this.AddProject(projecToCreate);
+  }
 
   public ObjectToProject(obj) {
     return new Project(obj);
@@ -39,6 +44,19 @@ export class ProjectService {
       return this.ObjectToProject(data);
     }));
   }
+  private dbGetProjectsWithUserId(userID: string) {
+    const url = this.REST_API_SERVER + "?team_members_ids=" + userID
+    return this.httpClient.get(url).pipe(
+      map((responseData: { [key: string]: Project }) => {
+        const tempArray = [];
+        for (const key in responseData) {
+          if (responseData.hasOwnProperty(key)) {
+            tempArray.push(this.ObjectToProject({ ...responseData[key] }));
+          }
+        }
+        return tempArray;
+      }));
+  }
   private dbAddProject(projectToAdd) {
     return this.httpClient.post(this.REST_API_SERVER, projectToAdd);
   }
@@ -50,41 +68,28 @@ export class ProjectService {
     const url = this.REST_API_SERVER + projectToDelete.id;
     return this.httpClient.delete(url);
   }
+
   public GetProjects() {
     return this.dbGetAllProjects();
   }
   public GetProjectById(id: string) {
     return this.dbGetPorjectById(id);
   }
+  public GetProjectsWithUserId(userID: string) {
+    return this.dbGetProjectsWithUserId(userID);
+  }
 
-  public AddProject(projectTOAdd) {
-    this.dbAddProject(projectTOAdd).subscribe();
+  public AddProject(projectToAdd) {
+    this.dbAddProject(projectToAdd).subscribe();
+    this.ProjectChanged.next({ action: "Created", project: projectToAdd });
   }
   public UpdateProject(projectToUpdate: Project) {
     this.dbUpdateProject(projectToUpdate).subscribe();
+    this.ProjectChanged.next({ action: "Updated", project: projectToUpdate });
   }
   public DeleteProject(projectToDelete: Project) {
     this.dbDeleteProject(projectToDelete).subscribe();
+    this.ProjectChanged.next({ action: "Deleted", project: projectToDelete });
   }
 
-  AddNewProject({
-    name = "NO_NAME",
-    type = "NO_TYPE",
-    logo = "NO_LOGO",
-    client_name = "NO_CLIENT_NAME",
-    start_date = "NO_START_DATE",
-    end_date = "NO_END_DATE",
-    description = "NO_DESCRIPTION",
-    team_members_ids = []
-  }) {
-    const projectToCreate = new Project({ id: uuidv4(), name, type, logo, client_name, start_date, end_date, description, team_members_ids });
-    this.AddProject(projectToCreate);
-    this.projects.push(projectToCreate);
-    //#FIX WITH IDs
-    /* //update the team-members
-    team_members.forEach(userInTeam => {
-      userInTeam.projects.push(projectToCreate);
-      this.userService.UpdateUser(userInTeam);
-    }); */
-  }
 }

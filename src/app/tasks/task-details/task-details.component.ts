@@ -4,6 +4,8 @@ import { Task } from '../task.model';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { TaskService } from '../../shared/task.service';
 import { UserService } from 'src/app/shared/user.service';
+import { ProjectService } from 'src/app/shared/project.service';
+import * as _ from "lodash";
 
 @Component({
   selector: 'app-task-details',
@@ -17,6 +19,7 @@ export class TaskDetailsComponent implements OnInit {
   users: User[];
   constructor(private taskService: TaskService,
     private userService: UserService,
+    private projectService: ProjectService,
     private route: ActivatedRoute,
     private router: Router) { }
   isShowingAllUsers: Boolean = false;
@@ -35,6 +38,18 @@ export class TaskDetailsComponent implements OnInit {
       this.users = users;
     });
   }
+  
+  getProjectName(id : string = this.task.project_id){
+    this.projectService.GetProjectById(id).subscribe(project =>{
+        return project.name;
+    });
+  } 
+
+  onProjectClicked() {
+    const id = this.task.project_id;
+    this.router.navigate(["/projects/" + id]);
+  }
+  
   onTaskReportedClicked() {
     const id = this.task.reporter_id;
     this.router.navigate(["/users/" + id]);
@@ -42,11 +57,6 @@ export class TaskDetailsComponent implements OnInit {
   onTaskUserClicked() {
     const id = this.task.worker_id;
     this.router.navigate(["/users/" + id]);
-  }
-
-  onProjectClicked() {
-    const id = this.task.project_id;
-    this.router.navigate(["/projects/" + id]);
   }
 
   onDeleteTaskClicked() {
@@ -63,10 +73,12 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   SetAsUser(newUser: User) {
-    this.userService.RemoveTaskFromUser(this.task.worker_id,this.task.id,newUser.id);
+    /* #TODO edit with new formula
+     this.userService.RemoveTaskFromUser(this.task.worker_id,this.task.id,newUser.id);
     this.task.worker_id = newUser.id;
     this.taskService.UpdateTask(this.task);
-    this.isShowingAllUsers = false;
+    this.isShowingAllUsers = false; 
+    */
   }
 
   ShowAllManagers() {
@@ -74,9 +86,11 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   SetAsReporter(newReporter: User) {
+/* #TODO edit with new forumla
     this.userService.RemoveTaskFromUser(this.task.reporter_id,this.task.id,newReporter.id);
     this.task.reporter_id = newReporter.id;
     this.taskService.UpdateTask(this.task);
     this.isShowingAllUsers = false;
+     */
   }
 }
