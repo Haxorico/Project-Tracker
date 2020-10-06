@@ -17,8 +17,7 @@ export class ProjectService {
 
   AddNewProject(obj) {
     obj.id = uuidv4();
-    const projecToCreate = new Project(obj);
-    this.AddProject(projecToCreate);
+    this.AddProject(new Project(obj));
   }
 
   public ObjectToProject(obj) {

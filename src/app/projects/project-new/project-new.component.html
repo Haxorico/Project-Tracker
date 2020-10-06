@@ -31,6 +31,22 @@
                         <label for="description">Description</label>
                         <input type="text" id="description" class="form-control" ngModel name="description" required>
                     </div>
+                    <label for="team_members">Team Members</label>
+                    <ul>
+                        <div *ngFor='let user of teamUsers; let i = index'>
+                            <li>
+                                {{user.name}} - <b><a (click)="RemoveUserFromTeam(user, i)">Remove from team</a></b>
+                            </li>
+                        </div>
+                    </ul>
+                    <label for="free_members">Available Users</label>
+                    <ul>
+                        <div *ngFor='let user of freeUsers; let i = index'>
+                            <li>
+                                {{user.name}} - <b><a (click)="AddUserToTeam(user, i)">Add to team</a></b>
+                            </li>
+                        </div>
+                    </ul>
                 </div>
                 <button class="btn btn-primary" type="submit" [disabled]="f.invalid">Submit</button>
             </form>

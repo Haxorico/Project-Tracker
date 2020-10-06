@@ -36,9 +36,9 @@
             </ul>
             Team Members:
             <ul>
-                <!-- #FIX WITH IDs -->
-                <!--    <li *ngFor="let member of project.team_members"><a [routerLink]="['/users', member.id]">{{member.name}}</a>  | {{member.GetTitle()}} | {{member.skype}}  <b *ngIf='loggedUser.rank > 9'>- [<a  (click)="onRemoveUserClicked(member)">Remove Worker?</a>]</b>
-     -->
+                
+                <li *ngFor="let member of teamUsers"><a [routerLink]="['/users', member.id]">{{member.name}}</a>  | {{member.GetTitle()}} | {{member.skype}}  <b *ngIf='loggedUser.rank > 9'>- [<a  (click)="onRemoveUserClicked(member)">Remove Worker?</a>]</b>
+ 
             </ul>
             <button type="button" class="btn btn-primary" (click)="onShowFreeMemberClicked()"
                 *ngIf="loggedUser.rank > 9">Add Member</button>
