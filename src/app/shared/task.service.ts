@@ -86,30 +86,15 @@ export class TaskService {
     return this.dbGetTasksWithProjectId(projID);
   }
   public AddTask(taskToAdd : Task){
-    this.updateUsersAndProjectsIds(taskToAdd);
     this.dbAddTask(taskToAdd).subscribe();
     this.TaskChanged.next({action: "Created", task : taskToAdd});
   }
   public UpdateTask(taskToUpdate: Task) {
-    this.updateUsersAndProjectsIds(taskToUpdate, true);
     this.dbUpdateTask(taskToUpdate).subscribe();
     this.TaskChanged.next({action: "Updated", task : taskToUpdate});
   }
   public DeleteTask(taskToDelete: Task) {
-    this.updateUsersAndProjectsIds(taskToDelete);
     this.dbDeleteTask(taskToDelete).subscribe();
     this.TaskChanged.next({action: "Deleted", task : taskToDelete});
-  }
-
-  private updateUsersAndProjectsIds(task: Task, update: boolean = false){
-    let project : Project;
-    this.projectService.GetProjectById(task.project_id).subscribe(data =>{
-      project = data;
-    });
-    project.team_members_ids.forEach(userID => {
-      if (userID == task.worker_id || userID == task.reporter_id){
-        
-      }
-    });
   }
 }

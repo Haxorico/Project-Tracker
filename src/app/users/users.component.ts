@@ -42,7 +42,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       else if (action == "Deleted") {
         const index = _.findIndex(this.usersToShow, arrUser => arrUser.id == user.id);
         if (index) {
-          this.usersToShow.splice(index)
+          this.usersToShow.splice(index,1)
         }
       }
     });

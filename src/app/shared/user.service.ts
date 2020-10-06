@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { User } from '../users/user.model';
-import { v4 as uuidv4 } from 'uuid';
-import * as _ from "lodash";
+import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
 import { Md5 } from 'ts-md5/dist/md5';
 import { map } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { v4 as uuidv4 } from 'uuid';
+import * as _ from "lodash";
+
+import { User } from '../users/user.model';
 
 @Injectable({
   providedIn: 'root'

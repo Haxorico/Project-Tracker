@@ -59,7 +59,7 @@ export class TasksComponent implements OnInit, OnDestroy {
       else if (action == "Deleted") {
         const index = _.findIndex(this.tasks, arrTask => arrTask.id == task.id);
         if (index) {
-          this.tasks.splice(index)
+          this.tasks.splice(index,1)
         }
       }
     });
@@ -73,19 +73,19 @@ export class TasksComponent implements OnInit, OnDestroy {
   removeTaskFromStatusList(task: Task) {
     if (task.status == 0) {
       const index = _.findIndex(this.openTasks, arrTask => arrTask.id == task.id);
-      this.openTasks.splice(index);
+      this.openTasks.splice(index,1);
     }
     else if (task.status == 1) {
       const index = _.findIndex(this.devTasks, arrTask => arrTask.id == task.id);
-      this.devTasks.splice(index);
+      this.devTasks.splice(index,1);
     }
     else if (task.status == 2) {
       const index = _.findIndex(this.qaTasks, arrTask => arrTask.id == task.id);
-      this.qaTasks.splice(index);
+      this.qaTasks.splice(index,1);
     }
     else if (task.status == 3) {
       const index = _.findIndex(this.closedTasks, arrTask => arrTask.id == task.id);
-      this.closedTasks.splice(index);
+      this.closedTasks.splice(index,1);
     }
   }
 

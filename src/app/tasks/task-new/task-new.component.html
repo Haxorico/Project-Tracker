@@ -8,10 +8,25 @@
                 </div>
                 <div class="form-group">
                     <label for="project">Project</label>
-                    <select id="project" class="form-control" [ngModel]="0" name="project" required>
-                        <option *ngFor='let project of Projects; let i = index' [value]="project.id">{{project.name}}</option>
+                    <select id="project" class="form-control" [ngModel]="0" name="project" required #p (change)="onProjectChanged(p.value)">
+                        <option *ngFor='let project of Projects; let i = index' [value]=i>{{project.name}}</option>
                     </select>
                 </div>
+                
+                <div class="form-group">
+                    <label for="worker">Worker</label>
+                    <select id="worker" class="form-control" [ngModel]="0" name="worker" required>
+                        <option *ngFor='let member of Members' [value]="member.id">{{member.name}}</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reporter">Reporter</label>
+                    <select id="reporter" class="form-control" [ngModel]="0" name="reporter" required>
+                        <option *ngFor='let reporter of Members' [value]="reporter.id">{{reporter.name}}</option>
+                    </select>
+                </div>
+
                 <div class="form-group">
                     <label for="status">Status</label>
                     <select id="status" class="form-control" [ngModel]="0" name="status" required>

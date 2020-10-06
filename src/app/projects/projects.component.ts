@@ -7,6 +7,7 @@ import { Project } from './project.model';
 import { User } from '../users/user.model';
 import { ProjectService } from '../shared/project.service';
 import { UserService } from '../shared/user.service';
+
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -45,7 +46,7 @@ export class ProjectsComponent implements OnInit {
       else if (action == "Deleted") {
         const index = _.findIndex(this.projects, arrProject => arrProject.id == project.id);
         if (index) 
-          this.projects.splice(index)
+          this.projects.splice(index,1)
       }
     });
   }
