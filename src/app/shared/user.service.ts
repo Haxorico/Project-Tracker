@@ -19,7 +19,7 @@ export class UserService {
   UsersChanged = new Subject<{action: string, user : User}>();
   userLogedChanged = new Subject<void>();
 
-  private REST_API_SERVER = "http://localhost:9000/users/";
+  private REST_API_SERVER = "I AM ERROR";//"http://localhost:9000/users/";
 
   constructor(private httpClient: HttpClient) { }
 
