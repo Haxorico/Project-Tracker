@@ -12,4 +12,4 @@ import { HTTP_INTERCEPTORS } from "@angular/common/http";
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true }
   ]
 })
-export class ErrorHandlerModule {}
+export class ErrorHandlerModule { }
