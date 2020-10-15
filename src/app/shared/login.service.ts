@@ -11,7 +11,7 @@ export class LoginService {
   constructor(private userService: UserService) {
     this.userService.GetUsers().subscribe(users =>{
       this.allUsers = users;
-    })
+    });
   }
 
   Login(name: string, password: string) {
