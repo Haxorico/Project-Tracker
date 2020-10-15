@@ -44,8 +44,6 @@ export class TaskNewComponent implements OnInit {
   onSubmitButtonClicked() {
     const index = this.newTaskForm.value.project;
     const projID = this.Projects[index].id;
-    console.log(this.newTaskForm.value.worker);
-    console.log(this.newTaskForm.value.reporter);
     this.taskService.NewTask({
       name: this.newTaskForm.value.name,
       project_id: projID,

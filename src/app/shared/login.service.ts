@@ -4,9 +4,8 @@ import { User } from '../users/user.model';
 import * as _ from "lodash";
 import {Md5} from 'ts-md5/dist/md5';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
+
 export class LoginService {
   allUsers : User[];
   constructor(private userService: UserService) {

@@ -6,4 +6,4 @@ import { ErrorHandlerModule } from "./error-handler.module";
   declarations: [],
   imports: [CommonModule, ErrorHandlerModule]
 })
-export class ErrorModule {}
+export class ErrorModule { }

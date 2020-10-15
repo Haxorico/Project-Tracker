@@ -8,18 +8,15 @@ import * as _ from "lodash";
 
 import { User } from '../users/user.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 
 export class UserService {
-  //private users: User[] = [];
   guest: User = new User({ name: "Guest", rank: 0 });
   private user: User = this.guest;
-  UsersChanged = new Subject<{action: string, user : User}>();
+  UsersChanged = new Subject<{ action: string, user: User }>();
   userLogedChanged = new Subject<void>();
 
-  private REST_API_SERVER = "I AM ERROR";//"http://localhost:9000/users/";
+  private REST_API_SERVER = "http://localhost:9000/users/";
 
   constructor(private httpClient: HttpClient) { }
 
@@ -41,23 +38,23 @@ export class UserService {
   }
 
   private getDBUsers() {
-    return this.httpClient
-      .get(this.REST_API_SERVER)
-      .pipe(
-        map((responseData: { [key: string]: User }) => {
-          const tempArray = [];
-          for (const key in responseData) {
-            if (responseData.hasOwnProperty(key)) {
-              tempArray.push(this.ObjectToUser({ ...responseData[key] }));
-            }
+    return this.httpClient.get(this.REST_API_SERVER).pipe(
+      map((responseData: { [key: string]: User }) => {
+        const tempArray = [];
+        for (const key in responseData) {
+          if (responseData.hasOwnProperty(key)) {
+            tempArray.push(this.ObjectToUser({ ...responseData[key] }));
           }
-          return tempArray;
-        }));
+        }
+        return tempArray;
+      }));
   }
+
   private delDBUser(user: User) {
     const url = this.REST_API_SERVER + user.id;
     return this.httpClient.delete(url);
   }
+
   private addDBUser(userToAdd: User) {
     return this.httpClient.post(this.REST_API_SERVER, userToAdd);
   }
@@ -76,21 +73,20 @@ export class UserService {
     return this.getDBUserById(userID);
   }
 
-  public AddUser(userToAdd: User){
+  public AddUser(userToAdd: User) {
     this.addDBUser(userToAdd).subscribe();
-    this.UsersChanged.next({action : "Created", user : userToAdd});
+    this.UsersChanged.next({ action: "Created", user: userToAdd });
   }
+
   public UpdateUser(userToUpdate: User) {
     this.updateDBUser(userToUpdate).subscribe();
-    this.UsersChanged.next({action : "Updated", user : userToUpdate});
+    this.UsersChanged.next({ action: "Updated", user: userToUpdate });
   }
 
   public DeleteUser(userToDelete: User) {
     this.delDBUser(userToDelete).subscribe();
-    this.UsersChanged.next({action : "Deleted", user : userToDelete});
+    this.UsersChanged.next({ action: "Deleted", user: userToDelete });
   }
-
-  
 
   public GetCurrentUser() {
     return this.user;
