@@ -12,8 +12,6 @@ export class GlobalErrorHandler implements ErrorHandler {
   };
   
   this.alertService.error('Undefined client error',options);
-    /* this.errorDialogService.openDialog(
-      error.message || "Undefined client error"
-    ); */
+    
   }
 }

@@ -10,16 +10,13 @@ import { ProjectService } from './project.service';
 import { User } from '../users/user.model';
 import { UserService } from './user.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
+
 export class TaskService {
   public TaskChanged = new Subject<{action : string, task : Task}>();
   private REST_API_SERVER = "http://localhost:9000/tasks/";
 
-  constructor(private httpClient: HttpClient,
-    private userService: UserService,
-    private projectService: ProjectService) {}
+  constructor(private httpClient: HttpClient) {}
 
   public NewTask(obj) {
     obj.id = uuidv4();
@@ -29,9 +26,11 @@ export class TaskService {
   public ObjectToTask(obj) {
     return new Task(obj);
   }
+
   private dbAddTask(taskToAdd){
     return this.httpClient.post(this.REST_API_SERVER, taskToAdd);
   }
+
   private dbGetAllTasks() {
     return this.httpClient
       .get(this.REST_API_SERVER)
@@ -53,6 +52,7 @@ export class TaskService {
       return this.ObjectToTask(data);
     }));
   }
+
   private dbGetTasksWithProjectId(projectID: string) {
     const url = this.REST_API_SERVER + "?project_id=" + projectID
     return this.httpClient.get(url).pipe(
@@ -66,14 +66,17 @@ export class TaskService {
         return tempArray;
       }));
   }
+
   private dbUpdateTask(taskToUpdate: Task) {
     const url: string = this.REST_API_SERVER + taskToUpdate.id;
     return this.httpClient.put(url, taskToUpdate);
   }
+
   private dbDeleteTask(taskToDelete: Task) {
     const url = this.REST_API_SERVER + taskToDelete.id;
     return this.httpClient.delete(url);
   }
+
   public GetTasks() {
     return this.dbGetAllTasks();
   }
@@ -85,14 +88,17 @@ export class TaskService {
   public GetTasksWithProjectId(projID : string){
     return this.dbGetTasksWithProjectId(projID);
   }
+
   public AddTask(taskToAdd : Task){
     this.dbAddTask(taskToAdd).subscribe();
     this.TaskChanged.next({action: "Created", task : taskToAdd});
   }
+
   public UpdateTask(taskToUpdate: Task) {
     this.dbUpdateTask(taskToUpdate).subscribe();
     this.TaskChanged.next({action: "Updated", task : taskToUpdate});
   }
+
   public DeleteTask(taskToDelete: Task) {
     this.dbDeleteTask(taskToDelete).subscribe();
     this.TaskChanged.next({action: "Deleted", task : taskToDelete});

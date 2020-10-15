@@ -26,12 +26,9 @@ import {
       return next.handle(request).pipe(
         catchError((error: HttpErrorResponse) => {
           this.alertService.error('Error from error interceptor',options);
-          /* console.error("Error from error interceptor", error); */
-          //this.errorDialogService.openDialog(error.message ?? JSON.stringify(error), error.status);
           return throwError(error);
         }),
         finalize(() => {
-          //this.loadingDialogService.hideDialog();
         })
       ) as Observable<HttpEvent<any>>;
     }
