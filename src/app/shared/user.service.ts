@@ -38,7 +38,10 @@ export class UserService {
   }
 
   private getDBUsers() {
-    return this.httpClient.get(this.REST_API_SERVER).pipe(
+    const token = localStorage.getItem("token");
+    const url = this.REST_API_SERVER + "?token=" + token;
+    console.log(token);
+    return this.httpClient.get(url).pipe(
       map((responseData: { [key: string]: User }) => {
         const tempArray = [];
         for (const key in responseData) {
@@ -65,12 +68,7 @@ export class UserService {
     return this.httpClient.put(url, userToUpdate);
   }
 
-  private dbLoginUser(username : string, pw : string){
-    const url = this.REST_API_SERVER + "login";
-    const obj = {name : username, password : pw};
-    return this.httpClient.post(url, obj);
-  }
-
+  
   public GetUsers() {
     return this.getDBUsers();
   }
@@ -84,9 +82,7 @@ export class UserService {
     this.UsersChanged.next({ action: "Created", user: userToAdd });
   }
 
-  public LoginUser(name,password){
-    return this.dbLoginUser(name, password);
-  }
+  
   public UpdateUser(userToUpdate: User) {
     this.updateDBUser(userToUpdate).subscribe();
     this.UsersChanged.next({ action: "Updated", user: userToUpdate });
