@@ -20,14 +20,22 @@ export class ProjectService {
     obj.id = uuidv4();
     this.AddProject(new Project(obj));
   }
-
+  private addToken(url : string) : string{
+    const token = localStorage.getItem("token");
+    let val = "?token=" + token;
+    if (url.includes("?")){
+      val = "&token=" + token;
+    }
+    return url  + val;
+  }
   public ObjectToProject(obj) {
     return new Project(obj);
   }
 
   private dbGetAllProjects() {
+    const url = this.addToken(this.REST_API_SERVER);
     return this.httpClient
-      .get(this.REST_API_SERVER)
+      .get(url)
       .pipe(
         map((responseData: { [key: string]: Project }) => {
           const tempArray = [];
@@ -41,14 +49,14 @@ export class ProjectService {
   }
 
   private dbGetPorjectById(projectID: string) {
-    const url = this.REST_API_SERVER + projectID
+    const url = this.addToken(this.REST_API_SERVER + projectID);
     return this.httpClient.get(url).pipe(map(data => {
       return this.ObjectToProject(data);
     }));
   }
 
   private dbGetProjectsWithUserId(userID: string) {
-    const url = this.REST_API_SERVER + "?team_members_ids=" + userID
+    const url = this.addToken(this.REST_API_SERVER + "?team_members_ids=" + userID);
     return this.httpClient.get(url).pipe(
       map((responseData: { [key: string]: Project }) => {
         const tempArray = [];
@@ -62,7 +70,8 @@ export class ProjectService {
   }
 
   private dbAddProject(projectToAdd) {
-    return this.httpClient.post(this.REST_API_SERVER, projectToAdd);
+    const url = this.addToken(this.REST_API_SERVER);
+    return this.httpClient.post(url, projectToAdd);
   }
 
   private dbUpdateProject(projectToUpdate: Project) {

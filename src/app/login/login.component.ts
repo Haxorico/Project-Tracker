@@ -29,18 +29,22 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/']);
     }
   }
-  onSubmitButtonClicked() {
+  async onSubmitButtonClicked() {
     const options = {
       autoClose: true,
       keepAfterRouteChange: false
     };
     const name = this.loginForm.value.name;
     const pw = this.loginForm.value.password;
-    if (this.loginService.Login(name, pw)) {
-      this.router.navigate(['/']);
-      this.alertService.success("Login Success", options);
-    }
-    else
-      this.alertService.error('Wrong username or password', options);
+    await this.loginService.Login(name, pw).then(data => {
+      if (data) {
+        this.router.navigate(['/']);
+        this.alertService.success("Login Success", options);
+      }
+      else
+        this.alertService.error("Login error", options);
+    }).catch(err => {
+      this.alertService.error(err, options);
+    });
   }
 }

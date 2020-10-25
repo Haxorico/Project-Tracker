@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import * as _ from "lodash";
+import { map } from 'rxjs/operators';
+
 import { UserService } from './user.service';
 import { User } from '../users/user.model';
 
@@ -15,35 +16,42 @@ export class LoginService {
     });
   }
 
-  private REST_API_SERVER = "http://localhost:9000/users/";
+  private REST_API_SERVER = "http://localhost:9000/login/";
 
 
   private dbLoginUser(username: string, pw: string) {
-    const url = this.REST_API_SERVER + "login";
+    const url = this.REST_API_SERVER;
     const obj = { name: username, password: pw };
     return this.httpClient.post(url, obj);
   }
 
+  private dbFetchUserByToken(token: string) {
+    const url = this.REST_API_SERVER + token;
+    return this.httpClient.get(url).pipe(map(res => {
+      return this.userService.ObjectToUser(res.data);
+    }));
+  }
 
 
   Login(name: string, password: string) {
-    name = name.toLowerCase();
-    //#TODO currently it returns the user. Change to token and user?
-    return this.dbLoginUser(name, password).subscribe(data => {
-      if (data) {
-        const user = this.userService.ObjectToUser(data.user);
-        const token = data.token;
-        console.log(token);
-        //save token to local storage
-        localStorage.clear();
-        localStorage.setItem("token", token);
-        this.userService.SetCurrentUser(user);
-        return true;
-      }
-      else {
-        
-        return false;
-      }
+    return new Promise((resolve, reject) => {
+      name = name.toLowerCase();
+      //#TODO currently it returns the user. Change to token and user?
+      //#ASK_ALEX => Why are errors showing.
+      this.dbLoginUser(name, password).subscribe(data => {
+        if (data.err) {
+          //#ASK_ALEX - why wont reject end the function? tried reject(false) and return afterwards.
+          resolve(false);
+        }
+        else {
+          const user = this.userService.ObjectToUser(data.user);
+          const token = data.token;
+          localStorage.clear();
+          localStorage.setItem("token", token);
+          this.userService.SetCurrentUser(user);
+          resolve(true);
+        }
+      });
     });
   }
 
@@ -52,6 +60,13 @@ export class LoginService {
   }
 
   Logout() {
+    localStorage.clear();
     this.userService.SetCurrentUser(this.userService.GetGuestUser());
+  }
+
+  AutoLogin(token) {
+    this.dbFetchUserByToken(token).subscribe(data => {
+      this.userService.SetCurrentUser(data);
+    });
   }
 }

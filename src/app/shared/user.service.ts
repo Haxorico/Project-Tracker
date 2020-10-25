@@ -25,22 +25,27 @@ export class UserService {
     obj.id = uuidv4()
     this.AddUser(new User(obj));
   }
-
+  private addToken(url : string) : string{
+    const token = localStorage.getItem("token");
+    let val = "?token=" + token;
+    if (url.includes("?")){
+      val = "&token=" + token;
+    }
+    return url  + val;
+  }
   public ObjectToUser(obj) {
     return new User(obj);
   }
 
   private getDBUserById(userID: string) {
-    const url = this.REST_API_SERVER + userID
+    const url = this.addToken(this.REST_API_SERVER + userID);
     return this.httpClient.get(url).pipe(map(userData => {
       return this.ObjectToUser(userData);
     }));
   }
 
   private getDBUsers() {
-    const token = localStorage.getItem("token");
-    const url = this.REST_API_SERVER + "?token=" + token;
-    console.log(token);
+    const url = this.addToken(this.REST_API_SERVER);
     return this.httpClient.get(url).pipe(
       map((responseData: { [key: string]: User }) => {
         const tempArray = [];
@@ -54,17 +59,17 @@ export class UserService {
   }
 
   private delDBUser(user: User) {
-    const url = this.REST_API_SERVER + user.id;
+    const url = this.addToken(this.REST_API_SERVER + user.id);
     return this.httpClient.delete(url);
   }
 
   private addDBUser(userToAdd: User) {
-    return this.httpClient.post(this.REST_API_SERVER, userToAdd);
+    const url = this.addToken(this.REST_API_SERVER);
+    return this.httpClient.post(url, userToAdd);
   }
 
   private updateDBUser(userToUpdate: User) {
-
-    const url: string = this.REST_API_SERVER + userToUpdate.id;
+    const url: string = this.addToken(this.REST_API_SERVER + userToUpdate.id);
     return this.httpClient.put(url, userToUpdate);
   }
 
@@ -84,12 +89,16 @@ export class UserService {
 
   
   public UpdateUser(userToUpdate: User) {
-    this.updateDBUser(userToUpdate).subscribe();
+    this.updateDBUser(userToUpdate).subscribe(data => {
+      
+    });
     this.UsersChanged.next({ action: "Updated", user: userToUpdate });
   }
 
   public DeleteUser(userToDelete: User) {
-    this.delDBUser(userToDelete).subscribe();
+    this.delDBUser(userToDelete).subscribe(data => {
+      
+    });
     this.UsersChanged.next({ action: "Deleted", user: userToDelete });
   }
 

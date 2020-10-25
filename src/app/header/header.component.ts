@@ -20,6 +20,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.userSub = this.userService.userLogedChanged.subscribe(() => {
       this.loggedUser = this.userService.GetCurrentUser();
     });
+    //#ASK_ALEX - Should auto-login be here? Is that okay?
+    const token = localStorage.getItem("token");
+    if (token){
+      this.loginService.AutoLogin(token);
+    }
    }
 
   ngOnDestroy() {
