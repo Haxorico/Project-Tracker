@@ -10,30 +10,40 @@ import { ProjectService } from './project.service';
 import { User } from '../users/user.model';
 import { UserService } from './user.service';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 
 export class TaskService {
-  public TaskChanged = new Subject<{action : string, task : Task}>();
+  public TaskChanged = new Subject<{ action: string, task: Task }>();
   private REST_API_SERVER = "http://localhost:9000/tasks/";
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   public NewTask(obj) {
     obj.id = uuidv4();
     this.AddTask(new Task(obj));
   }
 
+  private addToken(url : string) : string{
+    const token = localStorage.getItem("token");
+    let val = "?token=" + token;
+    if (url.includes("?")){
+      val = "&token=" + token;
+    }
+    return url  + val;
+  }
   public ObjectToTask(obj) {
     return new Task(obj);
   }
 
-  private dbAddTask(taskToAdd){
-    return this.httpClient.post(this.REST_API_SERVER, taskToAdd);
+  private dbAddTask(taskToAdd) {
+    const url = this.addToken(this.REST_API_SERVER);
+    return this.httpClient.post(url, taskToAdd);
   }
 
   private dbGetAllTasks() {
+    const url = this.addToken(this.REST_API_SERVER);
     return this.httpClient
-      .get(this.REST_API_SERVER)
+      .get(url)
       .pipe(
         map((responseData: { [key: string]: Task }) => {
           const tempArray = [];
@@ -46,15 +56,15 @@ export class TaskService {
         }));
   }
 
-  private dbGetTaskById(taskID : string){
-    const url = this.REST_API_SERVER + taskID
-    return this.httpClient.get(url).pipe(map(data =>{
+  private dbGetTaskById(taskID: string) {
+    const url = this.addToken(this.REST_API_SERVER + taskID);
+    return this.httpClient.get(url).pipe(map(data => {
       return this.ObjectToTask(data);
     }));
   }
 
   private dbGetTasksWithProjectId(projectID: string) {
-    const url = this.REST_API_SERVER + "?project_id=" + projectID
+    const url = this.addToken(this.REST_API_SERVER + "?project_id=" + projectID);
     return this.httpClient.get(url).pipe(
       map((responseData: { [key: string]: Task }) => {
         const tempArray = [];
@@ -68,12 +78,12 @@ export class TaskService {
   }
 
   private dbUpdateTask(taskToUpdate: Task) {
-    const url: string = this.REST_API_SERVER + taskToUpdate.id;
+    const url = this.addToken(this.REST_API_SERVER + taskToUpdate.id);
     return this.httpClient.put(url, taskToUpdate);
   }
 
   private dbDeleteTask(taskToDelete: Task) {
-    const url = this.REST_API_SERVER + taskToDelete.id;
+    const url = this.addToken(this.REST_API_SERVER + taskToDelete.id);
     return this.httpClient.delete(url);
   }
 
@@ -84,23 +94,23 @@ export class TaskService {
   public GetTaskById(taskID: string) {
     return this.dbGetTaskById(taskID);
   }
-  
-  public GetTasksWithProjectId(projID : string){
+
+  public GetTasksWithProjectId(projID: string) {
     return this.dbGetTasksWithProjectId(projID);
   }
 
-  public AddTask(taskToAdd : Task){
+  public AddTask(taskToAdd: Task) {
     this.dbAddTask(taskToAdd).subscribe();
-    this.TaskChanged.next({action: "Created", task : taskToAdd});
+    this.TaskChanged.next({ action: "Created", task: taskToAdd });
   }
 
   public UpdateTask(taskToUpdate: Task) {
     this.dbUpdateTask(taskToUpdate).subscribe();
-    this.TaskChanged.next({action: "Updated", task : taskToUpdate});
+    this.TaskChanged.next({ action: "Updated", task: taskToUpdate });
   }
 
   public DeleteTask(taskToDelete: Task) {
     this.dbDeleteTask(taskToDelete).subscribe();
-    this.TaskChanged.next({action: "Deleted", task : taskToDelete});
+    this.TaskChanged.next({ action: "Deleted", task: taskToDelete });
   }
 }
