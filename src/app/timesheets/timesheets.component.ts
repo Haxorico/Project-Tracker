@@ -13,6 +13,7 @@ import * as _ from "lodash";
   templateUrl: './timesheets.component.html',
   styleUrls: ['./timesheets.component.css']
 })
+
 export class TimesheetsComponent implements OnInit {
   projects: Project[] = [];
   tasks: Task[] = [];
@@ -23,6 +24,7 @@ export class TimesheetsComponent implements OnInit {
     private userService: UserService) { }
 
   ngOnInit(): void {
+  
     this.projectService.GetProjects().subscribe(projects => {
       this.projects = projects;
     })

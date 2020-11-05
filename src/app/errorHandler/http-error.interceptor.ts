@@ -22,9 +22,13 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       autoClose: true,
       keepAfterRouteChange: false
     };
-    //this.loadingDialogService.openDialog();
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
+        if (error.status == 401) {
+          return throwError(error);
+        }
+        //#DEBUG This part is only to ctach un handled errors. Will be delete by production stage
+        console.log("http-error-interceptor.ts", error);
         this.alertService.error('Error from error interceptor', options);
         return throwError(error);
       }),

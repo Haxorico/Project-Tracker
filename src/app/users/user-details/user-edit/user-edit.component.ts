@@ -5,7 +5,7 @@ import { User } from '../../user.model';
 import { Project } from 'src/app/projects/project.model';
 import { UserService } from '../../../shared/user.service';
 import { ProjectService } from '../../../shared/project.service';
-import {Md5} from 'ts-md5/dist/md5';
+import { Md5 } from 'ts-md5/dist/md5';
 
 @Component({
   selector: 'app-user-edit',
@@ -33,12 +33,12 @@ export class UserEditComponent implements OnInit {
         const id = params['id'];
         this.userService.GetUserById(id).subscribe(user => {
           this.userBeingEdited = user;
-          this.ProjectService.GetProjectsWithUserId(user.id).subscribe(projects=>{
+          this.ProjectService.GetProjectsWithUserId(user.id).subscribe((projects: any) => {
             this.userProjects = projects;
           });
-        }); 
+        });
       })
-      this.loggedUser = this.userService.GetCurrentUser();
+    this.loggedUser = this.userService.GetCurrentUser();
   }
   onSubmitButtonClicked() {
     let rank = this.editForm.value.rank;
@@ -46,11 +46,11 @@ export class UserEditComponent implements OnInit {
     if (this.userBeingEdited.rank > this.loggedUser.rank) {
       this.router.navigate(['../../'], { relativeTo: this.route })
       return;
-    } 
+    }
     // make sure you cant give someone a higher rank than you posses
     if (rank > this.loggedUser.rank)
       rank = this.userBeingEdited.rank;
-      
+
     this.userBeingEdited.name = this.editForm.value.name;
     this.userBeingEdited.password = Md5.hashStr(this.editForm.value.password).toString();
     this.userBeingEdited.photo = this.editForm.value.photo;

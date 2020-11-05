@@ -43,7 +43,7 @@ export class TaskDetailsComponent implements OnInit {
           
         this.userService.GetUserById(task.reporter_id).subscribe(user => {
           this.reporter = user;
-        });
+        }); 
       });
     });
     this.loggedUser = this.userService.GetCurrentUser();

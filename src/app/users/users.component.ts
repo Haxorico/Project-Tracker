@@ -22,9 +22,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.currentUser = this.userService.GetCurrentUser();
 
-    this.userService.GetUsers().subscribe(users => {
+        this.userService.GetUsers().subscribe(users => {
       this.usersToShow = users;
-    });
+    }); 
     
     this.userSub = this.userService.UsersChanged.subscribe(({ action, user }) => {
       //check if user was created.
@@ -63,7 +63,6 @@ export class UsersComponent implements OnInit, OnDestroy {
         user.name.toLowerCase().includes(val) ||
         user.skype.toLowerCase().includes(val)
       ));
-    });
+    }); 
   }
-
 }

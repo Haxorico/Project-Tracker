@@ -1,22 +1,18 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as _ from "lodash";
 import { v4 as uuidv4 } from 'uuid';
 import { Task } from '../tasks/task.model';
-import { Project } from '../projects/project.model';
-import { ProjectService } from './project.service';
-import { User } from '../users/user.model';
-import { UserService } from './user.service';
+import { WebService } from './webService';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 
 export class TaskService {
-  public TaskChanged = new Subject<{action : string, task : Task}>();
-  private REST_API_SERVER = "http://localhost:9000/tasks/";
+  public TaskChanged = new Subject<{ action: string, task: Task }>();
+  private ENT_NAME = "tasks/";
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private webService: WebService) { }
 
   public NewTask(obj) {
     obj.id = uuidv4();
@@ -27,80 +23,43 @@ export class TaskService {
     return new Task(obj);
   }
 
-  private dbAddTask(taskToAdd){
-    return this.httpClient.post(this.REST_API_SERVER, taskToAdd);
-  }
-
-  private dbGetAllTasks() {
-    return this.httpClient
-      .get(this.REST_API_SERVER)
-      .pipe(
-        map((responseData: { [key: string]: Task }) => {
-          const tempArray = [];
-          for (const key in responseData) {
-            if (responseData.hasOwnProperty(key)) {
-              tempArray.push(this.ObjectToTask({ ...responseData[key] }));
-            }
-          }
-          return tempArray;
-        }));
-  }
-
-  private dbGetTaskById(taskID : string){
-    const url = this.REST_API_SERVER + taskID
-    return this.httpClient.get(url).pipe(map(data =>{
-      return this.ObjectToTask(data);
+  public GetTasks() {
+    return this.webService.GetDataArray(this.ENT_NAME).pipe(map((rawData: any) => {
+      const data = rawData.map(taskRawData => this.ObjectToTask(taskRawData));
+      return data;
     }));
   }
 
-  private dbGetTasksWithProjectId(projectID: string) {
-    const url = this.REST_API_SERVER + "?project_id=" + projectID
-    return this.httpClient.get(url).pipe(
-      map((responseData: { [key: string]: Task }) => {
-        const tempArray = [];
-        for (const key in responseData) {
-          if (responseData.hasOwnProperty(key)) {
-            tempArray.push(this.ObjectToTask({ ...responseData[key] }));
-          }
-        }
-        return tempArray;
-      }));
-  }
-
-  private dbUpdateTask(taskToUpdate: Task) {
-    const url: string = this.REST_API_SERVER + taskToUpdate.id;
-    return this.httpClient.put(url, taskToUpdate);
-  }
-
-  private dbDeleteTask(taskToDelete: Task) {
-    const url = this.REST_API_SERVER + taskToDelete.id;
-    return this.httpClient.delete(url);
-  }
-
-  public GetTasks() {
-    return this.dbGetAllTasks();
-  }
-
   public GetTaskById(taskID: string) {
-    return this.dbGetTaskById(taskID);
-  }
-  
-  public GetTasksWithProjectId(projID : string){
-    return this.dbGetTasksWithProjectId(projID);
+    return this.webService.GetData(this.ENT_NAME, "", "", taskID).pipe(map((rawData: any) => {
+      const taskData = this.ObjectToTask(rawData);
+      return taskData;
+    }));
   }
 
-  public AddTask(taskToAdd : Task){
-    this.dbAddTask(taskToAdd).subscribe();
-    this.TaskChanged.next({action: "Created", task : taskToAdd});
+  public GetTasksWithProjectId(projID: string) {
+    return this.webService.GetDataArray(this.ENT_NAME, "project_id", projID).pipe(map((rawData: any) => {
+      const data = rawData.map(taskRawData => this.ObjectToTask(taskRawData));
+      return data;
+    }));
+  }
+
+
+  public AddTask(taskToAdd) {
+    this.webService.AddData(this.ENT_NAME, taskToAdd).subscribe(data => {
+      this.TaskChanged.next({ action: "Created", task: taskToAdd });
+    });
   }
 
   public UpdateTask(taskToUpdate: Task) {
-    this.dbUpdateTask(taskToUpdate).subscribe();
-    this.TaskChanged.next({action: "Updated", task : taskToUpdate});
+    this.webService.UpdateData(this.ENT_NAME, taskToUpdate).subscribe(data => {
+      this.TaskChanged.next({ action: "Updated", task: taskToUpdate });
+    });
   }
 
   public DeleteTask(taskToDelete: Task) {
-    this.dbDeleteTask(taskToDelete).subscribe();
-    this.TaskChanged.next({action: "Deleted", task : taskToDelete});
+    this.webService.DeleteData(this.ENT_NAME, "", "", taskToDelete.id).subscribe(data => {
+      this.TaskChanged.next({ action: "Deleted", task: taskToDelete });
+    });
   }
 }

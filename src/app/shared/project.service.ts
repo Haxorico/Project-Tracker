@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Project } from '../projects/project.model';
-import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as _ from "lodash";
 import { v4 as uuidv4 } from 'uuid';
+import { WebService } from './webService';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +12,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class ProjectService {
   ProjectChanged = new Subject<{ action: string, project: Project }>();
-  private REST_API_SERVER = "http://localhost:9000/projects/";
 
-  constructor(private httpClient: HttpClient) { }
+  private ENT_NAME = "projects/";
+
+  constructor(private webService: WebService) { }
 
   AddNewProject(obj) {
     obj.id = uuidv4();
@@ -25,81 +26,43 @@ export class ProjectService {
     return new Project(obj);
   }
 
-  private dbGetAllProjects() {
-    return this.httpClient
-      .get(this.REST_API_SERVER)
-      .pipe(
-        map((responseData: { [key: string]: Project }) => {
-          const tempArray = [];
-          for (const key in responseData) {
-            if (responseData.hasOwnProperty(key)) {
-              tempArray.push(this.ObjectToProject({ ...responseData[key] }));
-            }
-          }
-          return tempArray;
-        }));
-  }
-
-  private dbGetPorjectById(projectID: string) {
-    const url = this.REST_API_SERVER + projectID
-    return this.httpClient.get(url).pipe(map(data => {
-      return this.ObjectToProject(data);
+  public GetProjects() {
+    return this.webService.GetDataArray(this.ENT_NAME).pipe(map((rawData: any) => {
+      const data = rawData.map(projectRawData => this.ObjectToProject(projectRawData));
+      return data;
     }));
   }
 
-  private dbGetProjectsWithUserId(userID: string) {
-    const url = this.REST_API_SERVER + "?team_members_ids=" + userID
-    return this.httpClient.get(url).pipe(
-      map((responseData: { [key: string]: Project }) => {
-        const tempArray = [];
-        for (const key in responseData) {
-          if (responseData.hasOwnProperty(key)) {
-            tempArray.push(this.ObjectToProject({ ...responseData[key] }));
-          }
-        }
-        return tempArray;
-      }));
-  }
-
-  private dbAddProject(projectToAdd) {
-    return this.httpClient.post(this.REST_API_SERVER, projectToAdd);
-  }
-
-  private dbUpdateProject(projectToUpdate: Project) {
-    const url: string = this.REST_API_SERVER + projectToUpdate.id;
-    return this.httpClient.put(url, projectToUpdate);
-  }
-
-  private dbDeleteProject(projectToDelete: Project) {
-    const url = this.REST_API_SERVER + projectToDelete.id;
-    return this.httpClient.delete(url);
-  }
-
-  public GetProjects() {
-    return this.dbGetAllProjects();
-  }
-
   public GetProjectById(id: string) {
-    return this.dbGetPorjectById(id);
+    return this.webService.GetData(this.ENT_NAME, "", "", id).pipe(map((rawData: any) => {
+      const projectData = this.ObjectToProject(rawData);
+      return projectData;
+    }));
   }
 
   public GetProjectsWithUserId(userID: string) {
-    return this.dbGetProjectsWithUserId(userID);
+    return this.webService.GetDataArray(this.ENT_NAME, "team_members_ids", userID).pipe(map((rawData: any) => {
+      const projectData = this.ObjectToProject(rawData);
+      return projectData;
+    }));
   }
 
   public AddProject(projectToAdd) {
-    this.dbAddProject(projectToAdd).subscribe();
-    this.ProjectChanged.next({ action: "Created", project: projectToAdd });
+    this.webService.AddData(this.ENT_NAME, projectToAdd).subscribe(data => {
+      this.ProjectChanged.next({ action: "Created", project: projectToAdd });
+    });
   }
 
   public UpdateProject(projectToUpdate: Project) {
-    this.dbUpdateProject(projectToUpdate).subscribe();
-    this.ProjectChanged.next({ action: "Updated", project: projectToUpdate });
+    this.webService.UpdateData(this.ENT_NAME, projectToUpdate).subscribe(data => {
+      this.ProjectChanged.next({ action: "Updated", project: projectToUpdate });
+    });
   }
 
   public DeleteProject(projectToDelete: Project) {
-    this.dbDeleteProject(projectToDelete).subscribe();
-    this.ProjectChanged.next({ action: "Deleted", project: projectToDelete });
+    this.webService.DeleteData(this.ENT_NAME, "", "", projectToDelete.id).subscribe(data => {
+      this.ProjectChanged.next({ action: "Deleted", project: projectToDelete });
+    });
   }
 
 }
