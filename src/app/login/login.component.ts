@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { User } from '../users/user.model';
 import { Router } from '@angular/router';
+import { User } from '../users/user.model';
+import { UserService } from '../shared/user.service';
 import { LoginService } from '../shared/login.service';
 import { AlertService } from '../_alert';
 
@@ -12,9 +13,9 @@ import { AlertService } from '../_alert';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  
+
   @ViewChild('f', { static: false }) loginForm: NgForm;
-  
+ 
   loginUser : User;
   loginMessage : string;
   constructor(private loginService : LoginService,
@@ -27,11 +28,11 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/']);
     } */
   }
-  onSubmitButtonClicked() {
+  async onSubmitButtonClicked() {
     const options = {
       autoClose: true,
-    keepAfterRouteChange: false
-  };
+      keepAfterRouteChange: false
+    };
     const name = this.loginForm.value.name;
     const pw = this.loginForm.value.password;
     this.loginService.Login(name, pw).subscribe(data => {

@@ -21,7 +21,14 @@ export class ProjectService {
     obj.id = uuidv4();
     this.AddProject(new Project(obj));
   }
-
+  private addToken(url : string) : string{
+    const token = localStorage.getItem("token");
+    let val = "?token=" + token;
+    if (url.includes("?")){
+      val = "&token=" + token;
+    }
+    return url  + val;
+  }
   public ObjectToProject(obj) {
     return new Project(obj);
   }

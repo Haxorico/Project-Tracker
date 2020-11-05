@@ -52,7 +52,9 @@ export class UserService {
     });
   }
 
+  
   public UpdateUser(userToUpdate: User) {
+
     this.webService.UpdateData(this.ENT_NAME, userToUpdate).subscribe(data => {
       this.UsersChanged.next({ action: "Updated", user: userToUpdate });
     });
@@ -62,6 +64,7 @@ export class UserService {
     this.webService.DeleteData(this.ENT_NAME, "", "", userToDelete.id).subscribe(data => {
       this.UsersChanged.next({ action: "Deleted", user: userToDelete });
     });
+
   }
 
   public GetCurrentUser() {
