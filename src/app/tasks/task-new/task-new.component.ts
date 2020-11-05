@@ -30,12 +30,12 @@ export class TaskNewComponent implements OnInit {
     });
   }
 
-  onProjectChanged(index : number){
+  onProjectChanged(index: number) {
     const selected_project = this.Projects[index];
     //load team members
     this.Members = [];
     selected_project.team_members_ids.forEach(member => {
-      this.userService.GetUserById(member).subscribe(data =>{
+      this.userService.GetUserById(member).subscribe(data => {
         this.Members.push(data);
       });
     });
@@ -50,8 +50,8 @@ export class TaskNewComponent implements OnInit {
       status: this.newTaskForm.value.status,
       type: this.newTaskForm.value.type,
       estimate: this.newTaskForm.value.estimate,
-      worker_id : this.newTaskForm.value.worker,
-      reporter_id : this.newTaskForm.value.reporter,
+      worker_id: this.newTaskForm.value.worker,
+      reporter_id: this.newTaskForm.value.reporter,
       start_date: this.newTaskForm.value.start_date,
       end_date: this.newTaskForm.value.end_date,
       description: this.newTaskForm.value.description

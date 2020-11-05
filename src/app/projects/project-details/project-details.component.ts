@@ -32,6 +32,7 @@ export class ProjectDetailsComponent implements OnInit {
 
     this.route.params.subscribe(
       (params: Params) => {
+        
         this.userService.GetUsers().subscribe(users => {
           this.freeUsers = users;
         });
@@ -44,9 +45,10 @@ export class ProjectDetailsComponent implements OnInit {
             this.tasks = data;
           });
           project.team_members_ids.forEach(id => {
-            this.userService.GetUserById(id).subscribe(member => {
+            
+        this.userService.GetUserById(id).subscribe(member => {
               this.teamUsers.push(member);
-            });
+            }); 
             const index = _.findIndex(this.freeUsers, user => user.id == id);
             this.freeUsers.splice(index,1);
           });

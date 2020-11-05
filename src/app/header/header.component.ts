@@ -11,21 +11,19 @@ import { LoginService } from '../shared/login.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   userSub: Subscription;
-  loggedUser: User = this.loginService.GetGuestUser();
+  loggedUser: User = this.userService.GetGuestUser();
   constructor(private loginService: LoginService,
-    private userService: UserService)
-     { }
+    private userService: UserService) { }
 
   ngOnInit(): void {
     this.userSub = this.userService.userLogedChanged.subscribe(() => {
       this.loggedUser = this.userService.GetCurrentUser();
     });
-    //#ASK_ALEX - Should auto-login be here? Is that okay?
-    const token = localStorage.getItem("token");
-    if (token){
-      this.loginService.AutoLogin(token);
+   const token = localStorage.getItem("token");
+    if (token) {
+      this.loginService.AutoLogin();
     }
-   }
+  }
 
   ngOnDestroy() {
     this.userSub.unsubscribe();

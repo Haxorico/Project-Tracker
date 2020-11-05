@@ -17,12 +17,12 @@ export class UserDetailsComponent implements OnInit {
 
   @ViewChild('skill', { static: false }) skill;
   constructor(private userService: UserService,
-    private projectService : ProjectService,
+    private projectService: ProjectService,
     private route: ActivatedRoute,
-    private router: Router) {  }
+    private router: Router) { }
 
   ngOnInit(): void {
-    
+
     this.shownUser = this.userService.GetGuestUser();
     this.loggedUser = this.userService.GetCurrentUser();
     this.route.params.subscribe(
@@ -30,7 +30,7 @@ export class UserDetailsComponent implements OnInit {
         const id = params['id'];
         this.userService.GetUserById(id).subscribe(user => {
           this.shownUser = user;
-          this.projectService.GetProjectsWithUserId(user.id).subscribe(projects=>{
+          this.projectService.GetProjectsWithUserId(user.id).subscribe((projects: any) => {
             this.shownUserProjects = projects;
           });
         });

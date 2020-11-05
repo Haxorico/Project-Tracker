@@ -32,7 +32,8 @@ export class ProjectEditComponent implements OnInit {
         const id = params['id'];
         this.projectService.GetProjectById(id).subscribe(project => {
           this.project = project;
-          this.userService.GetUsers().subscribe(data => {
+          
+        this.userService.GetUsers().subscribe(data => {
             data.forEach(user => {
               if (_.find(this.project.team_members_ids, team_member => team_member == user.id)){
                 this.teamUsers.push(user);
@@ -41,7 +42,7 @@ export class ProjectEditComponent implements OnInit {
                 this.freeUsers.push(user);
               }
             });
-          });
+          }); 
         });
       })
   }

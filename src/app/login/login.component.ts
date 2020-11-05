@@ -15,19 +15,18 @@ import { AlertService } from '../_alert';
 export class LoginComponent implements OnInit {
 
   @ViewChild('f', { static: false }) loginForm: NgForm;
-
-  loginUser: User;
-  loginMessage: string;
-  constructor(private loginService: LoginService,
-    private userService: UserService,
+ 
+  loginUser : User;
+  loginMessage : string;
+  constructor(private loginService : LoginService,
     private router: Router,
     protected alertService: AlertService) { }
 
   ngOnInit(): void {
-    if (this.userService.GetCurrentUser() != this.loginService.GetGuestUser()) {
+    /* if (this.userService.GetCurrentUser() != this.loginService.GetGuestUser()){
       this.loginService.Logout();
       this.router.navigate(['/']);
-    }
+    } */
   }
   async onSubmitButtonClicked() {
     const options = {
@@ -36,7 +35,16 @@ export class LoginComponent implements OnInit {
     };
     const name = this.loginForm.value.name;
     const pw = this.loginForm.value.password;
-    await this.loginService.Login(name, pw).then(data => {
+    this.loginService.Login(name, pw).subscribe(data => {
+      if (data){
+        this.router.navigate(['/']);
+        this.alertService.success("Login Success", options);
+      }
+      else{
+        this.alertService.error("Login error", options);
+      }
+    });
+    /* this.loginService.Login(name, pw).then(data => {
       if (data) {
         this.router.navigate(['/']);
         this.alertService.success("Login Success", options);
@@ -45,6 +53,6 @@ export class LoginComponent implements OnInit {
         this.alertService.error("Login error", options);
     }).catch(err => {
       this.alertService.error(err, options);
-    });
+    }); */
   }
 }

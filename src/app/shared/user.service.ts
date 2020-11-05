@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Md5 } from 'ts-md5/dist/md5';
 import { map } from 'rxjs/operators';
@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import * as _ from "lodash";
 
 import { User } from '../users/user.model';
+import { WebService } from './webService';
 
 @Injectable({ providedIn: 'root' })
 
@@ -16,90 +17,54 @@ export class UserService {
   UsersChanged = new Subject<{ action: string, user: User }>();
   userLogedChanged = new Subject<void>();
 
-  private REST_API_SERVER = "http://localhost:9000/users/";
+  private ENT_NAME = "users/";
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+    private webService: WebService) { }
 
   NewUser(obj) {
     obj.password = Md5.hashStr(obj.password).toString();
     obj.id = uuidv4()
     this.AddUser(new User(obj));
   }
-  private addToken(url : string) : string{
-    const token = localStorage.getItem("token");
-    let val = "?token=" + token;
-    if (url.includes("?")){
-      val = "&token=" + token;
-    }
-    return url  + val;
-  }
-  public ObjectToUser(obj) {
+
+  public ObjectToUser(obj): User {
     return new User(obj);
   }
 
-  private getDBUserById(userID: string) {
-    const url = this.addToken(this.REST_API_SERVER + userID);
-    return this.httpClient.get(url).pipe(map(userData => {
-      return this.ObjectToUser(userData);
+  public GetUsers() {
+    return this.webService.GetDataArray(this.ENT_NAME).pipe(map((rawData: any) => {
+      const data = rawData.map(userRawData => this.ObjectToUser(userRawData));
+      return data;
     }));
   }
 
-  private getDBUsers() {
-    const url = this.addToken(this.REST_API_SERVER);
-    return this.httpClient.get(url).pipe(
-      map((responseData: { [key: string]: User }) => {
-        const tempArray = [];
-        for (const key in responseData) {
-          if (responseData.hasOwnProperty(key)) {
-            tempArray.push(this.ObjectToUser({ ...responseData[key] }));
-          }
-        }
-        return tempArray;
-      }));
-  }
-
-  private delDBUser(user: User) {
-    const url = this.addToken(this.REST_API_SERVER + user.id);
-    return this.httpClient.delete(url);
-  }
-
-  private addDBUser(userToAdd: User) {
-    const url = this.addToken(this.REST_API_SERVER);
-    return this.httpClient.post(url, userToAdd);
-  }
-
-  private updateDBUser(userToUpdate: User) {
-    const url: string = this.addToken(this.REST_API_SERVER + userToUpdate.id);
-    return this.httpClient.put(url, userToUpdate);
-  }
-
-  
-  public GetUsers() {
-    return this.getDBUsers();
-  }
-
   public GetUserById(userID: string) {
-    return this.getDBUserById(userID);
+    return this.webService.GetData(this.ENT_NAME, "", "", userID).pipe(map((rawData: any) => {
+      const userData = this.ObjectToUser(rawData);
+      return userData;
+    }));
   }
 
   public AddUser(userToAdd: User) {
-    this.addDBUser(userToAdd).subscribe();
-    this.UsersChanged.next({ action: "Created", user: userToAdd });
+    this.webService.AddData(this.ENT_NAME, userToAdd).subscribe(data => {
+      this.UsersChanged.next({ action: "Created", user: userToAdd });
+    });
   }
 
   
   public UpdateUser(userToUpdate: User) {
-    this.updateDBUser(userToUpdate).subscribe(data => {
-      
+
+    this.webService.UpdateData(this.ENT_NAME, userToUpdate).subscribe(data => {
+      this.UsersChanged.next({ action: "Updated", user: userToUpdate });
     });
-    this.UsersChanged.next({ action: "Updated", user: userToUpdate });
   }
 
   public DeleteUser(userToDelete: User) {
-    this.delDBUser(userToDelete).subscribe(data => {
-      
+    this.webService.DeleteData(this.ENT_NAME, "", "", userToDelete.id).subscribe(data => {
+      this.UsersChanged.next({ action: "Deleted", user: userToDelete });
     });
-    this.UsersChanged.next({ action: "Deleted", user: userToDelete });
+
   }
 
   public GetCurrentUser() {
