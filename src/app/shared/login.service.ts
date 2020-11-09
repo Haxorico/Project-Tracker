@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import * as _ from "lodash";
 import { UserService } from './user.service';
 import { WebService } from './webService';
 
@@ -13,15 +11,6 @@ export class LoginService {
     private webService: WebService) { }
 
   private ENT_NAME = "login/";
-
-
-  private dbFetchUserByToken(token: string) {
-    const url = this.REST_API_SERVER + token;
-    return this.httpClient.get(url).pipe(map(res => {
-      return this.userService.ObjectToUser(res.data);
-    }));
-  }
-
 
   Login(name: string, password: string) {
     name = name.toLowerCase();
@@ -39,11 +28,9 @@ export class LoginService {
       data.ret = true;
       return data.ret;
     }));
-
   }
 
   Logout() {
-    localStorage.clear();
     this.userService.SetCurrentUser(this.userService.GetGuestUser());
     localStorage.clear();
   }
@@ -52,12 +39,6 @@ export class LoginService {
     this.webService.GetData(this.ENT_NAME).subscribe((userRawData: any) => {
       const user = this.userService.ObjectToUser(userRawData.data);
       this.userService.SetCurrentUser(user);
-    });
-  }
-
-  AutoLogin(token) {
-    this.dbFetchUserByToken(token).subscribe(data => {
-      this.userService.SetCurrentUser(data);
     });
   }
 }

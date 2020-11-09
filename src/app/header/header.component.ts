@@ -19,7 +19,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.userSub = this.userService.userLogedChanged.subscribe(() => {
       this.loggedUser = this.userService.GetCurrentUser();
     });
-   const token = localStorage.getItem("token");
+
+    const token = localStorage.getItem("token");
     if (token) {
       this.loginService.AutoLogin();
     }

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as _ from "lodash";
 import { v4 as uuidv4 } from 'uuid';
 import { Task } from '../tasks/task.model';
 import { WebService } from './webService';
@@ -10,25 +9,15 @@ import { WebService } from './webService';
 
 export class TaskService {
   public TaskChanged = new Subject<{ action: string, task: Task }>();
-
   private ENT_NAME = "tasks/";
 
   constructor(private webService: WebService) { }
-
 
   public NewTask(obj) {
     obj.id = uuidv4();
     this.AddTask(new Task(obj));
   }
 
-  private addToken(url : string) : string{
-    const token = localStorage.getItem("token");
-    let val = "?token=" + token;
-    if (url.includes("?")){
-      val = "&token=" + token;
-    }
-    return url  + val;
-  }
   public ObjectToTask(obj) {
     return new Task(obj);
   }
@@ -45,7 +34,6 @@ export class TaskService {
       const taskData = this.ObjectToTask(rawData);
       return taskData;
     }));
-
   }
 
   public GetTasksWithProjectId(projID: string) {
@@ -54,6 +42,7 @@ export class TaskService {
       return data;
     }));
   }
+
 
   public AddTask(taskToAdd) {
     this.webService.AddData(this.ENT_NAME, taskToAdd).subscribe(data => {

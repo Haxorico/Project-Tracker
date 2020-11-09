@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Project } from '../projects/project.model';
 import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import * as _ from "lodash";
 import { v4 as uuidv4 } from 'uuid';
 import { WebService } from './webService';
 
@@ -21,14 +20,7 @@ export class ProjectService {
     obj.id = uuidv4();
     this.AddProject(new Project(obj));
   }
-  private addToken(url : string) : string{
-    const token = localStorage.getItem("token");
-    let val = "?token=" + token;
-    if (url.includes("?")){
-      val = "&token=" + token;
-    }
-    return url  + val;
-  }
+
   public ObjectToProject(obj) {
     return new Project(obj);
   }

@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Md5 } from 'ts-md5/dist/md5';
 import { map } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-import * as _ from "lodash";
-
 import { User } from '../users/user.model';
 import { WebService } from './webService';
 
@@ -19,8 +16,7 @@ export class UserService {
 
   private ENT_NAME = "users/";
 
-  constructor(private httpClient: HttpClient,
-    private webService: WebService) { }
+  constructor(private webService: WebService) { }
 
   NewUser(obj) {
     obj.password = Md5.hashStr(obj.password).toString();
@@ -52,9 +48,7 @@ export class UserService {
     });
   }
 
-  
   public UpdateUser(userToUpdate: User) {
-
     this.webService.UpdateData(this.ENT_NAME, userToUpdate).subscribe(data => {
       this.UsersChanged.next({ action: "Updated", user: userToUpdate });
     });
@@ -64,7 +58,6 @@ export class UserService {
     this.webService.DeleteData(this.ENT_NAME, "", "", userToDelete.id).subscribe(data => {
       this.UsersChanged.next({ action: "Deleted", user: userToDelete });
     });
-
   }
 
   public GetCurrentUser() {
