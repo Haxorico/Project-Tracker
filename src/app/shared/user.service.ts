@@ -36,7 +36,7 @@ export class UserService {
   }
 
   public GetUserById(userID: string) {
-    return this.webService.GetData(this.ENT_NAME, "", "", userID).pipe(map((rawData: any) => {
+    return this.webService.GetData(this.ENT_NAME, {}, userID).pipe(map((rawData: any) => {
       const userData = this.ObjectToUser(rawData);
       return userData;
     }));
@@ -55,7 +55,7 @@ export class UserService {
   }
 
   public DeleteUser(userToDelete: User) {
-    this.webService.DeleteData(this.ENT_NAME, "", "", userToDelete.id).subscribe(data => {
+    this.webService.DeleteData(this.ENT_NAME, {}, userToDelete.id).subscribe(data => {
       this.UsersChanged.next({ action: "Deleted", user: userToDelete });
     });
   }

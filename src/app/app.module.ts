@@ -7,6 +7,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AlertModule } from './_alert';
 import { ErrorModule } from './errorHandler/error.module';
 
+import { AuthGuard } from './guards/auth.guard';
+
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
@@ -33,12 +35,14 @@ import { TimesheetsComponent } from './timesheets/timesheets.component';
 //#TODO add guards to navigate incase no user loggedin into login page
 const appRoutes: Routes = [
   { path: '', redirectTo: 'timesheet', pathMatch: 'full' },
-  { path: 'userinfo', component: HomeComponent,children: [
-    { path: ':id', component: UserDetailsComponent },
-    { path: ':id/edit', component: UserEditComponent }
-  ]},
   {
-    path: 'users', component: UsersComponent, children: [
+    path: 'userinfo', component: HomeComponent, canActivate: [AuthGuard], children: [
+      { path: ':id', component: UserDetailsComponent },
+      { path: ':id/edit', component: UserEditComponent }
+    ]
+  },
+  {
+    path: 'users', component: UsersComponent, canActivate: [AuthGuard], children: [
       { path: 'new', component: UserNewComponent },
       { path: ':id', component: UserDetailsComponent },
       { path: ':id/edit', component: UserEditComponent }
@@ -47,21 +51,21 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'logout', redirectTo: 'login', pathMatch: 'full' },
   {
-    path: 'projects', component: ProjectsComponent, children: [
+    path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard], children: [
       { path: 'new', component: ProjectNewComponent },
       { path: ':id', component: ProjectDetailsComponent },
       { path: ':id/edit', component: ProjectEditComponent },
     ]
   },
   {
-    path: 'tasks', component: TasksComponent, children: [
+    path: 'tasks', component: TasksComponent, canActivate: [AuthGuard], children: [
       { path: 'new', component: TaskNewComponent },
       { path: ':id', component: TaskDetailsComponent },
       { path: ':id/edit', component: TaskEditComponent },
     ]
   },
   {
-    path: 'timesheet', component: TimesheetsComponent
+    path: 'timesheet', component: TimesheetsComponent, canActivate: [AuthGuard]
   },
 ]
 
@@ -93,7 +97,7 @@ const appRoutes: Routes = [
     ErrorModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [UserService, LoginService],
+  providers: [UserService, LoginService, AuthGuard],
   bootstrap: [AppComponent]
 })
 

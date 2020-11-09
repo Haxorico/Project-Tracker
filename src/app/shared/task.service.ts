@@ -30,19 +30,19 @@ export class TaskService {
   }
 
   public GetTaskById(taskID: string) {
-    return this.webService.GetData(this.ENT_NAME, "", "", taskID).pipe(map((rawData: any) => {
+    return this.webService.GetData(this.ENT_NAME, {}, taskID).pipe(map((rawData: any) => {
       const taskData = this.ObjectToTask(rawData);
       return taskData;
     }));
   }
 
   public GetTasksWithProjectId(projID: string) {
-    return this.webService.GetDataArray(this.ENT_NAME, "project_id", projID).pipe(map((rawData: any) => {
+    const queryParams = {name : "project_id", data : projID};
+    return this.webService.GetDataArray(this.ENT_NAME, queryParams).pipe(map((rawData: any) => {
       const data = rawData.map(taskRawData => this.ObjectToTask(taskRawData));
       return data;
     }));
   }
-
 
   public AddTask(taskToAdd) {
     this.webService.AddData(this.ENT_NAME, taskToAdd).subscribe(data => {
@@ -57,7 +57,7 @@ export class TaskService {
   }
 
   public DeleteTask(taskToDelete: Task) {
-    this.webService.DeleteData(this.ENT_NAME, "", "", taskToDelete.id).subscribe(data => {
+    this.webService.DeleteData(this.ENT_NAME, {}, taskToDelete.id).subscribe(data => {
       this.TaskChanged.next({ action: "Deleted", task: taskToDelete });
     });
   }

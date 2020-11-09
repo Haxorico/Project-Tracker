@@ -33,14 +33,15 @@ export class ProjectService {
   }
 
   public GetProjectById(id: string) {
-    return this.webService.GetData(this.ENT_NAME, "", "", id).pipe(map((rawData: any) => {
+    return this.webService.GetData(this.ENT_NAME, {}, id).pipe(map((rawData: any) => {
       const projectData = this.ObjectToProject(rawData);
       return projectData;
     }));
   }
 
   public GetProjectsWithUserId(userID: string) {
-    return this.webService.GetDataArray(this.ENT_NAME, "team_members_ids", userID).pipe(map((rawData: any) => {
+    const queryParams = {name: "team_members_ids", data : userID};
+    return this.webService.GetDataArray(this.ENT_NAME, queryParams).pipe(map((rawData: any) => {
       const projectData = this.ObjectToProject(rawData);
       return projectData;
     }));
@@ -59,7 +60,7 @@ export class ProjectService {
   }
 
   public DeleteProject(projectToDelete: Project) {
-    this.webService.DeleteData(this.ENT_NAME, "", "", projectToDelete.id).subscribe(data => {
+    this.webService.DeleteData(this.ENT_NAME, {}, projectToDelete.id).subscribe(data => {
       this.ProjectChanged.next({ action: "Deleted", project: projectToDelete });
     });
   }

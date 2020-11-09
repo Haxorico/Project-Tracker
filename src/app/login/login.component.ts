@@ -4,7 +4,7 @@ import { User } from '../users/user.model';
 import { Router } from '@angular/router';
 import { LoginService } from '../shared/login.service';
 import { AlertService } from '../_alert';
-
+import { UserService } from '../shared/user.service';
 
 @Component({
   selector: 'app-login',
@@ -14,18 +14,18 @@ import { AlertService } from '../_alert';
 export class LoginComponent implements OnInit {
   
   @ViewChild('f', { static: false }) loginForm: NgForm;
-  
   loginUser : User;
   loginMessage : string;
   constructor(private loginService : LoginService,
+    private userService : UserService,
     private router: Router,
     protected alertService: AlertService) { }
 
   ngOnInit(): void {
-    /* if (this.userService.GetCurrentUser() != this.loginService.GetGuestUser()){
+    if (this.userService.GetCurrentUser() != this.userService.GetGuestUser()){
       this.loginService.Logout();
       this.router.navigate(['/']);
-    } */
+    } 
   }
   onSubmitButtonClicked() {
     const options = {
@@ -43,15 +43,5 @@ export class LoginComponent implements OnInit {
         this.alertService.error("Login error", options);
       }
     });
-    /* this.loginService.Login(name, pw).then(data => {
-      if (data) {
-        this.router.navigate(['/']);
-        this.alertService.success("Login Success", options);
-      }
-      else
-        this.alertService.error("Login error", options);
-    }).catch(err => {
-      this.alertService.error(err, options);
-    }); */
   }
 }
