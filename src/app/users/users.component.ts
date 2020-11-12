@@ -46,8 +46,8 @@ export class UsersComponent implements OnInit, OnDestroy {
         }
       }
     });
-    
   }
+
   ngOnDestroy() {
     this.userSub.unsubscribe();
   }

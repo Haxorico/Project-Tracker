@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import * as _ from "lodash";
@@ -14,15 +14,15 @@ import { UserService } from '../shared/user.service';
   styleUrls: ['./projects.component.css']
 })
 
-export class ProjectsComponent implements OnInit {
+export class ProjectsComponent implements OnInit, OnDestroy {
   projectSub: Subscription;
   projects: Project[];
-  loggedUser: User; 
+  loggedUser: User;
   constructor(
     private projectService: ProjectService,
     private userService: UserService,
-    private router : Router,
-    private route : ActivatedRoute) { }
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.projectService.GetProjects().subscribe(projects => {
@@ -45,24 +45,28 @@ export class ProjectsComponent implements OnInit {
       //check if user was Deleted.
       else if (action == "Deleted") {
         const index = _.findIndex(this.projects, arrProject => arrProject.id == project.id);
-        if (index) 
-          this.projects.splice(index,1)
+        if (index)
+          this.projects.splice(index, 1)
       }
     });
   }
 
-  onNewProjectClicked() {
-    this.router.navigate(['new'],{relativeTo: this.route});
+  ngOnDestroy(): void {
+    this.projectSub.unsubscribe();
   }
-  onFilterChanged(val){
+
+  onNewProjectClicked() {
+    this.router.navigate(['new'], { relativeTo: this.route });
+  }
+  onFilterChanged(val) {
     val = val.toLowerCase();
     this.projectService.GetProjects().subscribe(projects => {
       this.projects = projects.filter(filetredProjects => (
         //currently filtering by name and client name. Can add any otehr type of filter if needed...
-        filetredProjects.name.toLowerCase().includes(val) || 
+        filetredProjects.name.toLowerCase().includes(val) ||
         filetredProjects.client_name.toLowerCase().includes(val)
-        ));
+      ));
     });
-    
+
   }
 }
